@@ -1,1 +1,0 @@
-# PA2-Automated-Visual-Quality-Control-Using-Convolutional-Neural-Networks
