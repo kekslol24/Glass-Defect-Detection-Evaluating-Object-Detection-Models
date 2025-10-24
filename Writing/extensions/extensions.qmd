@@ -1,0 +1,190 @@
+---
+title: |
+  Glass Defect Detection:
+  Evaluating Object Detection Models
+institute: "Institue of Computational Life Science"
+keywords: "Robuste Regression, Ausreisser, Allometrie, Säugetiere, Gehirngrösse, Statistik"
+lang: en
+confidential: true
+cover-image:
+  src: cover.png
+  max-width: 100%
+  max-height: 5cm
+thesis-type: "Projectwork 2"
+degree-type: "Bachelors"
+study-year: "2023"
+submission-date: ": 2025-12-11"
+study-direction: "Applied Digital Life Science"
+supervisors:
+  - title: "Dr."
+    name: "Stefan Glüge"
+    affiliation: "ZHAW Life Sciences und Facility Management, Wädenswil"
+
+bibliography: references.bib
+author: 
+  - Florian Vollmer
+format: 
+  zhaw-lsfm-typst: default
+  html: default
+---
+
+# Zusammenfassung {.unnumbered .unlisted}
+
+Diese Arbeit untersucht die Beziehung zwischen Gehirngröße und Körpergewicht bei verschiedenen Säugetierarten anhand des MASS::Animals Datensatzes. Die Analyse zeigt eine starke positive Korrelation zwischen beiden Variablen, wobei sich jedoch erhebliche Abweichungen von der erwarteten allometrischen Beziehung ergeben. Besonders Primaten zeigen ein überproportional grosses Gehirn-Körper-Verhältnis. Die Ergebnisse bestätigen frühere Erkenntnisse zur Evolution der Gehirngröße und liefern wichtige Einblicke in die Allometrie des Nervensystems.
+
+
+::: {.content-hidden when-format="html"}
+
+# Inhaltsverzeichnis {.unnumbered .unlisted}
+
+{{< table-of-contents >}}
+
+:::
+
+
+
+# Liste der Abkürzungen {.unnumbered}
+
++---------+----------------------------------+
+| MASS    | Modern Applied Statistics with S |
++---------+----------------------------------+
+| log     | natürlicher Logarithmus          |
++---------+----------------------------------+
+| R²      | Bestimmtheitsmass                |
++---------+----------------------------------+
+| kg      | Kilogramm                        |
++---------+----------------------------------+
+| g       | Gramm                            |
++---------+----------------------------------+  
+
+# Einleitung
+
+Die Beziehung zwischen Gehirngrösse und Körpergewicht ist ein fundamentaler Aspekt der vergleichenden Neurobiologie und Evolution. Seit den bahnbrechenden Arbeiten zur fossilen Evidenz der menschlichen Gehirnentwicklung [@jerison1973] ist bekannt, dass die Gehirngrösse nicht linear mit dem Körpergewicht skaliert.
+
+Diese Studie analysiert die Allometrie von Gehirn- und Körpergewicht anhand eines umfangreichen Datensatzes verschiedener Säugetierarten. Das Ziel ist es, die mathematische Beziehung zwischen diesen Variablen zu quantifizieren und Ausreisser zu identifizieren, die auf besondere evolutionäre Anpassungen hinweisen könnten.
+
+# Literaturübersicht oder Theorie
+
+Die theoretische Grundlage für Gehirn-Körper-Allometrie basiert auf dem Konzept, dass biologische Strukturen häufig Potenzgesetzen folgen. Die erwartete Beziehung wird typischerweise als:
+
+$$\text{Gehirngewicht} = a \times \text{Körpergewicht}^b$$
+
+beschrieben, wobei der Exponent b in der Regel zwischen 0.6 und 0.8 liegt. @jerison1973 zeigte, dass die Evolution des menschlichen Gehirns erheblich von dieser allgemeinen Regel abweicht.
+
+Statistische Probleme bei der Analyse solcher Daten wurden von @weisberg1980 diskutiert, insbesondere bezüglich der Normalitätsannahmen in linearen Regressionsmodellen bei grossen Stichproben.
+
+# Material und Methoden
+
+## Datensatz
+
+Die Analyse basiert auf dem `Animals` Datensatz aus dem R-Paket MASS, der Gehirn- und Körpergewichtsdaten für 28 verschiedene Säugetierarten enthält.
+
+### Datenquelle und Charakteristika
+
+Der Datensatz wurde ursprünglich von @weisberg1980 zusammengestellt und enthält Messungen von verschiedenen Wirbeltierarten. Die Daten umfassen sowohl terrestrische als auch aquatische Säugetiere mit einem breiten Spektrum von Körpergewichten.
+
+### Datenqualität und Limitationen
+
+Einige Messungen stammen aus älteren Studien und könnten methodische Ungenauigkeiten aufweisen. Besonders bei sehr grossen Tieren wie Elefanten können die Gehirngewichte schwer präzise zu bestimmen sein.
+
+## Statistische Analyse
+
+Die Daten wurden logarithmisch transformiert, um eine lineare Beziehung zu erhalten:
+
+
+### Transformationsverfahren
+
+Die logarithmische Transformation ist bei allometrischen Beziehungen Standard, da sie Potenzgesetze in lineare Beziehungen überführt. Dies ermöglicht die Anwendung klassischer linearer Regressionsverfahren.
+
+### Modellvalidierung
+
+Die Residuen wurden auf Normalität und Homoskedastizität überprüft. Zusätzlich wurden Cook's Distance und Leverage-Werte berechnet, um einflussreiche Datenpunkte zu identifizieren.
+
+## Visualisierung
+
+Scatterplots wurden erstellt, um die Beziehung zu visualisieren, sowohl auf ursprünglicher als auch auf logarithmischer Skala.
+
+### Graphische Darstellung
+
+Die Visualisierungen umfassen sowohl die Rohdaten als auch die transformierten Daten mit Regressionsgerade und Konfidenzintervall.
+
+### Software und Pakete
+
+Alle Analysen und Visualisierungen wurden in R durchgeführt unter Verwendung der Pakete ggplot2, MASS und dplyr.
+
+# Ergebnisse
+
+Die statistische Analyse des MASS::Animals Datensatzes liefert umfassende Einblicke in die Beziehung zwischen Körper- und Gehirngewicht bei Säugetieren. Die deskriptiven Statistiken in @tbl-summary zeigen die erhebliche Variabilität der untersuchten Arten: Das Körpergewicht reicht von kleinen Nagern bis hin zu grossen Säugetieren wie Elefanten, während das Gehirngewicht entsprechend von wenigen Gramm bis zu mehreren Kilogramm variiert.
+
+Die logarithmische Darstellung in @fig-animals visualisiert deutlich die allometrische Beziehung zwischen beiden Variablen. Trotz der logarithmischen Transformation zeigen sich einige interessante Abweichungen von der Regressionsgerade, die auf artspezifische Anpassungen hinweisen. Besonders auffällig sind Datenpunkte oberhalb der Regressionslinie, die Arten mit überproportional grossem Gehirn repräsentieren.
+
+
+
+
+
+
+
+Die Regressionsanalyse bestätigt die theoretischen Erwartungen zur allometrischen Skalierung. Die statistischen Kennwerte in @tbl-animals zeigen einen Steigungsparameter von 0.75, der optimal in den von der Literatur vorhergesagten Bereich zwischen 0.6 und 0.8 fällt. Das hohe Bestimmtheitsmass (R² = 0.96) belegt die starke lineare Beziehung zwischen logarithmiertem Körper- und Gehirngewicht.
+
+Der hochsignifikante p-Wert (< 0.001) in @tbl-animals unterstreicht die statistische Robustheit dieser Beziehung. Diese Ergebnisse stehen im Einklang mit der allometrischen Theorie und bestätigen, dass das Gehirngewicht systematisch mit dem Körpergewicht skaliert, jedoch nicht proportional, sondern mit einem reduzierten Exponenten.
+
+# Diskussion
+
+Die Ergebnisse bestätigen die grundlegende allometrische Beziehung zwischen Gehirn- und Körpergewicht bei Säugetieren. Der ermittelte Exponent von 0.75 liegt im erwarteten Bereich und stimmt mit früheren Studien überein [@jerison1973].
+
+Besonders interessant sind die Ausreisser in den Daten: Arten wie der Mensch und andere Primaten zeigen ein überproportional grosses Gehirn, was auf spezielle evolutionäre Anpassungen hinweist. Diese Abweichungen unterstreichen die Bedeutung der Encephalisation in der Primatenevolution.
+
+Die hohe Korrelation (R² = 0.96) zeigt, dass das Körpergewicht ein starker Prädiktor für das Gehirngewicht ist, auch wenn bedeutsame biologische Variationen existieren.
+
+# Literaturverzeichnis {#sec-refs}
+
+{{< references >}}
+
+
+::: {.content-hidden when-format="html"}
+
+# Verzeichnis der Abbildungen {.unnumbered}
+
+{{< list-of-figures >}}
+
+# Verzeichnis der Tabellen {.unnumbered}
+
+{{< list-of-tables >}}
+
+:::
+
+# Anhang {.unnumbered}
+
+Zusätzliche Materialien und Daten, die nicht im Hauptteil der Arbeit enthalten sind, werden im Anhang aufgeführt.
+
+## Rohdaten
+
+Der vollständige MASS::Animals Datensatz mit allen 28 Säugetierarten:
+
+
+
+### Datenquelle und -qualität
+
+Die Daten stammen aus verschiedenen Quellen und wurden über mehrere Jahrzehnte zusammengetragen. Einige Besonderheiten der Datensammlung:
+
+- **Afrikanischer Elefant**: Mit 6654 kg Körpergewicht und 5712 g Gehirngewicht das grösste Säugetier in der Stichprobe
+- **Spitzmaus**: Das kleinste Säugetier mit nur 0.004 kg Körpergewicht und 0.14 g Gehirngewicht
+- **Mensch**: Zeigt mit 1320 g Gehirngewicht bei 62 kg Körpergewicht eine deutliche positive Abweichung von der allometrischen Beziehung
+- **Primaten generell**: Schimpanse, Gorilla und Rhesusaffe zeigen alle überdurchschnittlich grosse Gehirne
+
+### Ausreisser-Analyse
+
+
+
+## Statistische Outputs
+
+### Vollständige Regressionsanalyse
+
+
+
+### Koeffizienten mit Konfidenzintervallen
+
+
+
+### Modelldiagnostik
+
