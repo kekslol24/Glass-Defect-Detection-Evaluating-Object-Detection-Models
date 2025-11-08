@@ -110,9 +110,9 @@
           #if confidential {
             parbreak()
             if lang == "en" [
-              #text(weight: "bold", size: subtitle-size)[confidential]
+              #text(weight: "bold", size: subtitle-size)[Confidential]
             ] else [
-              #text(weight: "bold", size: subtitle-size)[vertraulich]
+              #text(weight: "bold", size: subtitle-size)[Vertraulich]
             ]
           }
           #if thesis-type != none {

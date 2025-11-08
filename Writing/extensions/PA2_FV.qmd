@@ -49,8 +49,23 @@ Potential abbrevations
 
 # Introduction
 ## Context and Motivation
-## Research Questions
+In the current technological landscape, the implementation of modern technologies is indispensable for ensuring precise and automated processes. Within the industrial sector, quality control represents a critical success factor. Specifically in pharmaceuticals and medical technology, the integrity of the primary packaging material (typically glass containers) is crucial for product safety.
+
+The primary material used for medical glass containers generally consists of borosilicate glass. However, this material can exhibit or contain production-related defects, including particulate inclusions, air bubbles, or flexible fragments known as Lamellae [@Foglia2015AnIS].
+
+The relevance of these quality deficiencies is highlighted by the consequences demonstrated by [@Foglia2015AnIS]: _"In recent years, more than 20
+product recalls have been associated with glass issues, and over 100 million units of drugs packaged in vials or syringes have been withdrawn from the
+market."_ This underscores the urgent necessity of reliable detection methods for such flaws.
+
+The rapid advancement of Artificial Intelligence (AI) and fundamental mechanisms like Deep Learning allows for the application of so-called object detectors for the automated recognition of the aforementioned defects. The attractiveness of these AI-based image recognition methods is continuously increasing [@10.1115/1.4049535]. However, as these procedures still represent a nascent field of research, comprehensive validation studies on their suitability and the achievability of the necessary performance in industrial use are lacking.
+
+A central challenge in training robust models is the scarcity of extensive datasets [@10.1115/1.4049535]. Specifically, the naturally limited availability of data from defective products, caused by the significant imbalance in favor of intact units, complicates the creation of an adequate training dataset [@10.1115/1.4049535].
+
+This paper serves as an exploratory contribution to the evaluation of the current feasibility of AI-supported defect detection. The objective of this work is the comparison of available models on the market and the existence of suitable datasets, in order to provide a well-founded statement on the realisability of precise defect determination.
+
 ## Overall Concept
+## Research Questions
+
 ## State of the Art
 
 # Methodology
