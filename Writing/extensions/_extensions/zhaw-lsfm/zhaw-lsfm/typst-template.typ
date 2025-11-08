@@ -56,6 +56,7 @@
     margin: margin,
     numbering: none,
   )
+  set par(leading: 1.5em, justify: true) // Fügt den Zeilenabstand hinzu
   set par(justify: true)
   set text(lang: lang,
            region: region,

@@ -1,0 +1,97 @@
+---
+title: |
+  Glass Defect Detection:
+  Evaluating Object Detection Models
+institute: "Institue of Computational Life Science"
+keywords: "Deep Learning, Object Detectors, Image Processing, Evaluation Metrics"
+lang: en
+confidential: true
+cover-image:
+  src: Cover-image.jpg
+  max-width: 100%
+  max-height: 7cm
+thesis-type: "Projectwork 2"
+degree-type: "Bachelors"
+study-year: "2023"
+submission-date: "2025-12-11"
+study-direction: "Applied Digital Life Science"
+supervisors:
+  - title: "Dr."
+    name: "Stefan Glüge"
+    affiliation: "ZHAW Life Sciences und Facility Management, Wädenswil"
+
+bibliography: references.bib
+author: 
+  - Florian Vollmer
+format: 
+  zhaw-lsfm-typst: default
+  html: default
+---
+
+# Abstract {.unnumbered .unlisted}
+
+Write after work is written
+
+
+::: {.content-hidden when-format="html"}
+
+# Table of Contents {.unnumbered .unlisted}
+
+{{< table-of-contents >}}
+
+:::
+
+
+
+# List of abbrevations {.unnumbered}
+
+Potential abbrevations
+
+# Introduction
+## Context and Motivation
+## Research Questions
+## Overall Concept
+## State of the Art
+
+# Methodology
+## Datasets and Assumptions
+## Model Selection
+## Model Finetuning
+## Model Training
+## Model Testing
+## Evaluation Metrics
+
+# Results
+## Model Results and Statistical Evaluation
+## Quantitative and Qualitative Evaluation
+## Evaluation Visualization
+
+# Discussion
+## Interpretation of Results
+## Comparison with Expectations
+
+# Conclusion
+## Summary of Key Findings
+## Limitations and Challenges
+## Future Research Directions
+
+
+# References {#sec-refs}
+
+{{< references >}}
+
+::: {.content-hidden when-format="html"}
+
+# Lists
+
+## List of Figures {.unnumbered}
+
+{{< list-of-figures >}}
+
+## List of Tables {.unnumbered}
+
+{{< list-of-tables >}}
+
+:::
+
+# Attachments
