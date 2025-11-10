@@ -77,15 +77,56 @@ The overall objective of this work was to conduct a quantitative performance com
 ## Research Questions
 Based on the challenges mentioned in **[Context and Motivation](#context-and-motivation)**, this study tries to answer following research questions:
 
-- How does the performance differ between the two investigated object detection models (Model X vs. Model Y), measured by Mean Average Precision (mAP), in detecting defects in the different datasets?
-- Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
+  - How does the performance differ between the two investigated object detection models (Model X vs. Model Y), measured by Mean Average Precision (mAP), in detecting defects in the different datasets?
+  - Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
 
 ## State of the Art
 
 # Methodology
 ## Datasets and Assumptions
+The search for suitable data sets proved to be challenging due to the inherent imbalance in industrial production. As mentioned in the introduction, the lack of data is a key problem in the context of defect detection. For the experimental implementation, two separate data sets were selected. These data sets represent different product forms, but have the identical defect type of gas bubbles.
+
+### Dataset A (Glasjars, Roboflow)
+  The first dataset was an annotated dataset of glass jars. This dataset was obtained from the Roboflow platform.
+
+  - **Defined classes:** This dataset contained two primary classes: the defect class (the gas bubble itself) and the container class (the glass container as an object). The models were trained to locate both the surrounding product and the specific defect using bounding boxes.
+
+  - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set, validation set (‘val’) and test set (‘test’) was already predefined. This division was adopted for the subsequent analysis.
+
+![Raw example image of the dataset A](figures/59_png_jpg.rf.c0f66ac390964d30bc5c71b701b35a10.jpg){#fig-roboflow-raw width=40%}
+
+@fig-roboflow-raw shows that the images were caputred in monotone coloring, they are not autorotated, meaning the angle of the object is different in every picture.
+
+### Dataset B (Glass Plates, Kaggle)
+The second dataset was obtained from the Kaggle platform and was used to verify the model's performance on structurally different image data.
+
+  - **Scope and distribution:** With a total of 208 images, this dataset was significantly smaller than dataset A. Here, too, the distribution into training, validation and test sets was predefined and was adopted for the analysis.
+
+  - **Product and class definition:** In contrast to the first data set, data set B did not contain images of entire pharmaceutical containers, but rather images of a glass plate that exhibited the defect. The classification was limited exclusively to the defect class (gas bubble). This set came annotated with the respective bounding boxes and the class "DEFECT".
+
+  - **Important Feature:** A key feature of this data set was the guarantee that each image in the sample contained at least one defect. This represented a contrasting data basis to real production environments, as the natural imbalance between defective and intact samples was not represented here.
+
+![Raw example image of dataset B](figures/image_99_jpg.rf.3a7ac1bad7c7e785b7fbba1151f9464d.jpg){#fig-raw-kaggle-1 width=50%}
+
+![Raw example image of dataset B](figures/image_183_jpg.rf.69573aa74478fbc00d4193f55cde8d58.jpg){#fig-raw-kaggle-2 width=50%}
+
+As shown in (@fig-raw-kaggle-1) and Figure (@fig-raw-kaggle-2), the extent of the gas bubbles varied significantly from microlesions to large-area defects. This variation placed demands on the localisation capability of the models across a wide range of sizes.
+
+In view of the structural and qualitative differences between the data sets, a number of hypotheses were formulated in advance.
+
+It was assumed that data set A would be more challenging due to the pose variance and the more complex classification. A longer training period and lower overall performance were expected here compared to data set B.
+
+On the other hand, the small size of data set B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
+
 ## Model Selection
-Die Entscheidung der Modellwahl hat sich auf die momentan zwei bekanntesten Objekt deketoren konzentriert. Zum einen gibt es das sogenannte YOLO Modell (You Only Look Once). Dies stammt von dem Chinesischen Software Entwickler Ultralytics. Es ist ein Echtzeit-Objekterkennungs und Bildsegmentierungsmodell. 
+For the comparative part of the study, the decision was focused on two of the currently best-known and most powerful architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
+
+  - **YOLO (You Only Look Once)**
+  The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.
+
+  - **RF-DETR (Roboflow Detection Transformer)**
+  The RF-DETR model, provided by Roboflow, served as an alternative architecture. RF-DETR is a transformer-based model for object detection and instance segmentation. It represents a newer class of detectors which, unlike CNN-based architectures, does not require manual post-processing (such as non-maximum suppression).
+
 ## Model Finetuning
 ## Model Training
 ## Model Testing
