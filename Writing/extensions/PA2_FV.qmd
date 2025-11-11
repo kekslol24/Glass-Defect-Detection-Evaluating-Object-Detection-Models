@@ -86,6 +86,8 @@ Based on the challenges mentioned in **[Context and Motivation](#context-and-mot
 ## Datasets and Assumptions
 The search for suitable data sets proved to be challenging due to the inherent imbalance in industrial production. As mentioned in the introduction, the lack of data is a key problem in the context of defect detection. For the experimental implementation, two separate data sets were selected. These data sets represent different product forms, but have the identical defect type of gas bubbles.
 
+Ansprechen was in den ground truth files drin steht mit superclass, für was coco steht und warum es anders ist. dass die daten von kaggle auf roboflow von yolo zu coco konvertiert wurden
+
 ### Dataset A (Glasjars, Roboflow)
   The first dataset was an annotated dataset of glass jars. This dataset was obtained from the Roboflow platform.
 
