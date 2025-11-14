@@ -81,7 +81,40 @@ Based on the challenges mentioned in **[Context and Motivation](#context-and-mot
   - Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
 
 ## State of the Art
-Ganz kurz: was sind objekt detektoren, wie funktionieren sie, was ist IoU
+The quote from (@Buhl_2024) explains quite well what Object detection is:
+ _"Object detection is a critical capability of computer vision that identifies and locates objects within an image or video. Unlike image classification, object detection not only classifies the objects in an image, but also identifies their location within the image by drawing a bounding box around each object."_
+
+Given the lack of specific literature concerning the performance of contemporary object detectors on glass vial defect inspection, this study must rely on fundamental model performance benchmarks established by previous research. These benchmarks are typically derived from models trained on broad, general-purpose datasets.
+
+The following analysis focuses on the existing comparative statistics for the chosen architectures: YOLO and RF-DETR.
+
+![Comparison Table of different Object Detectors](figures/Comparison_table_models_robinson.png){#fig-comparison-table}
+
+The initial comparison in (@fig-comparison-table) provides a direct performance evaluation of various object detectors, including the two architectures selected for this paper (YOLOv11 Nano and RF-DETR Nano). Crucially, Non-Maximum Suppression (NMS), a fundamental post-processing algorithm, is utilised by YOLO to filter out overlapping, redundant bounding boxes, thereby ensuring that each object instance is identified only once (@Ultralytics_2025). The results published by @robinson2025rfdetrneuralarchitecturesearch reveal significant architectural and performance differences between the nano variants:
+- Architectural Size: The RF-DETR model possesses 30.5 million parameters (M), whereas the YOLO variant contains only 2.6M parameters. This disparity reflects a substantial difference in model complexity and memory footprint.
+- Detection Accuracy: Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size differential represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
+
+**Contrasting Benchmarks**
+Interestingly, the benchmark table presented by @sapkota2025rfdetrobjectdetectionvs, shown in (@fig-comparison-tabe-2)
+
+![Evaluation Metrics](figures/Comparison_table_models_paper.png){#fig-comparison-tabe-2}
+
+, demonstrates partially conflicting results.
+
+It is important to note that @sapkota2025rfdetrobjectdetectionvs utilised the newer YOLOv12 architecture and the Base variant of RF-DETR (with 29M parameters, slightly fewer than the Nano variant used in the Robinson study).
+
+- Single-Class Detection: In the context of single-class object detection, the YOLOv12N model outperformed the RF-DETR architecture.
+
+- Multi-Class Detection: Conversely, the ranking shifts for multi-class detection, where the RF-DETR model demonstrated superior performance compared to YOLOv12N.
+
+This discrepancy highlights the critical need to define the intended application: the optimal choice depends heavily on whether the scenario involves single-class or multi-class detection.
+
+**Research Gap and Contribution**
+
+The contradictory performance findings observed in the literature, particularly the trade-off between model size and average precision @robinson2025rfdetrneuralarchitecturesearch and the impact of class complexity @sapkota2025rfdetrobjectdetectionvs, underscore the need for further validation.
+
+The present paper connects with this existing body of literature by providing an empirical, comparative evaluation of the YOLO and RF-DETR architectures under the specific constraints of glass defect detection and data imbalance. This aims to serve as a specific supplementary reference for the performance of these models in a highly sensitive industrial application.
+
 # Methodology
 ## Datasets and Assumptions
 The search for suitable data sets proved to be challenging due to the inherent imbalance in industrial production. As mentioned in the introduction, the lack of data is a key problem in the context of defect detection. For the experimental implementation, two separate data sets were selected. These data sets represent different product forms, but have the identical defect type of gas bubbles.
@@ -131,18 +164,36 @@ Ansprechen was in den ground truth files drin steht mit superclass, für was coc
 
   - **YOLO (You Only Look Once)**
   The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.(@Ultralytics_2025)
-  
+  The YOLO Model's folder structure has the following components that are the same for every dataset. It consists of the aforementioned three folders: ´train´, ´val´, ´test´ and in addition, a YAML source file (Yet Another Markup Language) was used. This specified the file paths to the respective folders and defined the number and names of the classes contained in the data set. Each of the main folders are subdivided into two subfolders: 
+  - One containing the image data without annotations.
+  - The other containing five numbers: The class id, center_x, center_y, width and height of the bounding box 
 
   - **RF-DETR (Roboflow Detection Transformer)**
-  The RF-DETR model, provided by Roboflow, served as an alternative architecture. RF-DETR is a transformer-based model for object detection and instance segmentation. It represents a newer class of detectors which, unlike CNN-based architectures, does not require manual post-processing (such as non-maximum suppression).
+  The folder structure required for the RF-DETR model differed fundamentally from the YOLO standard, necessitating the use of the Common Objects in Context (COCO) format.
+
+  Similar to the preceding model, the directory maintained the main divisions (train, val, test). However, the key architectural distinction resided in the annotation storage. Instead of utilizing individual label files per image, each main folder contained a single JSON file that held all annotation information for the respective subset.
+
+  The structure of this JSON file adhered to the COCO standard, encompassing the following five key elements:
+
+  1. Dataset Information: General metadata regarding the dataset itself.
+
+  2. License Information: Details concerning data usage rights.
+
+  3. Categories: A definition of the classes present in the dataset. A specific feature of the COCO format was the mandatory inclusion of a Supercategory (e.g., 'Animals'), under which individual classes (e.g., 'Cat') were assigned.
+
+  4. Image Information: Metadata for each image, such as file name and dimensions.
+
+  5. Annotation Information: Detailed annotation data for each instance, including the object's id, the corresponding image_id, the category_id, the bounding box coordinates, the area (in square pixels), and the segmentation information (segmentation and is_crowd variables)
+
+For the experimental evaluation, the Nano variant (YOLOv11n, RFDETR-nano) was deliberately selected for both the YOLO and the RF-DETR architecture.
 
 ## Model Mechanics
-- **YOLO (You Only Look Once)**
+### **YOLO (You Only Look Once)**
 The YOLO (You Only Look Once) model is a real-time object detection system which fundamentally differs from traditional multi-stage detectors by processing the input image in a single pass. This architectural choice classifies YOLO as a Single-Shot Detector (SSD).
 
 This type of detector employs an algorithm that predicts the bounding box coordinates and the corresponding class probability of the detected object simultaneously and in one step. The primary beneficial consequence of this unified approach is a significant increase in processing speed. (@Buhl_2024) Consequently, the simultaneous prediction of the object's presence and its precise location accelerates the overall detection process, making it highly suitable for real-time applications.
 
-- **RF-DETR (Roboflow Detection Transformer)**
+### **RF-DETR (Roboflow Detection Transformer)**
 As the comparative alternative architecture, the RF-DETR (Roboflow Detection Transformer) model was selected. This model represents a real-time, state-of-the-art transformer-based architecture specifically designed for object detection and instance segmentation. [@robinson2025rfdetrneuralarchitecturesearch].
 
 The RF-DETR architecture leverages a Vision Transformer (ViT) to effectively extract multiscale features from the input image.
@@ -159,9 +210,13 @@ This deliberate balance helps maintain high performance while ensuring the model
 The selection of YOLO and RF-DETR for the experimental evaluation is based on their fundamental architectural divergence. Although both models are utilized for the same purpose, object detection and localization of defects, they differ significantly in their internal working structure.
 
 ## Model Training
+The training procedure for both models were carried out under identical conditions to ensure a fair comparison. All training and vailidation was conducted on Google Colab with a T4 GPU with 16GB VRAM (Virtual Random Access Memory). Both of the models were trained for 100 epochs with a total batch size of 16 and a learning rate of 0.001.
 
 ## Model Testing
+The testing of the models was conducted with the same conditions as the training. Therefore the test split of the datasets were used.
+
 ## Evaluation Metrics
+Evaluation Metrics that are 
 
 # Results
 ## Model Results and Statistical Evaluation
@@ -171,6 +226,7 @@ The selection of YOLO and RF-DETR for the experimental evaluation is based on th
 # Discussion
 ## Interpretation of Results
 (Self Note;)@Buhl_2024 sagt dass das modell weniger false positives hat, unbedingt mit dem resultat von rf detr abgleichen!
+
 ## Comparison with Expectations
 
 # Conclusion
