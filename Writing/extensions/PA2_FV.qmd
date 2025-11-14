@@ -81,12 +81,11 @@ Based on the challenges mentioned in **[Context and Motivation](#context-and-mot
   - Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
 
 ## State of the Art
-
+Ganz kurz: was sind objekt detektoren, wie funktionieren sie, was ist IoU
 # Methodology
 ## Datasets and Assumptions
 The search for suitable data sets proved to be challenging due to the inherent imbalance in industrial production. As mentioned in the introduction, the lack of data is a key problem in the context of defect detection. For the experimental implementation, two separate data sets were selected. These data sets represent different product forms, but have the identical defect type of gas bubbles.
 
-Ansprechen was in den ground truth files drin steht mit superclass, für was coco steht und warum es anders ist. dass die daten von kaggle auf roboflow von yolo zu coco konvertiert wurden
 
 ### Dataset A (Glasjars, Roboflow)
   The first dataset was an annotated dataset of glass jars. This dataset was obtained from the Roboflow platform.
@@ -109,31 +108,58 @@ The second dataset was obtained from the Kaggle platform and was used to verify 
 
   - **Important Feature:** A key feature of this data set was the guarantee that each image in the sample contained at least one defect. This represented a contrasting data basis to real production environments, as the natural imbalance between defective and intact samples was not represented here.
 
-![Raw example image of dataset B](figures/image_99_jpg.rf.3a7ac1bad7c7e785b7fbba1151f9464d.jpg){#fig-raw-kaggle-1 width=50%}
+::: {layout-ncol=2}
+![Example image of dataset B](figures/image_99_jpg.rf.3a7ac1bad7c7e785b7fbba1151f9464d.jpg){#fig-raw-kaggle-1}
 
-![Raw example image of dataset B](figures/image_183_jpg.rf.69573aa74478fbc00d4193f55cde8d58.jpg){#fig-raw-kaggle-2 width=50%}
+![Example image of dataset B](figures/image_183_jpg.rf.69573aa74478fbc00d4193f55cde8d58.jpg){#fig-raw-kaggle-2}
+:::
 
 As shown in (@fig-raw-kaggle-1) and Figure (@fig-raw-kaggle-2), the extent of the gas bubbles varied significantly from microlesions to large-area defects. This variation placed demands on the localisation capability of the models across a wide range of sizes.
 
 In view of the structural and qualitative differences between the data sets, a number of hypotheses were formulated in advance.
 
-It was assumed that data set A would be more challenging due to the pose variance and the more complex classification. A longer training period and lower overall performance were expected here compared to data set B.
+It was assumed that data set A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to data set B.
 
-On the other hand, the small size of data set B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
+On the other hand, the small size of dataset B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
 
 
 ## Model Selection
-For the comparative part of the study, the decision was focused on two of the currently best-known and most powerful architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
+For the comparative part of the study, the decision was focused on two of the currently best-known architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
+
+Ansprechen was in den ground truth files drin steht mit superclass, für was coco steht und warum es anders ist. dass die daten von kaggle auf roboflow von yolo zu coco konvertiert wurden
+
 
   - **YOLO (You Only Look Once)**
-  The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.
-  Der YOLO Datensatz enthielt die klassische Aufteilung in train, val & test. (@Ultralytics_2025) 
+  The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.(@Ultralytics_2025)
+  
 
   - **RF-DETR (Roboflow Detection Transformer)**
   The RF-DETR model, provided by Roboflow, served as an alternative architecture. RF-DETR is a transformer-based model for object detection and instance segmentation. It represents a newer class of detectors which, unlike CNN-based architectures, does not require manual post-processing (such as non-maximum suppression).
 
-## Model Finetuning
+## Model Mechanics
+- **YOLO (You Only Look Once)**
+The YOLO (You Only Look Once) model is a real-time object detection system which fundamentally differs from traditional multi-stage detectors by processing the input image in a single pass. This architectural choice classifies YOLO as a Single-Shot Detector (SSD).
+
+This type of detector employs an algorithm that predicts the bounding box coordinates and the corresponding class probability of the detected object simultaneously and in one step. The primary beneficial consequence of this unified approach is a significant increase in processing speed. (@Buhl_2024) Consequently, the simultaneous prediction of the object's presence and its precise location accelerates the overall detection process, making it highly suitable for real-time applications.
+
+- **RF-DETR (Roboflow Detection Transformer)**
+As the comparative alternative architecture, the RF-DETR (Roboflow Detection Transformer) model was selected. This model represents a real-time, state-of-the-art transformer-based architecture specifically designed for object detection and instance segmentation. [@robinson2025rfdetrneuralarchitecturesearch].
+
+The RF-DETR architecture leverages a Vision Transformer (ViT) to effectively extract multiscale features from the input image.
+
+Following feature extraction, the model utilizes a balanced combination of two distinct attention mechanisms:
+
+Windowed Attention Blocks: These restrict the self-attention mechanism to a local neighbourhood, which significantly improves processing speed.
+
+Non-Windowed Attention Blocks: These enable global interaction across features, which contributes to overall detection accuracy.
+
+This deliberate balance helps maintain high performance while ensuring the model remains fast enough for real-time applications. Subsequently, the deformable cross-attention layers and the segmentation head bilinearly interpolate the output. Finally, the detection and segmentation losses are applied to all decoder layers during the training process [@robinson2025rfdetrneuralarchitecturesearch].
+
+### YOLO vs RF-DETR
+The selection of YOLO and RF-DETR for the experimental evaluation is based on their fundamental architectural divergence. Although both models are utilized for the same purpose, object detection and localization of defects, they differ significantly in their internal working structure.
+
 ## Model Training
+
 ## Model Testing
 ## Evaluation Metrics
 
@@ -144,6 +170,7 @@ For the comparative part of the study, the decision was focused on two of the cu
 
 # Discussion
 ## Interpretation of Results
+(Self Note;)@Buhl_2024 sagt dass das modell weniger false positives hat, unbedingt mit dem resultat von rf detr abgleichen!
 ## Comparison with Expectations
 
 # Conclusion
