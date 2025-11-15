@@ -216,7 +216,23 @@ The training procedure for both models were carried out under identical conditio
 The testing of the models was conducted with the same conditions as the training. Therefore the test split of the datasets were used.
 
 ## Evaluation Metrics
-Evaluation Metrics that are 
+The evaluation metrics that were used during deployment were:
+
+  - True Positives (TP): The model correctly identified defects.
+
+  - True Negatives (TN): The model correctly identified no defects.
+
+  - False Positives (FP): The model predicted a defect where none was present.
+
+  - False Negatives (FN): The model was not able to predict a defect where one was present.
+
+Given these metrics further performance indicators were calculated:
+
+  - Precision (Measures the accuracy of positive preditions): $$Precision = \frac{TP}{TP+FP}$$
+  
+  - Recall (Measures the models ability to find all actual positive instances): $$Recall = \frac{TP}{TP+FN}$$
+  
+  - F1-Score (Harmonic mean of Precision and Recall): $$F1-Score = \frac{Precision \cdot Recall}{Precision + Recall}$$
 
 # Results
 ## Model Results and Statistical Evaluation
