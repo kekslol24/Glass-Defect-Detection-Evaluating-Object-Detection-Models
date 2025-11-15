@@ -149,7 +149,7 @@ The second dataset was obtained from the Kaggle platform and was used to verify 
 
 As shown in (@fig-raw-kaggle-1) and Figure (@fig-raw-kaggle-2), the extent of the gas bubbles varied significantly from microlesions to large-area defects. This variation placed demands on the localisation capability of the models across a wide range of sizes.
 
-In view of the structural and qualitative differences between the data sets, a number of hypotheses were formulated in advance.
+In view of the structural and qualitative differences between the data sets, a number of assumptions were formulated in advance.
 
 It was assumed that data set A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to data set B.
 
@@ -158,9 +158,6 @@ On the other hand, the small size of dataset B led to the hypothesis of low gene
 
 ## Model Selection
 For the comparative part of the study, the decision was focused on two of the currently best-known architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
-
-Ansprechen was in den ground truth files drin steht mit superclass, für was coco steht und warum es anders ist. dass die daten von kaggle auf roboflow von yolo zu coco konvertiert wurden
-
 
   - **YOLO (You Only Look Once)**
   The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.(@Ultralytics_2025)
@@ -245,20 +242,43 @@ Given these fundamental metrics, the following performance indicators were calcu
 
 # Results
 ## Model Results and Statistical Evaluation
-## Quantitative and Qualitative Evaluation
+Yolo Kaggle, traintime = ~7min
+Yolo Roboflow, traintime = ~40min
+RF-DETR Kaggle, traintime = 
+RF-DETR Roboflow, traintime ~ 6h
 ## Evaluation Visualization
 
 # Discussion
 ## Interpretation of Results
 (Self Note;)@Buhl_2024 sagt dass das modell weniger false positives hat, unbedingt mit dem resultat von rf detr abgleichen!
 
-## Comparison with Expectations
+## Research Questions & Assumptions
+
+**Assumptions**
+Es wurde angenommen, dass der Datensatz A eine längere Durchlaufzeit benötigt, da er grösser ist. Dies wurde im Abschnitt [Model Results and Statistical Evaluation](#model-results-and-statistical-evaluation) dargelegt.
 
 # Conclusion
 ## Summary of Key Findings
-## Limitations and Challenges
-## Future Research Directions
 
+## Limitations and Challenges
+The execution of the comparative study was subject to several inherent constraints and practical challenges:
+
+- **Computational Constraints and Training Duration:** A significant limitation was the dependency on high-performance computing resources.  It was observed that without a powerful GPU for fine-tuning, researchers must account for extended waiting periods. The training time increases proportionally with the size and complexity of the dataset, posing a barrier to rapid experimentation.
+
+- **Discrepancy in Model Outputs:** Due to the divergent underlying model infrastructures (i.e., the unique software libraries and frameworks used by YOLO and RF-DETR), the final training results were represented differently. This resulted in variations in data storage formats, metrics calculated, and output visualizations. Consequently, considerable effort was required to unify the various outputs into a consistent and comparable format suitable for a fair performance comparison.
+
+- **Data Scarcity and Suitability:** A major initial challenge, as previously discussed, was the difficulty in obtaining suitable public datasets containing sufficient annotated samples for the specific application of glass defect detection. The inherent data imbalance in the industrial context restricted the scope and depth of the training process.
+
+## Future Research Directions
+The findings of this project open up several promising avenues for future research and applied development:
+
+- **Real-Time Video Stream Evaluation:** A natural extension would be to test the trained models' performance using a real-time video signal. This would enable the precise evaluation of detection latency and practical precision under continuous operational conditions, moving closer to a live industrial application.
+
+- **Edge Device Deployment Simulation:** It would be highly valuable to deploy the final trained weights onto a resource-constrained edge computing device (e.g., a Raspberry Pi), paired with a camera.  This could simulate a real application scenario, allowing for the measurement of the actual processing speed (FPS) achievable on lightweight hardware, thus validating the choice of the Nano variants.
+
+- **User Interface Development:** The creation of a user interface (UI) would enhance the usability of the models. This UI could visualize the results in a user-friendly manner, clearly distinguishing between defect and no defect conditions for production personnel.
+
+- **Industrial Partnership and Validation:** Ideally, these proposed extensions could be executed in collaboration with an industrial partner. Such a partnership would facilitate the evaluation of whether these modern deep learning methods surpass the existing, often complex and expensive, traditional machine learning algorithms currently used for automated quality control in the pharmaceutical sector.
 
 # References {#sec-refs}
 
@@ -279,3 +299,20 @@ Given these fundamental metrics, the following performance indicators were calcu
 :::
 
 # Attachments
+
+## Raw Data
+
+### Dataset A
+**YOLO-Model**
+*Training*
+*Testing*
+**RF-DETR**
+*Training*
+*Testing*
+### Dataset B
+**YOLO-Model**
+*Training*
+*Testing*
+**RF-DETR**
+*Training*
+*Testing*
