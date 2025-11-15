@@ -210,29 +210,38 @@ This deliberate balance helps maintain high performance while ensuring the model
 The selection of YOLO and RF-DETR for the experimental evaluation is based on their fundamental architectural divergence. Although both models are utilized for the same purpose, object detection and localization of defects, they differ significantly in their internal working structure.
 
 ## Model Training
-The training procedure for both models were carried out under identical conditions to ensure a fair comparison. All training and vailidation was conducted on Google Colab with a T4 GPU with 16GB VRAM (Virtual Random Access Memory). Both of the models were trained for 100 epochs with a total batch size of 16 and a learning rate of 0.001.
+The training procedure for both the YOLO and RF-DETR architectures was carried out under identical computational and hyperparameter conditions to ensure a fair and direct comparative evaluation.
+
+  - **Computational Environment:** All training and validation processes were conducted on the Google Colab Pro environment, utilizing an NVIDIA T4 GPU equipped with 16GB of VRAM (Video Random Access Memory).
+
+  - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
 
 ## Model Testing
-The testing of the models was conducted with the same conditions as the training. Therefore the test split of the datasets were used.
+The final testing of the trained models was conducted under the same computational conditions as the training phase. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
 
 ## Evaluation Metrics
-The evaluation metrics that were used during deployment were:
+The performance of the models was assessed using standard metrics commonly applied in object detection and machine learning. These metrics were calculated based on the following fundamental classifications:
 
-  - True Positives (TP): The model correctly identified defects.
+  - **True Positives (TP):** The model correctly identified a defect, and the predicted bounding box sufficiently overlapped with the ground truth annotation.
 
-  - True Negatives (TN): The model correctly identified no defects.
+  - **True Negatives (TN):** The model correctly identified the absence of a defect in an area where none was present.
 
-  - False Positives (FP): The model predicted a defect where none was present.
+  - **False Positives (FP):** The model predicted a defect where the ground truth showed none (a false alarm).
 
-  - False Negatives (FN): The model was not able to predict a defect where one was present.
+  - **False Negatives (FN):** The model failed to predict a defect where one was present (a missed detection).
 
-Given these metrics further performance indicators were calculated:
+Given these fundamental metrics, the following performance indicators were calculated:
 
-  - Precision (Measures the accuracy of positive preditions): $$Precision = \frac{TP}{TP+FP}$$
+  - **Precision:** This metric measures the accuracy of the positive predictions, indicating the proportion of positively predicted instances that were truly correct. $$Precision = \frac{TP}{TP+FP}$$
   
-  - Recall (Measures the models ability to find all actual positive instances): $$Recall = \frac{TP}{TP+FN}$$
+  - **Recall:** This metric measures the model's ability to find all actual positive instances, indicating the proportion of actual defects that were successfully located. $$Recall = \frac{TP}{TP+FN}$$
   
-  - F1-Score (Harmonic mean of Precision and Recall): $$F1-Score = \frac{Precision \cdot Recall}{Precision + Recall}$$
+  - **F1-Score:** The F1-Score represents the harmonic mean of Precision and Recall, providing a single metric that balances both factors. $$F1-Score = \frac{Precision \cdot Recall}{Precision + Recall}$$
+
+  - **Intersection over Union (IoU):** IoU measures the degree of overlap between the model's predicted bounding box and the ground truth bounding box. It is calculated as the area of intersection divided by the area of union of the two boxes.
+  $$IoU = \frac{TP}{(TP+FP+FN)}$$
+
+  - **mAP@50 (Mean Average Precision at IoU 50):** The mAP is the mean of the Average Precision (AP) across all classes. The AP, in turn, represents the Area Under the Precision-Recall Curve. The suffix $@50$ indicates that only detections with an IoU overlap of at least 50% with the ground truth bounding box were considered true positives for the calculation. $$mAP@50 = \frac{1}{N} \sum_{i=1}^{N} AP_i@50$$
 
 # Results
 ## Model Results and Statistical Evaluation
