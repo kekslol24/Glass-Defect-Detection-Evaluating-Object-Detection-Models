@@ -244,7 +244,7 @@ Given these fundamental metrics, the following performance indicators were calcu
 ## Model Results and Statistical Evaluation
 Yolo Kaggle, traintime = ~7min
 Yolo Roboflow, traintime = ~40min
-RF-DETR Kaggle, traintime = 
+RF-DETR Kaggle, traintime = 50min
 RF-DETR Roboflow, traintime ~ 6h
 ## Evaluation Visualization
 
