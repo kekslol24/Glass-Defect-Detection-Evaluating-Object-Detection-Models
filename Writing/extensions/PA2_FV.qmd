@@ -26,11 +26,13 @@ author:
 format: 
   zhaw-lsfm-typst: default
   html: default
+execute:
+  echo: False
 ---
 
 # Abstract {.unnumbered .unlisted}
 
-Write after work is written
+This project addressed the critical challenge of automated glass defect detection in the pharmaceutical sector, where product safety hinges on packaging integrity. The study aimed to quantitatively compare two divergent object detection architectures. One is the lightweight YOLO Nano (CNN-based Single-Shot Detector) and the second model is the resource-intensive RF-DETR Nano (Transformer-based). Two discrete datasets, one representing complex, real-world conditions (Dataset A) and one simple set (Dataset B), were utilized for comparative fine-tuning. The results revealed a significant architectural trade-off: The YOLO model demonstrated overwhelming training efficiency (up to 90% faster than RF-DETR on Dataset A) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly False Positives. Furthermore, YOLO registered higher Recall, minimizing the critical risk of False Negatives, which endanger product safety. Conversely, the high scores achieved on the simple Dataset B confirmed the models’ reliance on data quality. The study concluded that the YOLO Nano architecture is the most efficient and robust choice for this application, as it provides the optimal balance between detection accuracy, speed, and resource constraints necessary for a deployment-ready system.
 
 
 ::: {.content-hidden when-format="html"}
@@ -101,7 +103,7 @@ Interestingly, the benchmark table presented by @sapkota2025rfdetrobjectdetectio
 
 , demonstrates partially conflicting results.
 
-It is important to note that @sapkota2025rfdetrobjectdetectionvs utilised the newer YOLOv12 architecture and the Base variant of RF-DETR (with 29M parameters, slightly fewer than the Nano variant used in the Robinson study).
+It is important to note that @sapkota2025rfdetrobjectdetectionvs utilised the newer YOLOv12 architecture and the Base variant of RF-DETR (with 29M parameters, slightly fewer than the Nano variant used in the @robinson2025rfdetrneuralarchitecturesearch study).
 
 - Single-Class Detection: In the context of single-class object detection, the YOLOv12N model outperformed the RF-DETR architecture.
 
@@ -211,7 +213,7 @@ The training procedure for both the YOLO and RF-DETR architectures was carried o
 
   - **Computational Environment:** All training and validation processes were conducted on the Google Colab Pro environment, utilizing an NVIDIA T4 GPU equipped with 16GB of VRAM (Video Random Access Memory).
 
-  - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
+  - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.0001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
 
 ## Model Testing
 The final testing of the trained models was conducted under the same computational conditions as the training phase. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
@@ -241,24 +243,156 @@ Given these fundamental metrics, the following performance indicators were calcu
   - **mAP@50 (Mean Average Precision at IoU 50):** The mAP is the mean of the Average Precision (AP) across all classes. The AP, in turn, represents the Area Under the Precision-Recall Curve. The suffix $@50$ indicates that only detections with an IoU overlap of at least 50% with the ground truth bounding box were considered true positives for the calculation. $$mAP@50 = \frac{1}{N} \sum_{i=1}^{N} AP_i@50$$
 
 # Results
-## Model Results and Statistical Evaluation
-Yolo Kaggle, traintime = ~7min
-Yolo Roboflow, traintime = ~40min
-RF-DETR Kaggle, traintime = 50min
-RF-DETR Roboflow, traintime ~ 6h
-## Evaluation Visualization
+## Model Results and Statistical Evaluation of Testing
+The time required for the Fine-Tuning process was recorded between the two model architectures. The observed data are presented in @tbl-trainingtime.
+
+```{python}
+#| tbl-cap: Training Duration
+#| label: tbl-trainingtime
+
+import pandas as pd
+
+# Daten für die Trainingszeiten
+data = {
+    "Model": ["YOLO", "RF-DETR", "YOLO", "RF-DETR"],
+    "Dataset": ["Dataset (A)", "Dataset (A)", "Dataset (B)", "Dataset (B)"],
+    "Train Time (Approx.)": ["~ 40 min", "~ 5.5h", "~ 7 min", "~ 50 min"]
+}
+
+# DataFrame erstellen
+df_train_time = pd.DataFrame(data, index=None)
+
+# Optional: Setzen Sie die Spalten "Model" und "Dataset" als Index, um die Tabelle kompakter zu gestalten
+# df_train_time = df_train_time.set_index(["Model", "Dataset"])
+
+# Anzeige des DataFrames (wird in Quarto als Tabelle gerendert)
+df_train_time
+```
+
+### Dataset A
+The confusion matrices yielded following results:
+
+:::{layout-ncol=2}
+![Confusion Matrix YOLO Dataset A](figures/confusion_matrix.png){#fig-yolo-datasetA-confusion}
+
+![Confusion Matrix RF-DETR Dataset A](figures/confusion_matrix_Roboflow.png){#fig-rfdetr-datasetA-confusion}
+:::
+
+The following metrics were calculated from @fig-yolo-datasetA-confusion and @fig-rfdetr-datasetA-confusion:
+
+
+```{python}
+#| tbl-cap: "Metrics Calculation Dataset A"
+#| label: tbl-datasetA
+
+
+import pandas as pd
+
+# Definieren der Zeilen-Header (Metriken)
+metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
+
+# Erstellen des leeren DataFrames
+# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
+data = {
+    "YOLO": [0.869, 0.799, 0.416, 0.839, 0.589],  # Platzhalter für die Werte
+    "RF-DETR": [0.776, 0.759, 0.384, 0.840, 0.590] # Platzhalter für die Werte
+}
+
+df = pd.DataFrame(data, index=metrics)
+
+# Anzeigen des DataFrames
+df
+```
+
+Based on the results of @tbl-datasetA a visualisation was generated:
+
+![Visualization of Results for Dataset A](figures/Roboflow.png){#fig-datasetA-comp}
+
+### Dataset B
+The confusion matrices for the dataset B yielded following results:
+
+:::{layout-ncol=2}
+
+![Confusion Matrix YOLO Dataset B](figures/confusion_matrix_yolo_kaggle.png){#fig-yolo-datasetB-confusion }
+
+![Confusion Matrix RF-DETR Dataset B](figures/confusion_matrix_rfdetr_kaggle.png){#fig-rfdetr-datasetB-confusion }
+
+:::
+
+Following metrics were calculated from @fig-yolo-datasetB-confusion and @fig-rfdetr-datasetB-confusion :
+
+```{python}
+#| tbl-cap: "Precision Metrics Dataset B"
+#| label: tbl-metricsB
+
+
+import pandas as pd
+# Definieren der Zeilen-Header (Metriken)
+metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
+
+# Erstellen des leeren DataFrames
+# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
+data = {
+    "YOLO": [0.960, 1.000, 0.490, 0.995, 0.784],  # Platzhalter für die Werte
+    "RF-DETR": [1.000, 1.000, 0.500, 1.000, 0.770] # Platzhalter für die Werte
+}
+
+df = pd.DataFrame(data, index=metrics)
+
+# Anzeigen des DataFrames
+df
+```
+
+Based on the results from (@tbl-metricsB) a visualisation was generated:
+
+![Visualization of Results for Dataset B](figures/Kaggle.png){#fig-datasetb-comp}
 
 # Discussion
+
 ## Interpretation of Results
-(Self Note;)@Buhl_2024 sagt dass das modell weniger false positives hat, unbedingt mit dem resultat von rf detr abgleichen!
 
-## Research Questions & Assumptions
+### Training Efficiency
+The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to nine times less training time (40 minutes vs. 5.5 hours on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.
 
-**Assumptions**
-Es wurde angenommen, dass der Datensatz A eine längere Durchlaufzeit benötigt, da er grösser ist. Dies wurde im Abschnitt [Model Results and Statistical Evaluation](#model-results-and-statistical-evaluation) dargelegt.
+### Performance on Dataset A
+The evaluation on Dataset A provided a clear delineation of the models' practical suitability:  
 
+- **Precision and False Positives (FPs)**: The YOLO architecture achieved a significantly higher Precision (0.869) than the RF-DETR model (0.776). Since Precision directly quantifies the reliability of positive predictions ($\frac{TP}{TP + FP}$), the lower Precision of RF-DETR indicated a higher rate of False Positives. This finding supports the theoretical expectation that Single-Shot Detectors often excel in suppressing redundant detections. For the pharmaceutical context, where minimizing unnecessary product rejection (FPs) is critical for cost management, YOLO's higher Precision established a substantial practical advantage.  
+
+- **Critical Relevance on False Negatives (FNs)**: In pharmaceutical applications, the identification of false negatives (FNs) is of critical importance. An $\text{FN}$ means that a structurally defective glass container is classified as intact and subsequently filled with a sterile medication. This poses an immediate risk to patient safety and can result in the catastrophic product recalls mentioned in the introduction. In the hierarchy of error costs, an $\text{FN}$ error (safety risk) therefore weighs considerably more heavily than an $\text{FP}$ (unnecessary rejection and costs).  
+
+- **Recall analysis:** With a recall of 0.799, the YOLO model achieved a higher value than the RF-DETR model (0.759) on dataset A. Although none of the models achieved the required recall close to 1.000, the higher recall performance of YOLO implied that it offered a higher probability of actually identifying existing defects and thus represented a lower risk for false negatives. The Recall performance of YOLO implied that it offered a higher probability of identifying actual defects and thus presented a lower risk of $\text{FNs}$.  
+
+- **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
+
+### Dataset B
+The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
+
+- **Bounding Box Localization:** The YOLO model achieved the highest score in the strict $\text{mAP@[50:95]}$ criterion (0.784 vs. 0.770 for RF-DETR). As this metric only rewards highly accurate bounding box overlap, this suggested that YOLO produced marginally more precise spatial localization of the defects across the wide size spectrum observed in Dataset B. Otherwise the performance of the two model was almost similar.
+
+## Assumptions & Research Questions
+
+### Verification of Assumptions
+The core assumption that Dataset A would require a longer training duration due to its larger size and higher complexity was strongly confirmed by the data presented in Table @tbl-trainingtime. This observation reinforced the selection of Dataset A as the more representative benchmark for an industrial simulation.
+
+### Answering Research Questions
+- **Performance Comparison:** The YOLO architecture was identified as the superior choice for the glass defect application. While both models delivered similar overall accuracy (mAP), YOLO outperformed RF-DETR on Precision and Recall on the complex Dataset A, while simultaneously providing a 90% reduction in training time.  
+
+- **Applicaton Benchmarks:** The achieved Precision of 0.869 by YOLO on the complex dataset was deemed sufficient for further practical feasibility testing, but did not meet the required industry benchmark for final deployment without generating excessive False Positives. The necessity for the industry to achieve a Precision closer to 1.000 was highlighted, suggesting that further data augmentation or model refinement is required.
 # Conclusion
 ## Summary of Key Findings
+The present comparative study successfully evaluated the performance of two leading object detection architectures, YOLO Nano and RF-DETR Nano, for the task of automated glass defect detection under varying dataset conditions.
+
+The central conclusions drawn from the experimental data are:
+
+- **Efficiency Triumphs:** The YOLO architecture demonstrated overwhelming training efficiency, completing the computational requirements significantly faster than the Transformer-based RF-DETR model.  
+
+- **Priority of product safety (recall)**: The higher recall performance of the YOLO model on the complex dataset A is of paramount importance in this sensitive sector. Since a false negative (FN) directly jeopardises the sterility and safety of the product, the ability to identify as many defects as possible (high Recall) is the most important requirement for the detection system. The YOLO architecture offered the lower safety risk here.  
+
+- **Robustness and Generalization:** The drastic performance difference observed between the highly optimized scores on Dataset B and the lower scores on Dataset A validated the hypothesis that both models require more comprehensive, varied training data to attain the high levels of robustness needed for final industrial deployment.  
+
+- **Final Recommendation:** The YOLO Nano model was identified as the most viable and efficient choice for this specific application, as it successfully balanced the conflicting demands of speed, memory footprint, and detection accuracy.
+
 
 ## Limitations and Challenges
 The execution of the comparative study was subject to several inherent constraints and practical challenges:
@@ -279,6 +413,13 @@ The findings of this project open up several promising avenues for future resear
 - **User Interface Development:** The creation of a user interface (UI) would enhance the usability of the models. This UI could visualize the results in a user-friendly manner, clearly distinguishing between defect and no defect conditions for production personnel.
 
 - **Industrial Partnership and Validation:** Ideally, these proposed extensions could be executed in collaboration with an industrial partner. Such a partnership would facilitate the evaluation of whether these modern deep learning methods surpass the existing, often complex and expensive, traditional machine learning algorithms currently used for automated quality control in the pharmaceutical sector.
+
+# Declaration on AI Assistance
+The author declares that the empirical research, data analysis, experimental design, and quantitative results presented in this thesis were generated independently and strictly remain the intellectual property of the author.  
+
+Artificial intelligence (AI) assistance was utilized solely for the purpose of language refinement, stylistic editing, and optimization of academic reading flow. Specifically, the AI model (Gemini 2.5 Pro) was employed to translate text, correct grammar, and restructure sentences into the required third-person past tense and formal academic style.  
+
+No core scientific content, model selection decisions, hyperparameter choices, or interpretation of results were delegated to or generated by the AI model.
 
 # References {#sec-refs}
 
