@@ -243,7 +243,7 @@ Given these fundamental metrics, the following performance indicators were calcu
   - **mAP@50 (Mean Average Precision at IoU 50):** The mAP is the mean of the Average Precision (AP) across all classes. The AP, in turn, represents the Area Under the Precision-Recall Curve. The suffix $@50$ indicates that only detections with an IoU overlap of at least 50% with the ground truth bounding box were considered true positives for the calculation. $$mAP@50 = \frac{1}{N} \sum_{i=1}^{N} AP_i@50$$
 
 # Results
-## Model Results and Statistical Evaluation of Testing
+## Model Results of Training
 The time required for the Fine-Tuning process was recorded between the two model architectures. The observed data are presented in @tbl-trainingtime.
 
 ```{python}
@@ -268,6 +268,21 @@ df_train_time = pd.DataFrame(data, index=None)
 # Anzeige des DataFrames (wird in Quarto als Tabelle gerendert)
 df_train_time
 ```
+
+### Dataset A
+
+![Training Results YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
+
+![Training Results RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
+
+### Dataset B
+
+![Training Results YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
+
+![Training Results RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
+
+
+## Model Results and Statistical Evaluation of Testing
 
 ### Dataset A
 The confusion matrices yielded following results:
@@ -446,12 +461,49 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 ### Dataset A
 
 **YOLO-Model**
+
 *Training*
-[]
+
+:::{layout-ncol=2}
+![Precision Training](figures/Roboflow/YOLO/BoxP_curve_roboflow_yolo_train.png)
+
+![Recall Training](figures/Roboflow/YOLO/BoxR_curve_roboflow_yolo_train.png)
+
+![Precision/Recall Training](figures/Roboflow/YOLO/BoxPR_curve_roboflow_yolo_train.png)
+
+![F1-Score Training](figures/Roboflow/YOLO/BoxF1_curve_roboflow_yolo_train.png)
+:::
+
 *Testing*
+
+:::{layout-ncol=2}
+![Precision Test](figures/Roboflow/YOLO/BoxP_curve_roboflow_yolo_test.png)
+
+![Recall Test](figures/Roboflow/YOLO/BoxR_curve_roboflow_yolo_test.png)
+
+![Precision/Recall Test](figures/Roboflow/YOLO/BoxPR_curve_roboflow_yolo_test.png)
+
+![F1-Score Test](figures/Roboflow/YOLO/BoxF1_curve_roboflow_yolo_test.png)
+:::
+
+
 **RF-DETR**
 *Training*
+
+See [Model Results of Training](#model-results-of-training)
+
 *Testing*
+
+:::{layout-ncol=2}
+![Precision Testing](figures/Roboflow/RF-DETR/Precision_Roboflow_rfdetr_test.png)
+
+![mAP Testing](figures/Roboflow/RF-DETR/MAP_Roboflow_rfdetr_test.png)
+
+![Recall Testing](figures/Roboflow/RF-DETR/Recall_Roboflow_rfdetr_test.png)
+
+![F1-Score Testing](figures/Roboflow/RF-DETR/F1_Score_Roboflow_rfdetr_test.png)
+:::
+
 
 ### Dataset B
 
@@ -467,8 +519,6 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 ![Recall Training](figures/Kaggle/YOLO/BoxR_curve_kaggle_yolo_train.png)
 
 ![F1-Score Training](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_train.png)
-
-![Training results](figures/Kaggle/YOLO/kaggle_yolo_train_results.png)
 :::
 
 *Testing*
@@ -481,8 +531,22 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 ![Precision/Recall Testing](figures/Kaggle/YOLO/BoxPR_curve_kaggle_yolo_test.png)
 
 ![F1-Score Testing](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_test.png)
-
 :::
+
 **RF-DETR**
+
 *Training*
+
+See [Model Results of Training](#model-results-of-training)
+
 *Testing*
+
+:::{layout-ncol=2}
+![Precision Testing](figures/Kaggle/RF-DETR/custom_precision_plot_kaggle_rfdetr_test.png)
+
+![mAP Testing](figures/Kaggle/RF-DETR/custom_map_plot_kaggle_rfdetr_test.png)
+
+![Recall Testing](figures/Kaggle/RF-DETR/custom_recall_plot_kaggle_rfdetr_test.png)
+
+![F1-Score Testing](figures/Kaggle/RF-DETR/custom_F1_score_plot_kaggle_rfdetr_test.png)
+:::
