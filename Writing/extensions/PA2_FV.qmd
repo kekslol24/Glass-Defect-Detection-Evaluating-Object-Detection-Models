@@ -86,7 +86,7 @@ Based on the challenges mentioned in **[Context and Motivation](#context-and-mot
   - Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
 
 ## State of the Art
-The quote from (@Buhl_2024) explains quite well what Object detection is:
+The quote from [@Buhl_2024] explains quite well what Object detection is:
  _"Object detection is a critical capability of computer vision that identifies and locates objects within an image or video. Unlike image classification, object detection not only classifies the objects in an image, but also identifies their location within the image by drawing a bounding box around each object."_
 
 Given the lack of specific literature concerning the performance of contemporary object detectors on glass vial defect inspection, this study must rely on fundamental model performance benchmarks established by previous research. These benchmarks are typically derived from models trained on broad, general-purpose datasets.
@@ -95,7 +95,7 @@ The following analysis focuses on the existing comparative statistics for the ch
 
 ![Comparison Table of different Object Detectors (@robinson2025rfdetrneuralarchitecturesearch)](figures/Comparison_table_models_robinson.png){#fig-comparison-table}
 
-The initial comparison in (@fig-comparison-table) provides a direct performance evaluation of various object detectors, including the two architectures selected for this paper (YOLOv11 Nano and RF-DETR Nano). Crucially, Non-Maximum Suppression (NMS), a fundamental post-processing algorithm, is utilised by YOLO to filter out overlapping, redundant bounding boxes, thereby ensuring that each object instance is identified only once (@Ultralytics_2025). The results published by @robinson2025rfdetrneuralarchitecturesearch reveal significant architectural and performance differences between the nano variants:
+The initial comparison in (@fig-comparison-table) provides a direct performance evaluation of various object detectors, including the two architectures selected for this paper (YOLOv11 Nano and RF-DETR Nano). Crucially, Non-Maximum Suppression (NMS), a fundamental post-processing algorithm, is utilised by YOLO to filter out overlapping, redundant bounding boxes, thereby ensuring that each object instance is identified only once [@Ultralytics_2025]. The results published by @robinson2025rfdetrneuralarchitecturesearch reveal significant architectural and performance differences between the nano variants:
 
 - **Architectural Size:** The RF-DETR model possesses 30.5 million parameters (M), whereas the YOLO variant contains only 2.6M parameters. This disparity reflects a substantial difference in model complexity and memory footprint.
 
@@ -120,7 +120,7 @@ This discrepancy highlights the critical need to define the intended application
 
 **Research Gap and Contribution**
 
-The contradictory performance findings observed in the literature, particularly the trade-off between model size and average precision @robinson2025rfdetrneuralarchitecturesearch and the impact of class complexity @sapkota2025rfdetrobjectdetectionvs, underscore the need for further validation.
+The contradictory performance findings observed in the literature, particularly the trade-off between model size and average precision [@robinson2025rfdetrneuralarchitecturesearch] and the impact of class complexity [@sapkota2025rfdetrobjectdetectionvs], underscore the need for further validation.
 
 The present paper connects with this existing body of literature by providing an empirical, comparative evaluation of the YOLO and RF-DETR architectures under the specific constraints of glass defect detection and data imbalance. This aims to serve as a specific supplementary reference for the performance of these models in a highly sensitive industrial application.
 
@@ -134,7 +134,7 @@ The search for suitable data sets proved to be challenging due to the inherent i
 
   - **Defined classes:** This dataset contained two primary classes: the defect class (the gas bubble itself) and the container class (the glass container as an object). The models were trained to locate both the surrounding product and the specific defect using bounding boxes.
 
-  - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set, validation set (‘val’) and test set (‘test’) was already predefined. This division was adopted for the subsequent analysis.
+  - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set ("train"), validation set ("val") and test set ("test") was already predefined. This division was adopted for the subsequent analysis.
 
 
 ![Raw example image of the dataset A](figures/59_png_jpg.rf.c0f66ac390964d30bc5c71b701b35a10.jpg){#fig-roboflow-raw width=40%}
@@ -146,7 +146,7 @@ The second dataset was obtained from the Kaggle platform and was used to verify 
 
   - **Scope and distribution:** With a total of 208 images, this dataset was significantly smaller than dataset A. Here, too, the distribution into training, validation and test sets was predefined and was adopted for the analysis.
 
-  - **Product and class definition:** In contrast to the first data set, data set B did not contain images of entire pharmaceutical containers, but rather images of a glass plate that exhibited the defect. The classification was limited exclusively to the defect class (gas bubble). This set came annotated with the respective bounding boxes and the class "DEFECT".
+  - **Product and class definition:** In contrast to the first data set, dataset B did not contain images of entire pharmaceutical containers, but rather images of a glass plate that exhibited the defect. The classification was limited exclusively to the defect class (gas bubble). This set came annotated with the respective bounding boxes and the class "DEFECT".
 
   - **Important Feature:** A key feature of this data set was the guarantee that each image in the sample contained at least one defect. This represented a contrasting data basis to real production environments, as the natural imbalance between defective and intact samples was not represented here.
 
@@ -160,24 +160,24 @@ As shown in (@fig-raw-kaggle-1) and Figure (@fig-raw-kaggle-2), the extent of th
 
 In view of the structural and qualitative differences between the data sets, a number of assumptions were formulated in advance.
 
-It was assumed that data set A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to data set B.
+It was assumed that dataset A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to dataset B.
 
 On the other hand, the small size of dataset B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
 
 
 ## Model Selection
-For the comparative part of the study, the decision was focused on two of the currently best-known architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
+For the comparative part of the study, the decision was focused on two of the currently biggest architectures for object detection. This selection aimed to evaluate the performance of a conventional convolutional neural network (CNN)-based approach against a transformer-based model.
 
   - **YOLO (You Only Look Once)**
-  The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors.(@Ultralytics_2025)
+  The YOLO model was selected as the first reference detector. The model was developed by the software developer Ultralytics and is considered a real-time object detection and segmentation model. It is characterised by its high speed and efficient performance, making it one of the most commonly used one-stage detectors[@Ultralytics_2025].
   The YOLO Model's folder structure has the following components that are the same for every dataset. It consists of the aforementioned three folders: ´train´, ´val´, ´test´ and in addition, a YAML source file (Yet Another Markup Language) was used. This specified the file paths to the respective folders and defined the number and names of the classes contained in the data set. Each of the main folders are subdivided into two subfolders: 
-  - One containing the image data without annotations.
-  - The other containing five numbers: The class id, center_x, center_y, width and height of the bounding box 
+      - One containing the image data without annotations.
+      - The other containing five numbers: The class id, center_x, center_y, width and height of the bounding box 
 
   - **RF-DETR (Roboflow Detection Transformer)**
   The folder structure required for the RF-DETR model differed fundamentally from the YOLO standard, necessitating the use of the Common Objects in Context (COCO) format.
 
-  Similar to the preceding model, the directory maintained the main divisions (train, val, test). However, the key architectural distinction resided in the annotation storage. Instead of utilizing individual label files per image, each main folder contained a single JSON file that held all annotation information for the respective subset.
+  Similar to the preceding model, the directory maintained the main divisions (train, val, test). However, the key architectural distinction resided in the annotation storage. Instead of utilizing individual label files per image, each main folder contained a single JSON (JavaScript Object Notation) file that held all annotation information for the respective subset.
 
   The structure of this JSON file adhered to the COCO standard, encompassing the following five key elements:
 
@@ -197,18 +197,18 @@ For the experimental evaluation, the Nano variant (YOLOv11n, RFDETR-nano) was de
 ### **YOLO (You Only Look Once)**
 The YOLO (You Only Look Once) model is a real-time object detection system which fundamentally differs from traditional multi-stage detectors by processing the input image in a single pass. This architectural choice classifies YOLO as a Single-Shot Detector (SSD).
 
-This type of detector employs an algorithm that predicts the bounding box coordinates and the corresponding class probability of the detected object simultaneously and in one step. The primary beneficial consequence of this unified approach is a significant increase in processing speed. (@Buhl_2024) Consequently, the simultaneous prediction of the object's presence and its precise location accelerates the overall detection process, making it highly suitable for real-time applications.
+This type of detector employs an algorithm that predicts the bounding box coordinates and the corresponding class probability of the detected object simultaneously and in one step. The primary beneficial consequence of this unified approach is a significant increase in processing speed [@Buhl_2024]. Consequently, the simultaneous prediction of the object's presence and its precise location accelerates the overall detection process, making it highly suitable for real-time applications.
 
 ### **RF-DETR (Roboflow Detection Transformer)**
-As the comparative alternative architecture, the RF-DETR (Roboflow Detection Transformer) model was selected. This model represents a real-time, state-of-the-art transformer-based architecture specifically designed for object detection and instance segmentation. [@robinson2025rfdetrneuralarchitecturesearch].
+As the comparative alternative architecture, the RF-DETR (Roboflow Detection Transformer) model was selected. This model represents a real-time, state-of-the-art transformer-based architecture specifically designed for object detection and instance segmentation [@robinson2025rfdetrneuralarchitecturesearch].
 
 The RF-DETR architecture leverages a Vision Transformer (ViT) to effectively extract multiscale features from the input image.
 
 Following feature extraction, the model utilizes a balanced combination of two distinct attention mechanisms:
 
-Windowed Attention Blocks: These restrict the self-attention mechanism to a local neighbourhood, which significantly improves processing speed.
+- **Windowed Attention Blocks:** These restrict the self-attention mechanism to a local neighbourhood, which significantly improves processing speed.
 
-Non-Windowed Attention Blocks: These enable global interaction across features, which contributes to overall detection accuracy.
+- **Non-Windowed Attention Blocks:** These enable global interaction across features, which contributes to overall detection accuracy.
 
 This deliberate balance helps maintain high performance while ensuring the model remains fast enough for real-time applications. Subsequently, the deformable cross-attention layers and the segmentation head bilinearly interpolate the output. Finally, the detection and segmentation losses are applied to all decoder layers during the training process [@robinson2025rfdetrneuralarchitecturesearch].
 
@@ -409,7 +409,7 @@ The evaluation on Dataset A provided a clear delineation of the models' practica
 
 - **Critical Relevance on False Negatives (FNs)**: In pharmaceutical applications, the identification of false negatives (FNs) is of critical importance. An $\text{FN}$ means that a structurally defective glass container is classified as intact and subsequently filled with a sterile medication. This poses an immediate risk to patient safety and can result in the catastrophic product recalls mentioned in the introduction. In the hierarchy of error costs, an $\text{FN}$ error (safety risk) therefore weighs considerably more heavily than an $\text{FP}$ (unnecessary rejection and costs).  
 
-- **Recall analysis:** With a recall of 0.799, the YOLO model achieved a higher value than the RF-DETR model (0.759) on dataset A. Although none of the models achieved the required recall close to 1.000, the higher recall performance of YOLO implied that it offered a higher probability of actually identifying existing defects and thus represented a lower risk for false negatives. The Recall performance of YOLO implied that it offered a higher probability of identifying actual defects and thus presented a lower risk of $\text{FNs}$.  
+- **Recall analysis:** With a recall of 0.799, the YOLO model achieved a higher value than the RF-DETR model (0.759) on dataset A. Although none of the models achieved the required recall close to 1.000, the higher recall performance of YOLO implied that it offered a higher probability of actually identifying existing defects and thus represented a lower risk for false negatives.
 
 - **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
 
@@ -476,6 +476,10 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 {{< references >}}
 
 ::: {.content-hidden when-format="html"}
+
+Gemini 2.5 Pro. (n.d.). Google Gemini. Retrieved October 1, 2025, from https://gemini.google.com/app
+
+DeepL Translate: The world’s most accurate translator. (n.d.). https://www.deepl.com/
 
 # Lists
 
