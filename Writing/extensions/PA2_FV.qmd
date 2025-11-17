@@ -3,7 +3,7 @@ title: |
   Glass Defect Detection:
   Evaluating Object Detection Models
 institute: "Institue of Computational Life Science"
-keywords: "Deep Learning, Object Detectors, Image Processing, Evaluation Metrics"
+keywords: "Deep Learning, Object Detectors, Evaluation Metrics, Digital Lab and Production, Factory Production, Image Processing"
 lang: en
 confidential: true
 cover-image:
@@ -43,11 +43,15 @@ This project addressed the critical challenge of automated glass defect detectio
 
 :::
 
-
-
 # List of abbrevations {.unnumbered}
 
-Potential abbrevations
+- **AI**: Aritficial Intelligence
+- **AP**: Average Precision
+- **CNN**: Convolutional Neural Network
+- **COCO**: Common Objects in Context
+- **mAP**: Mean Average Precision
+- **RF-DETR**: Roboflow Detection Transformer
+- **YOLO**: You Only Look Once
 
 # Introduction
 ## Context and Motivation
@@ -90,24 +94,28 @@ Given the lack of specific literature concerning the performance of contemporary
 
 The following analysis focuses on the existing comparative statistics for the chosen architectures: YOLO and RF-DETR.
 
-![Comparison Table of different Object Detectors](figures/Comparison_table_models_robinson.png){#fig-comparison-table}
+![Comparison Table of different Object Detectors (@robinson2025rfdetrneuralarchitecturesearch)](figures/Comparison_table_models_robinson.png){#fig-comparison-table}
 
 The initial comparison in (@fig-comparison-table) provides a direct performance evaluation of various object detectors, including the two architectures selected for this paper (YOLOv11 Nano and RF-DETR Nano). Crucially, Non-Maximum Suppression (NMS), a fundamental post-processing algorithm, is utilised by YOLO to filter out overlapping, redundant bounding boxes, thereby ensuring that each object instance is identified only once (@Ultralytics_2025). The results published by @robinson2025rfdetrneuralarchitecturesearch reveal significant architectural and performance differences between the nano variants:
-- Architectural Size: The RF-DETR model possesses 30.5 million parameters (M), whereas the YOLO variant contains only 2.6M parameters. This disparity reflects a substantial difference in model complexity and memory footprint.
-- Detection Accuracy: Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size differential represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
+
+- **Architectural Size:** The RF-DETR model possesses 30.5 million parameters (M), whereas the YOLO variant contains only 2.6M parameters. This disparity reflects a substantial difference in model complexity and memory footprint.
+
+- **Detection Accuracy:** Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. 
+
+This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size differential represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
 
 **Contrasting Benchmarks**
 Interestingly, the benchmark table presented by @sapkota2025rfdetrobjectdetectionvs, shown in (@fig-comparison-tabe-2)
 
-![Evaluation Metrics](figures/Comparison_table_models_paper.png){#fig-comparison-tabe-2}
+![Evaluation Metrics (@sapkota2025rfdetrobjectdetectionvs)](figures/Comparison_table_models_paper.png){#fig-comparison-tabe-2}
 
 , demonstrates partially conflicting results.
 
 It is important to note that @sapkota2025rfdetrobjectdetectionvs utilised the newer YOLOv12 architecture and the Base variant of RF-DETR (with 29M parameters, slightly fewer than the Nano variant used in the @robinson2025rfdetrneuralarchitecturesearch study).
 
-- Single-Class Detection: In the context of single-class object detection, the YOLOv12N model outperformed the RF-DETR architecture.
+- **Single-Class Detection:** In the context of single-class object detection, the YOLOv12N model outperformed the RF-DETR architecture.
 
-- Multi-Class Detection: Conversely, the ranking shifts for multi-class detection, where the RF-DETR model demonstrated superior performance compared to YOLOv12N.
+- **Multi-Class Detection:** Conversely, the ranking shifts for multi-class detection, where the RF-DETR model demonstrated superior performance compared to YOLOv12N.
 
 This discrepancy highlights the critical need to define the intended application: the optimal choice depends heavily on whether the scenario involves single-class or multi-class detection.
 
@@ -298,7 +306,7 @@ The following metrics were calculated from @fig-yolo-datasetA-confusion and @fig
 
 ```{python}
 #| tbl-cap: "Metrics Calculation Dataset A"
-#| label: tbl-datasetA
+#| label: tbl-dataset-a
 
 
 import pandas as pd
@@ -319,7 +327,7 @@ df = pd.DataFrame(data, index=metrics)
 df
 ```
 
-Based on the results of @tbl-datasetA a visualisation was generated:
+Based on the results of @tbl-dataset-a a visualisation was generated:
 
 ![Visualization of Results for Dataset A](figures/Roboflow.png){#fig-datasetA-comp}
 
@@ -338,7 +346,7 @@ Following metrics were calculated from @fig-yolo-datasetB-confusion and @fig-rfd
 
 ```{python}
 #| tbl-cap: "Precision Metrics Dataset B"
-#| label: tbl-metricsB
+#| label: tbl-dataset-b
 
 
 import pandas as pd
@@ -358,7 +366,7 @@ df = pd.DataFrame(data, index=metrics)
 df
 ```
 
-Based on the results from (@tbl-metricsB) a visualisation was generated:
+Based on the results from @tbl-dataset-b a visualisation was generated:
 
 ![Visualization of Results for Dataset B](figures/Kaggle.png){#fig-datasetb-comp}
 
@@ -367,7 +375,33 @@ Based on the results from (@tbl-metricsB) a visualisation was generated:
 ## Interpretation of Results
 
 ### Training Efficiency
-The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to nine times less training time (40 minutes vs. 5.5 hours on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.
+The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to nine times less training time (40 minutes vs. 5.5 hours on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
+
+### Analysis of Training Dynamics
+
+The dynamic behavior of the models during the 100 epochs was analyzed using the loss and metric curves. It is crucial to note that the scaling of the axes in the provided visualizations differed significantly between the YOLO and RF-DETR output formats, necessitating careful comparative observation.
+
+**Definition of YOLO Loss Components**  
+
+For the YOLO model, the following loss components were monitored:
+
+  - **Box Loss ($\text{box\_loss}$):** Quantifies the accuracy with which the model predicts the position and size (bounding box) of the detected object.
+
+  - **Classification Loss ($\text{cls\_loss}$):** Measures the accuracy of the model's classification of the detected object.
+
+  - **Distribution Focal Loss ($\text{dfl\_loss}$):** Improves the bounding box estimation by modeling the coordinates as probability distributions instead of simple discrete values.
+
+**Training Dynamics on Dataset A** As observed in the training results for both models (@fig-yolo-roboflow-train for YOLO and @fig-rfdetr-roboflow-train for RF-DETR), the loss curves indicated a steady decrease across the 100 epochs. For both architectures, the train and val losses did not fully converge before the 100th epoch, and no clear signs of overfitting or underfitting were present (i.e., the validation loss continued to decrease or remained stable).  
+
+This behavior suggested that the full 100 epochs were necessary to achieve the recorded level of performance on this more complex dataset. It is plausible that a moderate increase in the epoch count beyond 100 could have potentially yielded further marginal improvements in the subsequent prediction accuracy.
+
+**Training Dynamics on Dataset B**
+
+The effect of data scarcity on Dataset B (only 208 images) was distinctly visible in the training plots (@fig-fig-yolo-kaggle-train for YOLO and @fig-rfdetr-kaggle-train for RF-DETR). 
+
+While the loss curves continued a steady, albeit oscillating, decline, the Average Precision ($\text{mAP@50}$) metric converged very rapidly. For both models, the $\text{mAP@50}$ curve reached near-maximal performance around or shortly after the 20 th epoch. This rapid plateauing of the core evaluation metric indicated that the models learned the limited defect variance present in Dataset B relatively quickly. Consequently, the remaining 80 epochs were likely redundant for maximizing performance on this specific dataset. A predefined Early Stopping strategy or a reduction of the epoch count after the 20 th epoch could have significantly reduced the computational time without negatively impacting the achieved test performance.
+
+### Testing Efficiency
 
 ### Performance on Dataset A
 The evaluation on Dataset A provided a clear delineation of the models' practical suitability:  
@@ -380,7 +414,7 @@ The evaluation on Dataset A provided a clear delineation of the models' practica
 
 - **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
 
-### Dataset B
+### Performance on Dataset B
 The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
 
 - **Bounding Box Localization:** The YOLO model achieved the highest score in the strict $\text{mAP@[50:95]}$ criterion (0.784 vs. 0.770 for RF-DETR). As this metric only rewards highly accurate bounding box overlap, this suggested that YOLO produced marginally more precise spatial localization of the defects across the wide size spectrum observed in Dataset B. Otherwise the performance of the two model was almost similar.
@@ -462,7 +496,7 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 
 **YOLO-Model**
 
-*Training*
+_**Training**_
 
 :::{layout-ncol=2}
 ![Precision Training](figures/Roboflow/YOLO/BoxP_curve_roboflow_yolo_train.png)
@@ -474,7 +508,7 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 ![F1-Score Training](figures/Roboflow/YOLO/BoxF1_curve_roboflow_yolo_train.png)
 :::
 
-*Testing*
+_**Testing**_
 
 :::{layout-ncol=2}
 ![Precision Test](figures/Roboflow/YOLO/BoxP_curve_roboflow_yolo_test.png)
@@ -488,11 +522,12 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 
 
 **RF-DETR**
-*Training*
 
-See [Model Results of Training](#model-results-of-training)
+_**Training**_
 
-*Testing*
+See [Model Results of Training](#model-results-of-training) @fig-rfdetr-roboflow-train
+
+_**Testing**_
 
 :::{layout-ncol=2}
 ![Precision Testing](figures/Roboflow/RF-DETR/Precision_Roboflow_rfdetr_test.png)
@@ -509,7 +544,7 @@ See [Model Results of Training](#model-results-of-training)
 
 **YOLO-Model**
 
-*Training*
+_**Training**_
 
 :::{layout-ncol=2}
 ![Precision Training](figures/Kaggle/YOLO/BoxP_curve_kaggle_yolo_train.png)
@@ -521,7 +556,7 @@ See [Model Results of Training](#model-results-of-training)
 ![F1-Score Training](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_train.png)
 :::
 
-*Testing*
+_**Testing**_
 
 :::{layout-ncol=2}
 ![Precision Testing](figures/Kaggle/YOLO/BoxP_curve_kaggle_yolo_test.png)
@@ -535,11 +570,12 @@ See [Model Results of Training](#model-results-of-training)
 
 **RF-DETR**
 
-*Training*
+_**Training**_
 
-See [Model Results of Training](#model-results-of-training)
+See [Model Results of Training](#model-results-of-training) 
+ @fig-rfdetr-kaggle-train
 
-*Testing*
+_**Testing**_
 
 :::{layout-ncol=2}
 ![Precision Testing](figures/Kaggle/RF-DETR/custom_precision_plot_kaggle_rfdetr_test.png)
@@ -549,4 +585,21 @@ See [Model Results of Training](#model-results-of-training)
 ![Recall Testing](figures/Kaggle/RF-DETR/custom_recall_plot_kaggle_rfdetr_test.png)
 
 ![F1-Score Testing](figures/Kaggle/RF-DETR/custom_F1_score_plot_kaggle_rfdetr_test.png)
+:::
+
+**Sample Images from the YOLO Model**
+
+_**Dataset A**_
+
+:::{layout-ncol=2}
+![Ground Truth](figure)
+
+:::
+
+
+_**Dataset B**_
+
+:::{layout-ncol=2}
+![Ground Truth]()
+
 :::
