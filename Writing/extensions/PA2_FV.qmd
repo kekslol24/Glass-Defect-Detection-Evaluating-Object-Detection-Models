@@ -444,16 +444,45 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 ## Raw Data
 
 ### Dataset A
+
 **YOLO-Model**
 *Training*
+[]
 *Testing*
 **RF-DETR**
 *Training*
 *Testing*
+
 ### Dataset B
+
 **YOLO-Model**
+
 *Training*
+
+:::{layout-ncol=2}
+![Precision Training](figures/Kaggle/YOLO/BoxP_curve_kaggle_yolo_train.png)
+
+![Precision/Recall Training](figures/Kaggle/YOLO/BoxPR_curve_kaggle_yolo_train.png)
+
+![Recall Training](figures/Kaggle/YOLO/BoxR_curve_kaggle_yolo_train.png)
+
+![F1-Score Training](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_train.png)
+
+![Training results](figures/Kaggle/YOLO/kaggle_yolo_train_results.png)
+:::
+
 *Testing*
+
+:::{layout-ncol=2}
+![Precision Testing](figures/Kaggle/YOLO/BoxP_curve_kaggle_yolo_test.png)
+
+![Recall Testing](figures/Kaggle/YOLO/BoxR_curve_kaggle_yolo_test.png)
+
+![Precision/Recall Testing](figures/Kaggle/YOLO/BoxPR_curve_kaggle_yolo_test.png)
+
+![F1-Score Testing](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_test.png)
+
+:::
 **RF-DETR**
 *Training*
 *Testing*
