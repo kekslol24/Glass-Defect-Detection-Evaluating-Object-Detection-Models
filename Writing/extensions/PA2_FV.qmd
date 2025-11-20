@@ -32,7 +32,14 @@ execute:
 
 # Abstract {.unnumbered .unlisted}
 
+### English Version
+
 This project addressed the critical challenge of automated glass defect detection in the pharmaceutical sector, where patient safety hinges on packaging integrity. The study quantitatively compared two divergent object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural trade-off: The YOLO model demonstrated overwhelming training efficiency (up to 90% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly False Positives. However, the critical finding was the failure to meet safety standards: The best achieved Recall was only 0.799 on the complex dataset. This unacceptable rate of False Negatives (missed defects) precludes both models from safe industrial deployment. The study concluded that while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect Recall necessary to guarantee product safety.
+
+### German Version
+
+Dieses Projekt befasste sich mit der kritischen Herausforderung der automatisierten Erkennung von Glasfehlern im Pharmasektor, wo die Patientensicherheit von der Unversehrtheit der Verpackung abhängt. Die Studie verglich quantitativ zwei unterschiedliche Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensive RF-DETR Nano (Transformer-basiert), wobei zwei diskrete Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Kompromiss hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 90 % schneller als RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kam zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
+
 
 ::: {.content-hidden when-format="html"}
 
@@ -58,9 +65,15 @@ In the current technological landscape, the implementation of modern technologie
 
 The primary material used for medical and chemical glass containers generally consists of borosilicate glass. However, this material can exhibit or contain production-related defects, including particulate inclusions, air bubbles, or flexible fragments known as Lamellae [@Foglia2015AnIS].
 
-The relevance of these quality deficiencies is highlighted by the consequences demonstrated by [@Foglia2015AnIS]: _"In recent years, more than 20
+The relevance of these quality deficiencies is highlighted by the consequences demonstrated by [@Foglia2015AnIS]: 
+
+
+_"In recent years, more than 20
 product recalls have been associated with glass issues, and over 100 million units of drugs packaged in vials or syringes have been withdrawn from the
-market."_ This underscores the urgent necessity of reliable detection methods for such flaws.
+market."_ 
+
+
+This underscores the urgent necessity of reliable detection methods for such flaws.
 
 The rapid advancement of Artificial Intelligence (AI) and fundamental mechanisms like Deep Learning allows for the application of so-called object detectors for the automated recognition of the aforementioned defects. The attractiveness of these AI-based image recognition methods is continuously increasing [@10.1115/1.4049535]. However, as these procedures still represent a nascent field of research, comprehensive validation studies on their suitability and the achievability of the necessary performance in industrial use are lacking.
 
