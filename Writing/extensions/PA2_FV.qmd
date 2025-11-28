@@ -62,7 +62,7 @@ Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennu
 
 # Introduction
 ## Context and Motivation
-In the current technological landscape, the implementation of modern technologies is indispensable for ensuring precise and automated processes. Within the industrial sector, quality control represents a critical success factor. Specifically in pharmaceuticals and medical technology, the integrity of the primary packaging material (typically glass containers) is crucial for product safety.
+Within the industrial sector, quality control represents a critical success factor. Specifically in pharmaceuticals and medical technology, the integrity of the primary packaging material (typically glass containers) is crucial for product safety.
 
 The primary material used for medical and chemical glass containers generally consists of borosilicate glass. However, this material can exhibit or contain production-related defects, including particulate inclusions, air bubbles, or flexible fragments known as Lamellae [@Foglia2015AnIS].
 
@@ -76,18 +76,18 @@ market."_
 
 This underscores the urgent necessity of reliable detection methods for such flaws.
 
-The rapid advancement of Artificial Intelligence (AI) and fundamental mechanisms like Deep Learning allows for the application of so-called object detectors for the automated recognition of the aforementioned defects. The attractiveness of these AI-based image recognition methods is continuously increasing [@10.1115/1.4049535]. However, as these procedures still represent a nascent field of research, comprehensive validation studies on their suitability and the achievability of the necessary performance in industrial use are lacking.
+The rapid advancement of Artificial Intelligence (AI) and fundamental mechanisms like deep learning allows for the application of object detectors for the automated recognition of the aforementioned defects. The attractiveness of these AI-based image recognition methods is continuously increasing [@10.1115/1.4049535]. However, as these procedures still represent a nascent field of research, comprehensive validation studies on their suitability and the achievability of the necessary performance in industrial use are lacking.
 
 A central challenge in training robust models is the scarcity of extensive datasets [@10.1115/1.4049535]. Specifically, the naturally limited availability of data from defective products, caused by the significant imbalance in favor of intact units, complicates the creation of an adequate training dataset [@10.1115/1.4049535].
 
 This paper serves as an exploratory contribution to the evaluation of the current feasibility of AI-supported defect detection. The objective of this work is the comparison of available models on the market and the existence of suitable datasets, in order to provide a well-founded statement on the realisability of precise defect determination.
 
 ## Overall Concept
-The overall objective of this work was to conduct a quantitative performance comparison of two different object detection models under varying data conditions. The experimental procedure was based on the following fundamental steps:
+The overall objective of this work was to conduct a quantitative performance comparison of two different object detection models on two different datasets. The experimental procedure was based on the following fundamental steps:
 
 1. **Model selection and preparation:** Two specific, pre-trained foundation models from the class of object detectors were selected and initialized for evaluation.
 
-2. **Data management and fine-tuning:** To test the models' generalizability, they were each adapted to the specific classification task (defect detection) using two discrete datasets (dataset A and dataset B) via a fine-tuning process.
+2. **Data management and fine-tuning:** To test the models' generalizability, they were each finetuned to the specific classification task (defect detection) using two discrete datasets (dataset A and dataset B).
 
 3. **Performance evaluation:** The performance of the four trained model-dataset combinations was then evaluated on a separate, previously unseen test dataset. The performance was determined based on established quantitative metrics for object detection.
 
@@ -115,7 +115,7 @@ The initial comparison in (@fig-comparison-table) provides a direct performance 
 
 - **Detection Accuracy:** Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. 
 
-This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size differential represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
+This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size difference represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
 
 **Contrasting Benchmarks**
 Interestingly, the benchmark table presented by @sapkota2025rfdetrobjectdetectionvs, shown in (@fig-comparison-tabe-2)
@@ -136,7 +136,7 @@ This discrepancy highlights the critical need to define the intended application
 
 The contradictory performance findings observed in the literature, particularly the trade-off between model size and average precision [@robinson2025rfdetrneuralarchitecturesearch] and the impact of class complexity [@sapkota2025rfdetrobjectdetectionvs], underscore the need for further validation.
 
-The present paper connects with this existing body of literature by providing an empirical, comparative evaluation of the YOLO and RF-DETR architectures under the specific constraints of glass defect detection and data imbalance. This aims to serve as a specific supplementary reference for the performance of these models in a highly sensitive industrial application.
+The present paper connects with this existing body of literature by providing an empirical, comparative evaluation of the YOLO and RF-DETR architectures under the specific constraints of glass defect detection and data imbalance. This aims to serve as a specific supplementary reference for the performance of these models in a industrial application.
 
 # Methodology
 ## Datasets and Assumptions
@@ -144,19 +144,19 @@ The search for suitable data sets proved to be challenging due to the inherent i
 
 
 ### Dataset A (Glasjars, Roboflow)
-  The first dataset was an annotated dataset of glass jars. This dataset was obtained from the Roboflow platform.
+  The first dataset was an annotated dataset of glass jars. This dataset was obtained from the Roboflow platform [@roboflow_dataset].
 
   - **Defined classes:** This dataset contained two primary classes: the defect class (the gas bubble itself) and the container class (the glass container as an object). The models were trained to locate both the surrounding product and the specific defect using bounding boxes.
 
   - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set ("train"), validation set ("val") and test set ("test") was already predefined. This division was adopted for the subsequent analysis.
 
 
-![Raw example image of the dataset A](figures/59_png_jpg.rf.c0f66ac390964d30bc5c71b701b35a10.jpg){#fig-roboflow-raw width=40%}
+![Raw example images of the dataset A (Ground Truth)](figures/val_batch0_labels_roboflow.jpg){#fig-roboflow-raw width=40%}
 
 @fig-roboflow-raw shows that the images were caputred in monotone coloring, they are not autorotated, meaning the angle of the object is different in every picture.
 
 ### Dataset B (Glass Plates, Kaggle)
-The second dataset was obtained from the Kaggle platform and was used to verify the model's performance on structurally different image data.
+The second dataset was obtained from the Kaggle platform and was used to verify the model's performance on structurally different image data [@kaggle_dataset].
 
   - **Scope and distribution:** With a total of 208 images, this dataset was significantly smaller than dataset A. Here, too, the distribution into training, validation and test sets was predefined and was adopted for the analysis.
 
@@ -236,6 +236,8 @@ The training procedure for both the YOLO and RF-DETR architectures was carried o
 
   - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.0001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
 
+  - **Cross Validation:** The training procedure involved 5-fold Cross Validation (CV), but with a critical modification: a dedicated 20% portion of the entire dataset was initially isolated as the final, unseen test dataset (Holdout Set). This 20% test set remained identical and unaltered across all training runs and architectures. The remaining 80% of the data was utilized for the actual 5-fold CV process to tune models and determine validation metrics. The retention of this consistent, unseen test dataset was methodologically mandatory, as it formed the basis for establishing a scientific benchmark to fairly compare the models' true generalization capabilities.
+
 ## Model Testing
 The final testing of the trained models was conducted under the same computational conditions as the training phase. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
 
@@ -277,14 +279,11 @@ import pandas as pd
 data = {
     "Model": ["YOLO", "RF-DETR", "YOLO", "RF-DETR"],
     "Dataset": ["Dataset (A)", "Dataset (A)", "Dataset (B)", "Dataset (B)"],
-    "Train Time (Approx.)": ["~ 40 min", "~ 5.5h", "~ 7 min", "~ 50 min"]
+    "Train Time (Approx.)": ["~ 200min", "~ 1500min", "~ 25 min", "~ 111 min"]
 }
 
 # DataFrame erstellen
 df_train_time = pd.DataFrame(data, index=None)
-
-# Optional: Setzen Sie die Spalten "Model" und "Dataset" als Index, um die Tabelle kompakter zu gestalten
-# df_train_time = df_train_time.set_index(["Model", "Dataset"])
 
 # Anzeige des DataFrames (wird in Quarto als Tabelle gerendert)
 df_train_time
@@ -296,11 +295,39 @@ df_train_time
 
 ![Training Results RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
 
+### Metrics comparison
+
+<!-- ```{python}
+#| tbl-cap: "Metrics Calculation Dataset A"
+#| label: tbl-dataset-a
+
+
+import pandas as pd
+
+# Definieren der Zeilen-Header (Metriken)
+metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
+
+# Erstellen des leeren DataFrames
+# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
+data = {
+    "YOLO": [0.869, 0.799, 0.833, 0.839, 0.589],  # Platzhalter für die Werte
+    "RF-DETR": [0.776, 0.759, 0.767, 0.840, 0.590] # Platzhalter für die Werte
+}
+
+df = pd.DataFrame(data, index=metrics)
+
+# Anzeigen des DataFrames
+df
+``` -->
+
 ### Dataset B
 
 ![Training Results YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
 
 ![Training Results RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
+
+
+
 
 
 ## Model Results and Statistical Evaluation of Testing
@@ -427,6 +454,8 @@ The evaluation on Dataset A provided a clear delineation of the models' practica
 
 - **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
 
+- **Detection Guarantee of the Container Object:** As seen in[@fig-yolo-datasetA-confusion] the detection of the glass object was always successful. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
+
 ### Performance on Dataset B
 The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
 
@@ -491,9 +520,9 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 
 ::: {.content-hidden when-format="html"}
 
-[7] Gemini 2.5 Pro. (n.d.). Google Gemini. Retrieved October 1, 2025, from https://gemini.google.com/app
+[9] Gemini 2.5 Pro. (n.d.). Google Gemini. Retrieved October 1, 2025, from https://gemini.google.com/app
 
-[8] DeepL Translate: The world’s most accurate translator. (n.d.). https://www.deepl.com/
+[10] DeepL Translate: The world’s most accurate translator. (n.d.). https://www.deepl.com/
 
 # Lists
 
