@@ -1,5 +1,0 @@
-Model,Dataset,Train Time (Approx.)
-YOLO,Dataset (A),~ 40 min
-RF-DETR,Dataset (A),~ 6h
-YOLO,Dataset (B),~ 7 min
-RF-DETR,Dataset (B),~ 50 min

@@ -35,11 +35,13 @@ execute:
 
 ### English Version
 
-This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural trade-off: The YOLO model demonstrated overwhelming training efficiency (up to 90% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly False Positives. However, the critical finding was the failure to meet safety standards: The best achieved Recall was only 0.799 on the complex dataset. This unacceptable rate of False Negatives (missed defects) precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect Recall necessary to guarantee product safety.
+This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural trade-off: The YOLO model demonstrated overwhelming training efficiency (up to 70% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly False Positives. However, the critical finding was the failure to meet safety standards: The best achieved Recall was only 0.799 on the complex dataset. This unacceptable rate of False Negatives (missed defects) precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect Recall necessary to guarantee product safety.
+
+{{< pagebreak >}}
 
 ### German Version
 
-Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Glasfehlern im Pharmasektor, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensive RF-DETR Nano (Transformer-basiert), wobei zwei diskrete Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Kompromiss hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 90 % schneller als RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
+Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Glasfehlern im Pharmasektor, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensive RF-DETR Nano (Transformer-basiert), wobei zwei diskrete Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Kompromiss hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 70 % schneller als RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
 
 
 ::: {.content-hidden when-format="html"}
@@ -87,7 +89,7 @@ The overall objective of this work was to conduct a quantitative performance com
 
 1. **Model selection and preparation:** Two specific, pre-trained foundation models from the class of object detectors were selected and initialized for evaluation.
 
-2. **Data management and fine-tuning:** To test the models' generalizability, they were each finetuned to the specific classification task (defect detection) using two discrete datasets (dataset A and dataset B).
+2. **Data management and fine-tuning:** To test the models' generalizability, they were each finetuned to the specific classification task (defect detection) using two discrete datasets (dataset A and dataset B). Cross Validation was applied to ensure statistical robustness. 
 
 3. **Performance evaluation:** The performance of the four trained model-dataset combinations was then evaluated on a separate, previously unseen test dataset. The performance was determined based on established quantitative metrics for object detection.
 
@@ -132,6 +134,8 @@ It is important to note that @sapkota2025rfdetrobjectdetectionvs utilised the ne
 
 This discrepancy highlights the critical need to define the intended application: the optimal choice depends heavily on whether the scenario involves single-class or multi-class detection.
 
+{{< pagebreak >}}
+
 **Research Gap and Contribution**
 
 The contradictory performance findings observed in the literature, particularly the trade-off between model size and average precision [@robinson2025rfdetrneuralarchitecturesearch] and the impact of class complexity [@sapkota2025rfdetrobjectdetectionvs], underscore the need for further validation.
@@ -151,9 +155,11 @@ The search for suitable data sets proved to be challenging due to the inherent i
   - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set ("train"), validation set ("val") and test set ("test") was already predefined. This division was adopted for the subsequent analysis.
 
 
-![Raw example images of the dataset A (Ground Truth)](figures/val_batch0_labels_roboflow.jpg){#fig-roboflow-raw width=40%}
+![Raw example images of the dataset A (Ground Truth)](figures/val_batch0_labels_roboflow.jpg){#fig-roboflow-raw width=60%}
 
 @fig-roboflow-raw shows that the images were caputred in monotone coloring, they are not autorotated, meaning the angle of the object is different in every picture.
+
+{{< pagebreak >}}
 
 ### Dataset B (Glass Plates, Kaggle)
 The second dataset was obtained from the Kaggle platform and was used to verify the model's performance on structurally different image data [@kaggle_dataset].
@@ -239,7 +245,7 @@ The training procedure for both the YOLO and RF-DETR architectures was carried o
   - **Cross Validation:** The training procedure involved 5-fold Cross Validation (CV), but with a critical modification: a dedicated 20% portion of the entire dataset was initially isolated as the final, unseen test dataset (Holdout Set). This 20% test set remained identical and unaltered across all training runs and architectures. The remaining 80% of the data was utilized for the actual 5-fold CV process to tune models and determine validation metrics. The retention of this consistent, unseen test dataset was methodologically mandatory, as it formed the basis for establishing a scientific benchmark to fairly compare the models' true generalization capabilities.
 
 ## Model Testing
-The final testing of the trained models was conducted under the same computational conditions as the training phase. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
+The final testing of the trained models was conducted under the same computational conditions as the training phase. The best weights of the 5 fold cross validation were selected. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
 
 ## Evaluation Metrics
 The performance of the models was assessed using standard metrics commonly applied in object detection and machine learning. These metrics were calculated based on the following fundamental classifications:
@@ -267,6 +273,9 @@ Given these fundamental metrics, the following performance indicators were calcu
 
 # Results
 ## Model Results of Training
+
+### Metrics comparison
+
 The time required for the Fine-Tuning process was recorded between the two model architectures. The observed data are presented in @tbl-trainingtime.
 
 ```{python}
@@ -279,7 +288,7 @@ import pandas as pd
 data = {
     "Model": ["YOLO", "RF-DETR", "YOLO", "RF-DETR"],
     "Dataset": ["Dataset (A)", "Dataset (A)", "Dataset (B)", "Dataset (B)"],
-    "Train Time (Approx.)": ["~ 200min", "~ 1500min", "~ 25 min", "~ 111 min"]
+    "Train Time (Approx.)": ["~ 200min", "~ 720min (2 runs) / (~1500min for 5 runs)", "~ 25 min", "~ 111 min"]
 }
 
 # DataFrame erstellen
@@ -290,45 +299,185 @@ df_train_time
 ```
 
 ### Dataset A
+The 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo).
 
-![Training Results YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
+```{python}
+#| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset A)"
+#| label: tbl-5cv-dataseta-yolo
+metric_names_yolo_a = [
+    "Precision",
+    "Recall",
+    "mAP50",
+    "mAP50-95"
+]
 
-![Training Results RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
+mean_yolo_a = [0.8409, 0.7900, 0.8221, 0.5768]
+std_yolo_a = [0.0173, 0.0161, 0.0149, 0.0066]
 
-### Metrics comparison
+df_yolo_a = pd.DataFrame({
+    "Metric": metric_names_yolo_a,
+    "Mean": mean_yolo_a,
+    "Std. (+-)": std_yolo_a
+}
+)
 
-<!-- ```{python}
-#| tbl-cap: "Metrics Calculation Dataset A"
-#| label: tbl-dataset-a
+df_yolo_a
+```
 
+![Training Results of Best Weights YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
 
+{{< pagebreak >}}
+
+The 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr).
+
+```{python}
+#| tbl-cap: "Results of 2-fold Cross Validation RF-DETR (Dataset A)"
+#| label: tbl-5cv-dataseta-rfdetr
+import numpy as np
 import pandas as pd
 
-# Definieren der Zeilen-Header (Metriken)
-metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
+# 1. Metrik-Namen definieren (in der korrekten COCO-Reihenfolge)
+# Wir müssen den Keys eindeutige Zusätze geben (all, small, medium, large etc.),
+# da sie im Originaltext identisch hiessen.
+metric_names_rfdetr = [
+    "AP (IoU=0.50:0.95) | area=all",
+    "AP (IoU=0.50)      | area=all",
+    "AP (IoU=0.75)      | area=all",
+    "AP (IoU=0.50:0.95) | area=small",
+    "AP (IoU=0.50:0.95) | area=medium",
+    "AP (IoU=0.50:0.95) | area=large",
+    "AR (IoU=0.50:0.95) | maxDets=1",
+    "AR (IoU=0.50:0.95) | maxDets=10",
+    "AR (IoU=0.50:0.95) | maxDets=100",
+    "AR (IoU=0.50:0.95) | area=small",
+    "AR (IoU=0.50:0.95) | area=medium",
+    "AR (IoU=0.50:0.95) | area=large"
+]
 
-# Erstellen des leeren DataFrames
-# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
-data = {
-    "YOLO": [0.869, 0.799, 0.833, 0.839, 0.589],  # Platzhalter für die Werte
-    "RF-DETR": [0.776, 0.759, 0.767, 0.840, 0.590] # Platzhalter für die Werte
-}
+# 2. Daten als Listen definieren
+# Ich habe die Werte aus deinem Text extrahiert. Listen behalten die Reihenfolge.
+fold_1_rfdetr = [0.589, 0.850, 0.548, 0.250, 0.244, 0.928, 0.611, 0.637, 0.640, 0.331, 0.367, 0.949]
+fold_2_rfdetr = [0.657, 0.903, 0.632, 0.426, 0.575, 0.964, 0.659, 0.702, 0.703, 0.548, 0.640, 0.975]
 
-df = pd.DataFrame(data, index=metrics)
+# Alle Folds in eine Matrix packen (5 Zeilen, 12 Spalten)
+all_folds_rfdetr = np.array([fold_1_rfdetr, fold_2_rfdetr])
 
-# Anzeigen des DataFrames
-df
-``` -->
+# 3. Berechnungen durchführen
+# axis=0 bedeutet, wir berechnen den Durchschnitt "von oben nach unten" durch die Folds
+means_rfdetr = np.mean(all_folds_rfdetr, axis=0)
+stds_rfdetr = np.std(all_folds_rfdetr, axis=0)
+
+# 4. Ergebnis schön darstellen
+# Wir erstellen ein DataFrame für eine saubere Tabelle
+df_results_rfdetr = pd.DataFrame({
+    'Metrics': metric_names_rfdetr,
+    'Mean': means_rfdetr,
+    'Std. (+-)': stds_rfdetr
+})
+
+# Formatierung auf 3 Nachkommastellen
+pd.options.display.float_format = '{:.3f}'.format
+
+df_results_rfdetr
+```
+
+![Training Results of Best Weights RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
+
+
+{{< pagebreak >}}
 
 ### Dataset B
 
-![Training Results YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
+The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-yolo).
 
-![Training Results RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
+```{python}
+#| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset B)"
+#| label: "tbl-5cv-datasetb-yolo"
+import pandas as pd
 
+metric_names_yolo_b = [
+    "Precision",
+    "Recall",
+    "mAP50",
+    "mAP50-95"
+]
 
+mean_yolo_b = [0.9944, 0.9928, 0.9918, 0.8105]
+std_yolo_b = [0.0109, 0.0107, 0.0069, 0.0189]
 
+df_yolo_b = pd.DataFrame({
+    "Metric": metric_names_yolo_b,
+    "Mean": mean_yolo_b,
+    "Std. (+-)": std_yolo_b
+}
+)
 
+df_yolo_b
+```
+
+![Training Results of Best Weights YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
+
+{{< pagebreak >}}
+
+The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-rfdetr).
+
+```{python}
+#| tbl-cap: "Results of 5-fold Cross Validation RF-DETR (Dataset B)"
+#| label: tbl-5cv-datasetb-rfdetr
+import numpy as np
+import pandas as pd
+
+# 1. Metrik-Namen definieren (in der korrekten COCO-Reihenfolge)
+# Wir müssen den Keys eindeutige Zusätze geben (all, small, medium, large etc.),
+# da sie im Originaltext identisch hiessen.
+metric_names = [
+    "AP (IoU=0.50:0.95) | area=all",
+    "AP (IoU=0.50)      | area=all",
+    "AP (IoU=0.75)      | area=all",
+    "AP (IoU=0.50:0.95) | area=small",
+    "AP (IoU=0.50:0.95) | area=medium",
+    "AP (IoU=0.50:0.95) | area=large",
+    "AR (IoU=0.50:0.95) | maxDets=1",
+    "AR (IoU=0.50:0.95) | maxDets=10",
+    "AR (IoU=0.50:0.95) | maxDets=100",
+    "AR (IoU=0.50:0.95) | area=small",
+    "AR (IoU=0.50:0.95) | area=medium",
+    "AR (IoU=0.50:0.95) | area=large"
+]
+
+# 2. Daten als Listen definieren
+# Ich habe die Werte aus deinem Text extrahiert. Listen behalten die Reihenfolge.
+fold_1 = [0.797, 1.000, 0.941, 0.647, 0.759, 0.911, 0.710, 0.832, 0.832, 0.700, 0.796, 0.950]
+fold_2 = [0.863, 0.970, 0.970, 0.567, 0.870, 1.000, 0.772, 0.882, 0.885, 0.625, 0.897, 1.000]
+fold_3 = [0.915, 1.000, 1.000, 0.855, 0.898, 0.972, 0.835, 0.938, 0.943, 0.900, 0.929, 0.990]
+fold_4 = [0.931, 1.000, 1.000, 0.852, 0.919, 0.990, 0.813, 0.941, 0.944, 0.860, 0.942, 0.990]
+fold_5 = [0.916, 1.000, 1.000, 0.864, 0.921, 1.000, 0.777, 0.935, 0.935, 0.875, 0.940, 1.000]
+
+# Alle Folds in eine Matrix packen (5 Zeilen, 12 Spalten)
+all_folds = np.array([fold_1, fold_2, fold_3, fold_4, fold_5])
+
+# 3. Berechnungen durchführen
+# axis=0 bedeutet, wir berechnen den Durchschnitt "von oben nach unten" durch die Folds
+means = np.mean(all_folds, axis=0)
+stds = np.std(all_folds, axis=0)
+
+# 4. Ergebnis schön darstellen
+# Wir erstellen ein DataFrame für eine saubere Tabelle
+df_results = pd.DataFrame({
+    'Metrics': metric_names,
+    'Mean': means,
+    'Std. (+-)': stds
+})
+
+# Formatierung auf 3 Nachkommastellen
+pd.options.display.float_format = '{:.3f}'.format
+
+df_results
+```
+
+![Training Results of Best Weights RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
+
+{{< pagebreak >}}
 
 ## Model Results and Statistical Evaluation of Testing
 
@@ -382,6 +531,8 @@ The confusion matrices for the dataset B yielded following results:
 
 :::
 
+{{< pagebreak >}}
+
 Following metrics were calculated from @fig-yolo-datasetB-confusion and @fig-rfdetr-datasetB-confusion :
 
 ```{python}
@@ -410,12 +561,37 @@ Based on the results from @tbl-dataset-b a visualisation was generated:
 
 ![Visualization of Results for Dataset B](figures/Kaggle.png){#fig-datasetb-comp}
 
+{{< pagebreak >}}
+
+## Sample Images of Testing
+
+### Dataset A
+
+![True Positive](figures/TP_roboflow.png){#fig-TP-roboflow}
+
+![True Negative](figures/TN_roboflow.png){#fig-TN-roboflow}
+
+![False Positive](figures/FP_roboflow.png){#fig-FP-roboflow}
+
+![False Negative](figures/FN_roboflow.png){#fig-FN-roboflow}
+
+{{< pagebreak >}}
+
+### Dataset B
+
+![True Positive](figures/TP_kaggle.png){#fig-TP-kaggle}
+
+![False Positive](figures/FP_kaggle.png){#fig-FP-kaggle}
+
+
 # Discussion
 
 ## Interpretation of Results
 
 ### Training Efficiency
-The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to nine times less training time (40 minutes vs. 5.5 hours on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
+The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to seven times less training time (200 minutes vs. theoretical 1500min on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
+
+An attempt to execute the full 5-fold Cross Validation (CV) on the RF-DETR model was initiated, but proved infeasible due to resource limitations. Given that a single RF-DETR training run on Dataset A required approximately 5 hours (300minutes), the full 5-fold CV process would have necessitated a continuous execution time exceeding 25 hours. The available computational resources were insufficient for such a sustained, long duration, which constrained the RF-DETR model's final evaluation to only two runs on Dataset A.
 
 ### Analysis of Training Dynamics
 
@@ -441,6 +617,8 @@ The effect of data scarcity on Dataset B (only 208 images) was distinctly visibl
 
 While the loss curves continued a steady, albeit oscillating, decline, the Average Precision ($\text{mAP@50}$) metric converged very rapidly. For both models, the $\text{mAP@50}$ curve reached near-maximal performance around or shortly after the 20 th epoch. This rapid plateauing of the core evaluation metric indicated that the models learned the limited defect variance present in Dataset B relatively quickly. Consequently, the remaining 80 epochs were likely redundant for maximizing performance on this specific dataset. A predefined Early Stopping strategy or a reduction of the epoch count after the 20 th epoch could have significantly reduced the computational time without negatively impacting the achieved test performance.
 
+{{< pagebreak >}}
+
 ### Testing Efficiency
 
 ### Performance on Dataset A
@@ -454,12 +632,14 @@ The evaluation on Dataset A provided a clear delineation of the models' practica
 
 - **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
 
-- **Detection Guarantee of the Container Object:** As seen in[@fig-yolo-datasetA-confusion] the detection of the glass object was always successful. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
+- **Detection Guarantee of the Container Object:** As seen in [@fig-yolo-datasetA-confusion] aswell as in @fig-TP-roboflow, @fig-TN-roboflow, @fig-FP-roboflow and @fig-FN-roboflow the detection of the glass object was always successful with a high accuracy. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
 
 ### Performance on Dataset B
 The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
 
 - **Bounding Box Localization:** The YOLO model achieved the highest score in the strict $\text{mAP@[50:95]}$ criterion (0.784 vs. 0.770 for RF-DETR). As this metric only rewards highly accurate bounding box overlap, this suggested that YOLO produced marginally more precise spatial localization of the defects across the wide size spectrum observed in Dataset B. Otherwise the performance of the two model was almost similar.
+
+- **Absence of True and False Negatives:** Since the dataset was guaranteed to contain at least one defect in every image, the True Negative and False Negative classes were effectively eliminated from the test population. Consequently, the high metrics recorded for Dataset B did not provide a reliable measure of the models' sensitivity to true negative scenarios and must be interpreted with this structural constraint in mind.
 
 ## Assumptions & Research Questions
 
@@ -474,7 +654,7 @@ The core assumption that Dataset A would require a longer training duration due 
 
 # Conclusion
 ## Summary of Key Findings
-The present comparative study successfully evaluated the performance of two leading object detection architectures, YOLO Nano and RF-DETR Nano, for the task of automated glass defect detection under varying dataset conditions.
+The present comparative study successfully evaluated the performance of two leading object detection architectures, YOLO Nano and RF-DETR Nano, for the task of automated glass defect detection under varying dataset conditions, with the exception that the RF-DETR model on Dataset A was evaluated using only two Cross-Validation (CV) folds due to resource constraints, rather than the intended five folds.
 
 The central conclusions drawn from the experimental data are:
 
@@ -490,9 +670,9 @@ The central conclusions drawn from the experimental data are:
 ## Limitations and Challenges
 The execution of the comparative study was subject to several inherent constraints and practical challenges:
 
-- **Computational Constraints and Training Duration:** A significant limitation was the dependency on high-performance computing resources.  It was observed that without a powerful GPU for fine-tuning, researchers must account for extended waiting periods. The training time increases proportionally with the size and complexity of the dataset, posing a barrier to rapid experimentation.
+- **Computational Constraints and Training Duration:** A significant limitation was the dependency on high-performance computing resources.  It was observed that without a powerful GPU for fine-tuning and cross validating, researchers must account for extended waiting periods. The training time increases proportionally with the size and complexity of the dataset, posing a barrier to rapid experimentation.
 
-- **Discrepancy in Model Outputs:** Due to the divergent underlying model infrastructures (i.e., the unique software libraries and frameworks used by YOLO and RF-DETR), the final training results were represented differently. This resulted in variations in data storage formats, metrics calculated, and output visualizations. Consequently, considerable effort was required to unify the various outputs into a consistent and comparable format suitable for a fair performance comparison.
+- **Discrepancy in Model Outputs:** Due to the divergent underlying model infrastructures (i.e., the unique software libraries and frameworks used by YOLO and RF-DETR), the final training results were represented differently. This resulted in variations in data storage formats, metrics calculated, and output visualizations. Consequently, considerable effort was required to unify the various outputs into a consistent and comparable format suitable for a fair performance comparison. Additionally the infrastructure was highly self-contained (closed in itself), meaning that the process of extracting cross validation data and standardizing metrics was exceptionally cumbersome. The code required complex, custom adjustments to facilitate the planned CV implementation.
 
 - **Data Scarcity and Suitability:** A major initial challenge, as previously discussed, was the difficulty in obtaining suitable public datasets containing sufficient annotated samples for the specific application of glass defect detection. The inherent data imbalance in the industrial context restricted the scope and depth of the training process.
 
