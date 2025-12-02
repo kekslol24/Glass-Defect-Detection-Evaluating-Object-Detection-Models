@@ -9,12 +9,9 @@ The project applies Transfer Learning to fine-tune two fundamentally different o
 1. YOLOv11 Nano (Efficiency Baseline)
 Architecture: A one-stage, anchor-free detector, chosen for its minimal memory footprint and highest potential CPU inference speed.
 
-Role: Serves as the baseline for maximum efficiency, assessing the feasibility of deployment on resource-constrained industrial Edge devices.
 
 2. RF-DETR (Accuracy Baseline)
 Architecture: A Transformer-based detector (Reduced Flops DETR). These models excel in global context understanding, often leading to high detection accuracy.
 
-Role: Acts as the contrasting model, investigating whether its potential superior accuracy can justify its typically slower inference speed on standard industrial CPU hardware.
-
 Evaluation Focus
-The research centers on a direct, quantitative comparison of both models. Benchmarking involves measuring Accuracy (mAP) against Inference Speed (FPS) to establish which architecture delivers the most practical solution for real-time industrial requirements.
+The research centers on a direct, quantitative comparison of both models. Benchmarking involves measuring Accuracy (mAP) to establish which architecture delivers the most practical solution for real-time industrial requirements.
