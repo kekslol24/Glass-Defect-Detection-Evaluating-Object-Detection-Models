@@ -5,7 +5,7 @@ title: |
 institute: "Institue of Computational Life Science"
 keywords: "Deep Learning, Object Detectors, Evaluation Metrics, Digital Lab and Production, Factory Production, Image Processing"
 lang: en
-confidential: true
+confidential: false
 cover-image:
   src: Cover-image.jpg
   max-width: 100%
@@ -19,8 +19,8 @@ supervisors:
   - title: "Dr."
     name: "Stefan Glüge"
     affiliation: "ZHAW Life Sciences und Facility Management, Wädenswil"
-
 bibliography: references.bib
+link-citations: true
 csl: ieee.csl
 author: 
   - Florian Vollmer
@@ -120,6 +120,7 @@ The initial comparison in (@fig-comparison-table) provides a direct performance 
 This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size difference represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
 
 **Contrasting Benchmarks**
+
 Interestingly, the benchmark table presented by @sapkota2025rfdetrobjectdetectionvs, shown in (@fig-comparison-tabe-2)
 
 ![Evaluation Metrics (@sapkota2025rfdetrobjectdetectionvs)](figures/Comparison_table_models_paper.png){#fig-comparison-tabe-2}
@@ -238,14 +239,14 @@ The selection of YOLO and RF-DETR for the experimental evaluation is based on th
 ## Model Training
 The training procedure for both the YOLO and RF-DETR architectures was carried out under identical computational and hyperparameter conditions to ensure a fair and direct comparative evaluation.
 
-  - **Computational Environment:** All training and validation processes were conducted on the Google Colab Pro environment, utilizing an NVIDIA T4 GPU equipped with 16GB of VRAM (Video Random Access Memory).
+  - **Computational Environment:** All training and validation processes were conducted on the Kaggle Coding environment, utilizing an NVIDIA T4 GPU equipped with 16GB of VRAM (Video Random Access Memory).
 
   - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.0001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
 
   - **Cross Validation:** The training procedure involved 5-fold Cross Validation (CV), but with a critical modification: a dedicated 20% portion of the entire dataset was initially isolated as the final, unseen test dataset (Holdout Set). This 20% test set remained identical and unaltered across all training runs and architectures. The remaining 80% of the data was utilized for the actual 5-fold CV process to tune models and determine validation metrics. The retention of this consistent, unseen test dataset was methodologically mandatory, as it formed the basis for establishing a scientific benchmark to fairly compare the models' true generalization capabilities.
 
 ## Model Testing
-The final testing of the trained models was conducted under the same computational conditions as the training phase. The best weights of the 5 fold cross validation were selected. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
+The final testing of the trained models was conducted under the same computational conditions as the training phase. The best weight of the 5 fold cross validation was selected. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
 
 ## Evaluation Metrics
 The performance of the models was assessed using standard metrics commonly applied in object detection and machine learning. These metrics were calculated based on the following fundamental classifications:
@@ -326,8 +327,6 @@ df_yolo_a
 
 ![Training Results of Best Weights YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
 
-{{< pagebreak >}}
-
 The 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr).
 
 ```{python}
@@ -384,8 +383,6 @@ df_results_rfdetr
 ![Training Results of Best Weights RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
 
 
-{{< pagebreak >}}
-
 ### Dataset B
 
 The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-yolo).
@@ -417,7 +414,6 @@ df_yolo_b
 
 ![Training Results of Best Weights YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
 
-{{< pagebreak >}}
 
 The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-rfdetr).
 
@@ -591,11 +587,13 @@ Based on the results from @tbl-dataset-b a visualisation was generated:
 ### Training Efficiency
 The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to seven times less training time (200 minutes vs. theoretical 1500min on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
 
-An attempt to execute the full 5-fold Cross Validation (CV) on the RF-DETR model was initiated, but proved infeasible due to resource limitations. Given that a single RF-DETR training run on Dataset A required approximately 5 hours (300minutes), the full 5-fold CV process would have necessitated a continuous execution time exceeding 25 hours. The available computational resources were insufficient for such a sustained, long duration, which constrained the RF-DETR model's final evaluation to only two runs on Dataset A.
+An attempt to execute the full 5-fold Cross Validation (CV) on the RF-DETR model was initiated, but proved infeasible due to resource limitations. Given that a single RF-DETR training run on Dataset A required approximately 5 hours (300minutes), the full 5-fold CV process would have necessitated a continuous execution time exceeding 25 hours. The available computational resources were insufficient for such a sustained, long duration, which constrained the RF-DETR model's final evaluation to only two runs on Dataset A.  
+
 
 ### Analysis of Training Dynamics
 
-The dynamic behavior of the models during the 100 epochs was analyzed using the loss and metric curves. It is crucial to note that the scaling of the axes in the provided visualizations differed significantly between the YOLO and RF-DETR output formats, necessitating careful comparative observation.
+The dynamic behavior of the models during the 100 epochs was analyzed using the loss and metric curves. It is crucial to note that the scaling of the axes in the provided visualizations differed significantly between the YOLO and RF-DETR output formats, necessitating careful comparative observation.  
+
 
 **Definition of YOLO Loss Components**  
 
@@ -632,7 +630,8 @@ The evaluation on Dataset A provided a clear delineation of the models' practica
 
 - **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
 
-- **Detection Guarantee of the Container Object:** As seen in [@fig-yolo-datasetA-confusion] aswell as in @fig-TP-roboflow, @fig-TN-roboflow, @fig-FP-roboflow and @fig-FN-roboflow the detection of the glass object was always successful with a high accuracy. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
+- **Detection Guarantee of the Container Object:** 
+As seen in [@fig-yolo-datasetA-confusion] aswell as in @fig-TP-roboflow, @fig-TN-roboflow, @fig-FP-roboflow and @fig-FN-roboflow the detection of the glass object was always successful with a high accuracy. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
 
 ### Performance on Dataset B
 The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
@@ -666,6 +665,7 @@ The central conclusions drawn from the experimental data are:
 
 - **Final Implication:** The work demonstrates that for industrial integration, the prerequisite is the development of more advanced training strategies or data collection methods that can push the Recall performance toward the near-perfect scores required to meet stringent safety standards.
 
+{{< pagebreak >}}
 
 ## Limitations and Challenges
 The execution of the comparative study was subject to several inherent constraints and practical challenges:
@@ -675,6 +675,8 @@ The execution of the comparative study was subject to several inherent constrain
 - **Discrepancy in Model Outputs:** Due to the divergent underlying model infrastructures (i.e., the unique software libraries and frameworks used by YOLO and RF-DETR), the final training results were represented differently. This resulted in variations in data storage formats, metrics calculated, and output visualizations. Consequently, considerable effort was required to unify the various outputs into a consistent and comparable format suitable for a fair performance comparison. Additionally the infrastructure was highly self-contained (closed in itself), meaning that the process of extracting cross validation data and standardizing metrics was exceptionally cumbersome. The code required complex, custom adjustments to facilitate the planned CV implementation.
 
 - **Data Scarcity and Suitability:** A major initial challenge, as previously discussed, was the difficulty in obtaining suitable public datasets containing sufficient annotated samples for the specific application of glass defect detection. The inherent data imbalance in the industrial context restricted the scope and depth of the training process.
+
+{{< pagebreak >}}
 
 ## Future Research Directions
 The findings of this project open up several promising avenues for future research and applied development:
@@ -700,9 +702,11 @@ No core scientific content, model selection decisions, hyperparameter choices, o
 
 ::: {.content-hidden when-format="html"}
 
-[9] Gemini 2.5 Pro. (n.d.). Google Gemini. Retrieved October 1, 2025, from https://gemini.google.com/app
+[9] Gemini 2.5 Pro. (n.d.). Google Gemini. Retrieved October 1, 2025, from <https://gemini.google.com/app>
 
-[10] DeepL Translate: The world’s most accurate translator. (n.d.). https://www.deepl.com/
+[10] DeepL Translate: The world’s most accurate translator. (n.d.). <https://www.deepl.com/>
+
+[11] F. Vollmer, „GitHub Repository: Glass Defect Detection-Evaluating-Object-Models“, GitHub, 1. December 2025. <https://github.zhaw.ch/vollmflo/Glass-Defect-Detection-Evaluating-Object-Detection-Models>
 
 # Lists
 
@@ -815,7 +819,7 @@ _**Testing**_
 ![F1-Score Testing](figures/Kaggle/RF-DETR/custom_F1_score_plot_kaggle_rfdetr_test.png)
 :::
 
-**Sample Images from the YOLO Model (RF-DETR does not generate any)**  
+**Sample Images**
 
 
   _**Dataset A**_

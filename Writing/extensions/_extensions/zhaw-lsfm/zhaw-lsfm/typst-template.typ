@@ -305,6 +305,8 @@
     ]
   }
 
+  set par(spacing: 2em)
+
   if cols == 1 {
     doc
   } else {
