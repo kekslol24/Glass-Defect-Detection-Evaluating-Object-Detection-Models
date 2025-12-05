@@ -20,6 +20,8 @@ The research centers on a direct, quantitative comparison of both models. Benchm
 
 It is recommended to use a virtual environment to manage dependencies. Please follow the steps below to set up your environment.
 
+The core logic and scripts are located in the `#Deployment` folder.
+
 ### 1. Create a Virtual Environment
 
 Run the following command in the root directory of the project:
