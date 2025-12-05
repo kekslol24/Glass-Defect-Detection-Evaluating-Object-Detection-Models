@@ -1,0 +1,8 @@
+path: 'D:\Studium\5. Semester\PA2\PA2-Automated-Visual-Quality-Control-Using-Convolutional-Neural-Networks\dataset\dataset' # dataset root dir
+train: images/train
+val: images/val
+test: images/test
+
+# Classes
+names:
+  0: "DEFECT"
