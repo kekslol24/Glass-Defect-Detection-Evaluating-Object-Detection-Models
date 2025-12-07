@@ -35,13 +35,13 @@ execute:
 
 ### English Version
 
-This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural trade-off: The YOLO model demonstrated overwhelming training efficiency (up to 70% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly False Positives. However, the critical finding was the failure to meet safety standards: The best achieved Recall was only 0.799 on the complex dataset. This unacceptable rate of False Negatives (missed defects) precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect Recall necessary to guarantee product safety.
+This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the more resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural difference: The YOLO model demonstrated overwhelming training efficiency (up to 70% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly false positives. However, the critical finding was the failure to meet safety standards: The best achieved recall was only 0.799 on the complex dataset. This unacceptable rate of false negatives (missed defects) precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect recall necessary to guarantee product safety.
 
 {{< pagebreak >}}
 
 ### German Version
 
-Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Glasfehlern im Pharmasektor, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensive RF-DETR Nano (Transformer-basiert), wobei zwei diskrete Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Kompromiss hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 70 % schneller als RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
+Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Defekten auf Glasoberflächen im Pharmasektor, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensivere RF-DETR Nano (Transformer-basiert), wobei zwei unterschiedliche Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Unterschied hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 70 % schneller als das RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
 
 
 ::: {.content-hidden when-format="html"}
@@ -82,7 +82,7 @@ The rapid advancement of Artificial Intelligence (AI) and fundamental mechanisms
 
 A central challenge in training robust models is the scarcity of extensive datasets [@10.1115/1.4049535]. Specifically, the naturally limited availability of data from defective products, caused by the significant imbalance in favor of intact units, complicates the creation of an adequate training dataset [@10.1115/1.4049535].
 
-This paper serves as an exploratory contribution to the evaluation of the current feasibility of AI-supported defect detection. The objective of this work is the comparison of available models on the market and the existence of suitable datasets, in order to provide a well-founded statement on the realisability of precise defect determination.
+This work serves as an exploratory contribution to the evaluation of the current feasibility of AI-supported defect detection. The objective is the comparison of available models on the market in order to provide a well-founded statement on the realisability of precise defect determination.
 
 ## Overall Concept
 The overall objective of this work was to conduct a quantitative performance comparison of two different object detection models on two different datasets. The experimental procedure was based on the following fundamental steps:
@@ -117,7 +117,7 @@ The initial comparison in (@fig-comparison-table) provides a direct performance 
 
 - **Detection Accuracy:** Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. 
 
-This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size difference represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment.
+This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size difference represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment. Specifically, in industrial settings, where processing is often performed on decentralized, resource constrained Edge devices (such as industrial single board computers), models must be lightweight for efficient deployment, possess a minimal memory footprint, and maintain high inference speed to ensure the low latency and high throughput required for real time quality control.
 
 **Contrasting Benchmarks**
 
@@ -243,7 +243,13 @@ The training procedure for both the YOLO and RF-DETR architectures was carried o
 
   - **Hyperparameters:** Both models were trained for a fixed duration of 100 epochs. A total batch size of 16 and a learning rate of 0.0001 were applied consistently across all four training runs (YOLO on Datasets A and B; RF-DETR on Datasets A and B). The other Hyperparameters were left as they are configured when starting the training.
 
-  - **Cross Validation:** The training procedure involved 5-fold Cross Validation (CV), but with a critical modification: a dedicated 20% portion of the entire dataset was initially isolated as the final, unseen test dataset (Holdout Set). This 20% test set remained identical and unaltered across all training runs and architectures. The remaining 80% of the data was utilized for the actual 5-fold CV process to tune models and determine validation metrics. The retention of this consistent, unseen test dataset was methodologically mandatory, as it formed the basis for establishing a scientific benchmark to fairly compare the models' true generalization capabilities.
+  - **Cross Validation:** The training procedure involved 5-fold Cross Validation (CV). The specific CV technique varied depending on the complexity of the dataset's class distribution:  
+  
+    - **Dataset A (Two Classes):** Stratified K-Fold CV was applied. This method ensured that the proportion of instances for the two defined classes was preserved in every fold.  
+    
+    - **Dataset B (Single Class):** Standard K-Fold CV was applied. Since this dataset contained only a single defect class, standard K-Fold CV was utilized, as stratification was not necessary.  
+  
+  The consistent use of the entire dataset for this CV process was methodologically mandatory to establish a scientific benchmark, allowing for a fair comparison of the models' true generalization capabilities.
 
 ## Model Testing
 The final testing of the trained models was conducted under the same computational conditions as the training phase. The best weight of the 5 fold cross validation was selected. For evaluation, the separate test splits of both Datasets A and B were used exclusively. This ensured that the model performance metrics were derived from data the models had not previously encountered during the training or validation phases.
@@ -296,13 +302,18 @@ data = {
 df_train_time = pd.DataFrame(data, index=None)
 
 # Anzeige des DataFrames (wird in Quarto als Tabelle gerendert)
-df_train_time
+df_train_time.style.hide(axis="index")
 ```
 
 ### Dataset A
+
+
 The 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo).
 
+:::{layout-ncol=2}
+
 ```{python}
+
 #| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset A)"
 #| label: tbl-5cv-dataseta-yolo
 metric_names_yolo_a = [
@@ -322,8 +333,14 @@ df_yolo_a = pd.DataFrame({
 }
 )
 
-df_yolo_a
+col_number = [col for col in df_yolo_a.keys() if col != "Metric"]
+
+df_yolo_a.style.format("{:.3f}", subset=col_number).hide(axis="index")
+
 ```
+
+:::
+
 
 ![Training Results of Best Weights YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
 
@@ -560,6 +577,8 @@ Based on the results from @tbl-dataset-b a visualisation was generated:
 {{< pagebreak >}}
 
 ## Sample Images of Testing
+
+This section displays the predtictions vs the ground truth values for each case.
 
 ### Dataset A
 

@@ -33,7 +33,7 @@
   paper: "us-letter",
   lang: "en",
   region: "US",
-  font: ("Arial", "Helvetica Neue", "Helvetica", "Liberation Sans", "DejaVu Sans", "Noto Sans"),
+  font: "Times New Roman",
   fontsize: 11pt,
   title-size: 1.5em,
   subtitle-size: 1.25em,
@@ -56,7 +56,7 @@
     margin: margin,
     numbering: none,
   )
-  set par(leading: 1.5em, justify: true) // Fügt den Zeilenabstand hinzu
+  set par(leading: 1.0em, justify: true) // Fügt den Zeilenabstand hinzu
   set par(justify: true)
   set text(lang: lang,
            region: region,
