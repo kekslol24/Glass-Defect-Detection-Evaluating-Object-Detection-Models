@@ -289,6 +289,7 @@ The time required for the Fine-Tuning process was recorded between the two model
 #| tbl-cap: Training Duration
 #| label: tbl-trainingtime
 
+import numpy as np
 import pandas as pd
 
 # Daten für die Trainingszeiten
@@ -308,104 +309,172 @@ df_train_time.style.hide(axis="index")
 ### Dataset A
 
 
-The 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo).
+The 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo-folds).
 
 :::{layout-ncol=2}
 
 ```{python}
 
-#| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset A)"
-#| label: tbl-5cv-dataseta-yolo
-metric_names_yolo_a = [
-    "Precision",
-    "Recall",
-    "mAP50",
-    "mAP50-95"
+#| tbl-cap: "YOLO (Validation)"
+#| label: tbl-5cv-dataseta-yolo-folds
+
+data_val = [
+    {
+        "Fold": 1,
+        "Precision": [0.849, np.nan],
+        "Recall": [0.796, np.nan],
+        "mAP50": 0.817,
+        "mAP50-95": 0.584,
+    },
+    {
+        "Fold": 2,
+        "Precision": [0.815, np.nan],
+        "Recall": [0.812, np.nan],
+        "mAP50": 0.831,
+        "mAP50-95": 0.593,
+    },
+    {
+        "Fold": 3,
+        "Precision": [0.836, np.nan],
+        "Recall": [0.793, np.nan],
+        "mAP50": 0.824,
+        "mAP50-95": 0.57,
+    },
+    {
+        "Fold": 4,
+        "Precision": [0.841, np.nan],
+        "Recall": [0.761, np.nan],
+        "mAP50": 0.811,
+        "mAP50-95": 0.575,
+    },
+    {
+        "Fold": 5,
+        "Precision": [0.838, np.nan],
+        "Recall": [0.818, np.nan],
+        "mAP50": 0.846,
+        "mAP50-95": 0.591,
+    }
 ]
 
-mean_yolo_a = [0.8409, 0.7900, 0.8221, 0.5768]
-std_yolo_a = [0.0173, 0.0161, 0.0149, 0.0066]
+# DataFrame erstellen
+df_val = pd.DataFrame(data_val)
 
-df_yolo_a = pd.DataFrame({
-    "Metric": metric_names_yolo_a,
-    "Mean": mean_yolo_a,
-    "Std. (+-)": std_yolo_a
-}
-)
+# Precision & Recall Listen aufsplitten: Index 0 = Defect, Index 1 = Glass
+df_val['Precision_defect'] = df_val['Precision'].apply(lambda x: x[0])
+df_val['Precision_glass'] = df_val['Precision'].apply(lambda x: x[1])
+df_val['Recall_defect'] = df_val['Recall'].apply(lambda x: x[0])
+df_val['Recall_glass'] = df_val['Recall'].apply(lambda x: x[1])
 
-col_number = [col for col in df_yolo_a.keys() if col != "Metric"]
+# Alte Spalten entfernen und sortieren
+df_val_final = df_val.drop(columns=['Precision', "Recall"])
+df_val_final = df_val_final[['Fold','Precision_defect', 'Precision_glass', 'Recall_defect', 'Recall_glass', 'mAP50', 'mAP50-95']]
 
-df_yolo_a.style.format("{:.3f}", subset=col_number).hide(axis="index")
+col_yolo = [col for col in df_val_final if col != "Fold"]
 
+df_val_final.style.format("{:.3f}", subset=col_yolo).hide(axis="index")
 ```
 
 :::
 
 
-![Training Results of Best Weights YOLO (Dataset A)](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
+![Training Results of Best Weights YOLO](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
 
-The 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr).
+The 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr-val).
 
 ```{python}
-#| tbl-cap: "Results of 2-fold Cross Validation RF-DETR (Dataset A)"
-#| label: tbl-5cv-dataseta-rfdetr
+#| tbl-cap: "RF-DETR (Validation)"
+#| label: tbl-5cv-dataseta-rfdetr-val
+
 import numpy as np
 import pandas as pd
 
-# 1. Metrik-Namen definieren (in der korrekten COCO-Reihenfolge)
-# Wir müssen den Keys eindeutige Zusätze geben (all, small, medium, large etc.),
-# da sie im Originaltext identisch hiessen.
-metric_names_rfdetr = [
-    "AP (IoU=0.50:0.95) | area=all",
-    "AP (IoU=0.50)      | area=all",
-    "AP (IoU=0.75)      | area=all",
-    "AP (IoU=0.50:0.95) | area=small",
-    "AP (IoU=0.50:0.95) | area=medium",
-    "AP (IoU=0.50:0.95) | area=large",
-    "AR (IoU=0.50:0.95) | maxDets=1",
-    "AR (IoU=0.50:0.95) | maxDets=10",
-    "AR (IoU=0.50:0.95) | maxDets=100",
-    "AR (IoU=0.50:0.95) | area=small",
-    "AR (IoU=0.50:0.95) | area=medium",
-    "AR (IoU=0.50:0.95) | area=large"
-]
+rfdetr_roboflow_val = [{
+    "Fold": 1,
+    "Precision": [0.697, np.nan],
+    "Recall": [0.78508772, 1.000],
+    "mAP50": 0.830,
+    "mAP50-95": 0.603
+},
+{
+    "Fold": 2,
+    "Precision": [0.810, np.nan],
+    "Recall": [0.85388128, 1.000],
+    "mAP50": 0.886,
+    "mAP50-95": 0.673
+}]
 
-# 2. Daten als Listen definieren
-# Ich habe die Werte aus deinem Text extrahiert. Listen behalten die Reihenfolge.
-fold_1_rfdetr = [0.589, 0.850, 0.548, 0.250, 0.244, 0.928, 0.611, 0.637, 0.640, 0.331, 0.367, 0.949]
-fold_2_rfdetr = [0.657, 0.903, 0.632, 0.426, 0.575, 0.964, 0.659, 0.702, 0.703, 0.548, 0.640, 0.975]
+# DataFrame erstellen
+df_rfdetr_robo_val = pd.DataFrame(rfdetr_roboflow_val)
 
-# Alle Folds in eine Matrix packen (5 Zeilen, 12 Spalten)
-all_folds_rfdetr = np.array([fold_1_rfdetr, fold_2_rfdetr])
 
-# 3. Berechnungen durchführen
-# axis=0 bedeutet, wir berechnen den Durchschnitt "von oben nach unten" durch die Folds
-means_rfdetr = np.mean(all_folds_rfdetr, axis=0)
-stds_rfdetr = np.std(all_folds_rfdetr, axis=0)
+# Precision & Recall Listen aufsplitten: Index 0 = Defect, Index 1 = Glass
+df_rfdetr_robo_val['Precision_defect'] = df_rfdetr_robo_val['Precision'].apply(lambda x: x[0])
+df_rfdetr_robo_val['Precision_glass'] = df_rfdetr_robo_val['Precision'].apply(lambda x: x[1])
+df_rfdetr_robo_val['Recall_defect'] = df_rfdetr_robo_val['Recall'].apply(lambda x: x[0])
+df_rfdetr_robo_val['Recall_glass'] = df_rfdetr_robo_val['Recall'].apply(lambda x: x[1])
 
-# 4. Ergebnis schön darstellen
-# Wir erstellen ein DataFrame für eine saubere Tabelle
-df_results_rfdetr = pd.DataFrame({
-    'Metrics': metric_names_rfdetr,
-    'Mean': means_rfdetr,
-    'Std. (+-)': stds_rfdetr
-})
+# Alte Spalten entfernen und sortieren
+df_rfdetr_robo_val_final = df_rfdetr_robo_val.drop(columns=['Precision', 'Recall'])
+df_rfdetr_robo_val_final = df_rfdetr_robo_val_final[[
+  'Fold',
+  'Precision_defect', 
+  'Precision_glass', 
+  'Recall_defect', 
+  'Recall_glass', 
+  'mAP50', 
+  'mAP50-95']]
 
-# Formatierung auf 3 Nachkommastellen
-pd.options.display.float_format = '{:.3f}'.format
+cols_rf = [col for col in df_rfdetr_robo_val_final if col != "Fold"]
 
-df_results_rfdetr
+df_rfdetr_robo_val_final.style.format("{:.3f}", subset=cols_rf).hide(axis="index")
+
 ```
 
-![Training Results of Best Weights RF-DETR (Dataset A)](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
 
+![Training Results of Best Weights RF-DETR](figures/Roboflow/RF-DETR/metrics_plot_roborf_train.png){#fig-rfdetr-roboflow-train}  
+
+### Comparison of Means and Std.
+
+The values of [@tbl-5cv-dataseta-yolo-folds] and [@tbl-5cv-dataseta-rfdetr-val] have been aggregated and are displayed in [@tbl-5cv-dataseta-yolo-agg] and [@tbl-5cv-dataseta-rfdetr-agg].
+
+:::{layout-ncol=2}
+
+```{python}
+#| tbl-cap: "Aggregated Values YOLO 5-Fold"
+#| label: tbl-5cv-dataseta-yolo-agg
+
+### YOLO-Roboflow_val
+summary_yolo_val = df_val_final.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_yolo_val = round(summary_yolo_val.T.rename(columns={"mean": "Mean", "std": "Std (+-)"}),3)
+
+summary_yolo_val
+```
+
+```{python}
+#| tbl-cap: "Aggregated Values RF-DETR 2-Fold"
+#| label: tbl-5cv-dataseta-rfdetr-agg
+
+### RF-DETR-Roboflow_val
+# Berechnung von Mittelwert (mean) und Standardabweichung (std)
+summary_robo_rfdetr_val_final = df_rfdetr_robo_val_final.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_robo_rfdetr_val_final = round(summary_robo_rfdetr_val_final.T.rename(columns={"mean": "Mean", "std": "Std (+-)"}),3)
+
+summary_robo_rfdetr_val_final
+```
+
+:::
+
+
+![Validation Comparison](figures/Roboflow/Roboflow_VALID.png){#fig-valid-data-a}  
 
 ### Dataset B
 
 The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-yolo).
 
 ```{python}
-#| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset B)"
+#| tbl-cap: "YOLO (Validation)"
 #| label: "tbl-5cv-datasetb-yolo"
 #| 
 #### YOLO-Kaggle-Results-Val
@@ -453,11 +522,6 @@ num_cols = [col for col in yolo_kaggle_val_df if col != "Fold"]
 
 yolo_kaggle_val_df.style.format("{:.3f}", subset=num_cols).hide(axis="index")
 
-## YOLO-Kaggle-Results-Val Mean + Std
-
-yolo_kaggle_val_df = round(yolo_kaggle_val_df.drop(columns="Fold").agg(["mean", "std"]).rename({"mean": "Mean", "std": "Std (+-)"}),3)
-
-yolo_kaggle_val_df
 ```
 
 ![Training Results of Best Weights YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
@@ -466,7 +530,7 @@ yolo_kaggle_val_df
 The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-rfdetr).
 
 ```{python}
-#| tbl-cap: "Results of 5-fold Cross Validation RF-DETR (Dataset B)"
+#| tbl-cap: "RF-DETR (Validation)"
 #| label: tbl-5cv-datasetb-rfdetr
 
 
@@ -494,15 +558,45 @@ num_cols_val = [col for col in df_val if col != "Fold"]
 
 df_val.style.format("{:.3f}", subset=num_cols_val).hide(axis="index")
 
-## RF-DETR Validation Mean + Std
-summary_rfdetr_kaggle_val = df_val.drop(columns=['Fold']).agg(['mean', 'std'])
-
-summary_rfdetr_kaggle_val = round(summary_rfdetr_kaggle_val.rename({"mean": "Mean", "std": "Std (+-)"}),3)
-summary_rfdetr_kaggle_val
 
 ```
 
 ![Training Results of Best Weights RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
+
+
+### Comparison of Mean and Std
+
+The values of [@tbl-5cv-datasetb-yolo] and [@tbl-5cv-datasetb-rfdetr] have been aggregated and are displayed in [@tbl-5cv-dataseta-yolo-agg] and [@tbl-5cv-dataseta-rfdetr-agg].
+
+:::{layout-ncol=2}
+
+```{python}
+#| tbl-cap: "YOLO (Validation)"
+#| label: tbl-5cv-datasetb-yolo-agg
+
+## YOLO-Kaggle-Results-Val Mean + Std
+
+yolo_kaggle_val_df = round(yolo_kaggle_val_df.drop(columns="Fold").agg(["mean", "std"]).rename({"mean": "Mean", "std": "Std (+-)"}),3)
+
+yolo_kaggle_val_df.T
+
+```
+
+```{python}
+#| tbl-cap: "RF-DETR (Validation)"
+#| label: tbl-5cv-datasetb-rfdetr-agg
+
+## RF-DETR Validation Mean + Std
+summary_rfdetr_kaggle_val = df_val.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_rfdetr_kaggle_val = round(summary_rfdetr_kaggle_val.rename({"mean": "Mean", "std": "Std (+-)"}),3)
+summary_rfdetr_kaggle_val.T
+
+```
+
+:::
+
+![Validation Comparison](figures/Kaggle/Kaggle_VAL.png){#fig-valid-data-b} 
 
 {{< pagebreak >}}
 
