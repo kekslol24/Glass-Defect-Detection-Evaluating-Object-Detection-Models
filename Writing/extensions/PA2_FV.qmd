@@ -309,7 +309,7 @@ df_train_time.style.hide(axis="index")
 ### Dataset A
 
 
-The 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo-folds).
+The stratified 5-fold cross validation produced results displayed in (@tbl-5cv-dataseta-yolo-folds).
 
 :::{layout-ncol=2}
 
@@ -379,7 +379,7 @@ df_val_final.style.format("{:.3f}", subset=col_yolo).hide(axis="index")
 
 ![Training Results of Best Weights YOLO](figures/Roboflow/YOLO/results_roboflow_yolo_train.png){#fig-yolo-roboflow-train}
 
-The 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr-val).
+The stratified 2-fold cross validation produced results displayed in (@tbl-5cv-dataseta-rfdetr-val).
 
 ```{python}
 #| tbl-cap: "RF-DETR (Validation)"
@@ -391,14 +391,14 @@ import pandas as pd
 rfdetr_roboflow_val = [{
     "Fold": 1,
     "Precision": [0.697, np.nan],
-    "Recall": [0.78508772, 1.000],
+    "Recall": [0.78508772, np.nan],
     "mAP50": 0.830,
     "mAP50-95": 0.603
 },
 {
     "Fold": 2,
     "Precision": [0.810, np.nan],
-    "Recall": [0.85388128, 1.000],
+    "Recall": [0.85388128, np.nan],
     "mAP50": 0.886,
     "mAP50-95": 0.673
 }]
@@ -467,7 +467,7 @@ summary_robo_rfdetr_val_final
 :::
 
 
-![Validation Comparison](figures/Roboflow/Roboflow_VALID.png){#fig-valid-data-a}  
+![Stratified Validation Comparison](figures/Roboflow/Roboflow_VALID.png){#fig-valid-data-a}  
 
 ### Dataset B
 
@@ -603,69 +603,287 @@ summary_rfdetr_kaggle_val.T
 ## Model Results and Statistical Evaluation of Testing
 
 ### Dataset A
-The confusion matrices yielded following results:
 
-:::{layout-ncol=2}
-![Confusion Matrix YOLO Dataset A](figures/confusion_matrix.png){#fig-yolo-datasetA-confusion}
-
-![Confusion Matrix RF-DETR Dataset A](figures/confusion_matrix_Roboflow.png){#fig-rfdetr-datasetA-confusion}
-:::
-
-The following metrics were calculated from @fig-yolo-datasetA-confusion and @fig-rfdetr-datasetA-confusion:
-
+Following results have been achieved on the testing set by the models:
 
 ```{python}
-#| tbl-cap: "Metrics Calculation Dataset A"
-#| label: tbl-dataset-a
+#| tbl-cap: "Test Performance YOLO 5 Fold"
+#| label: tbl-dataseta-test-yolo
+#| 
+# Deine Ergebnisse aus der 5-Fold Cross-Validation
+data_test = [
+    {
+        "Fold": 1,
+        "Precision": [0.7514621966286971, 0.9671146226696267],
+        "Recall": [0.5702702702702702, 0.9166666666666666],
+        "mAP50": 0.817217,
+        "mAP50-95": 0.563044,
+    },
+    {
+        "Fold": 2,
+        "Precision": [0.7385323545021348, 0.9627684545208934],
+        "Recall": [0.6494995472899632, 0.9715799732608127],
+        "mAP50": 0.837757,
+        "mAP50-95": 0.589359,
+    },
+    {
+        "Fold": 3,
+        "Precision": [0.7381310342963431, 0.9619391630191857],
+        "Recall": [0.6630434782608695, 0.9468563665758085],
+        "mAP50": 0.835691,
+        "mAP50-95": 0.567396,
+    },
+    {
+        "Fold": 4,
+        "Precision": [0.7367265344526664, 0.9684008740259846],
+        "Recall": [0.6235435144157984, 0.9596541786743515],
+        "mAP50": 0.825140,
+        "mAP50-95": 0.579171,
+    },
+    {
+        "Fold": 5,
+        "Precision": [0.6915238029656346, 0.9463481568322523],
+        "Recall": [0.6657824933687002, 0.976878612716763],
+        "mAP50": 0.824331,
+        "mAP50-95": 0.585665,
+    }
+]
 
+# DataFrame erstellen
+df_test = pd.DataFrame(data_test)
+
+# Precision & Recall Listen aufsplitten: Index 0 = Defect, Index 1 = Glass
+df_test['Precision_defect'] = df_test['Precision'].apply(lambda x: x[0])
+df_test['Precision_glass'] = df_test['Precision'].apply(lambda x: x[1])
+df_test['Recall_defect'] = df_test['Recall'].apply(lambda x: x[0])
+df_test['Recall_glass'] = df_test['Recall'].apply(lambda x: x[1])
+
+# Alte Spalten entfernen und sortieren
+df_test_final = df_test.drop(columns=['Precision', "Recall"])
+df_test_final = df_test_final[['Fold','Precision_defect', 'Precision_glass', 'Recall_defect', 'Recall_glass', 'mAP50', 'mAP50-95']]
+
+
+col_yolo = [col for col in df_val_final if col != "Fold"]
+
+df_test_final.style.format("{:.3f}", subset=col_yolo).hide(axis="index")
+
+
+```
+
+```{python}
+
+#| tbl-cap: "Test Performance RF-DETR 2-Fold"
+#| label: tbl-dataseta-test-rfdetr
+
+
+rfdetr_roboflow_test = [{
+    "Fold": 1,
+    "Precision": [0.718, np.nan],
+    "Recall": [0.77272727, 1.000],
+    "mAP50": 0.838,
+    "mAP50-95": 0.599
+},
+{
+    "Fold": 2,
+    "Precision": [0.887, np.nan],
+    "Recall": [0.91081081, 1.000],
+    "mAP50": 0.933,
+    "mAP50-95": 0.694
+}]
+
+
+# DataFrame erstellen
+df_rfdetr_robo_test = pd.DataFrame(rfdetr_roboflow_test)
+
+# Precision & Recall Listen aufsplitten: Index 0 = Defect, Index 1 = Glass
+df_rfdetr_robo_test['Precision_defect'] = df_rfdetr_robo_test['Precision'].apply(lambda x: x[0])
+df_rfdetr_robo_test['Precision_glass'] = df_rfdetr_robo_test['Precision'].apply(lambda x: x[1])
+df_rfdetr_robo_test['Recall_defect'] = df_rfdetr_robo_test['Recall'].apply(lambda x: x[0])
+df_rfdetr_robo_test['Recall_glass'] = df_rfdetr_robo_test['Recall'].apply(lambda x: x[1])
+
+# Alte Spalten entfernen und sortieren
+df_rfdetr_robo_test_final = df_rfdetr_robo_test.drop(columns=['Precision', 'Recall'])
+df_rfdetr_robo_test_final = df_rfdetr_robo_test_final[['Fold','Precision_defect', 'Precision_glass', 'Recall_defect', 'Recall_glass', 'mAP50', 'mAP50-95', 
+                      ]]
+
+df_rfdetr_robo_test_final.style.format("{:.3f}", subset=cols_rf).hide(axis="index")
+
+```
+
+Both [@tbl-dataseta-test-yolo] and [@tbl-dataseta-test-rfdetr] have been aggregated:
+
+
+:::{layout-ncol=2}
+
+```{python}
+#| tbl-cap: "Testing YOLO (Aggregated)"
+#| label: tbl-test-dataseta-yolo-agg
+
+# Berechnung von Mittelwert (mean) und Standardabweichung (std)
+summary_test = df_test_final.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_test = round(summary_test.T.rename(columns={"mean": "Mean", "std": "Std (+-)"}),3)
+
+summary_test
+
+```
+
+```{python}
+#| tbl-cap: "Testing RF-DETR (Aggregated)"
+#| label: tbl-test-dataseta-rfdetr-agg
+
+# Berechnung von Mittelwert (mean) und Standardabweichung (std)
+summary_robo_rfdetr_test_final = df_rfdetr_robo_test_final.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_robo_rfdetr_test_final = round(summary_robo_rfdetr_test_final.T.rename(columns={"mean": "Mean", "std": "Std (+-)"}),3)
+
+summary_robo_rfdetr_test_final
+
+```
+
+:::
+
+A comparison graph has been created:
+
+
+![Visualization of Stratified Test Results](figures/Roboflow/Roboflow_TEST.png){#fig-datasetA-comp}
+
+### Dataset B
+
+The testing of the models on the dataset b yielded following results:
+
+```{python}
+#| tbl-cap: "Test Performance YOLO 5 Fold"
+#| label: tbl-datasetb-test-yolo
+
+
+### YOLO-Kaggle-Test
+
+# Daten aus der Benutzereingabe
+data = [
+    {
+        "Fold": 1,
+        "Precision": 0.9772674114421703,
+        "Recall": 1.0,
+        "mAP50": 0.994592,
+        "mAP50-95": 0.819206,
+       
+    },
+    {
+        "Fold": 2,
+        "Precision": 0.9797221042867775,
+        "Recall": 1.0,
+        "mAP50": 0.994444,
+        "mAP50-95": 0.831578
+        
+    },
+    {
+        "Fold": 3,
+        "Precision": 1.0,
+        "Recall": 0.9751540154585319,
+        "mAP50": 0.994600,
+        "mAP50-95": 0.788892
+            
+    },
+    {
+        "Fold": 4,
+        "Precision": 0.9987336240133619,
+        "Recall": 0.9615384615384616,
+        "mAP50": 0.985325,
+        "mAP50-95": 0.808739
+   
+    },
+    {
+        "Fold": 5,
+        "Precision": 0.9994167272567542,
+        "Recall": 1.0,
+        "mAP50": 0.995000,
+        "mAP50-95": 0.851857
+        
+    }
+]
+
+
+df = pd.DataFrame(data)
+
+num_cols = [col for col in df if col != "Fold"]
+
+df.style.format("{:.3f}", subset=num_cols).hide(axis="index")
+
+
+```
+
+```{python}
+
+#| tbl-cap: "Test Performance RF-DETR 5-Fold"
+#| label: tbl-datasetb-test-rfdetr
+
+## RF-DETR-Kaggle Test
 
 import pandas as pd
 
-# Definieren der Zeilen-Header (Metriken)
-metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
 
-# Erstellen des leeren DataFrames
-# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
-data = {
-    "YOLO": [0.869, 0.799, 0.833, 0.839, 0.589],  # Platzhalter für die Werte
-    "RF-DETR": [0.776, 0.759, 0.767, 0.840, 0.590] # Platzhalter für die Werte
+data_test = {
+    'Fold': [1, 2, 3, 4, 5],
+    'Precision': [0.986, 1, 1, 1, 1],
+    'Recall': [1.000000, 1.000000, 1.000000, 1.000000, 0.980392],
+    'mAP50': [1.000000, 1.000000, 1.000000, 1.000000, 0.980198],
+    'mAP50-95': [0.777840, 0.881448, 0.885093, 0.913619, 0.892534]
 }
 
-df = pd.DataFrame(data, index=metrics)
+df_test = pd.DataFrame(data_test)
 
-# Anzeigen des DataFrames
-df
+df_test = df_test[['Fold', "Precision", "Recall", 'mAP50', 'mAP50-95']].copy()
+
+
+num_cols_test = [col for col in df_test if col != "Fold"]
+
+# Zusammenfassung berechnen
+
+df_test.style.format("{:.3f}", subset=num_cols_test).hide(axis="index")
+
 ```
 
-Based on the results of @tbl-dataset-a a visualisation was generated:
-
-![Visualization of Results for Dataset A](figures/Roboflow.png){#fig-datasetA-comp}
-
-### Dataset B
-The confusion matrices for the dataset B yielded following results:
+From [@tbl-datasetb-test-yolo] and [@tbl-datasetb-test-rfdetr] the following aggregations and comparison plot have been generated:
 
 :::{layout-ncol=2}
 
-![Confusion Matrix YOLO Dataset B](figures/confusion_matrix_yolo_kaggle.png){#fig-yolo-datasetB-confusion }
+```{python}
+#| tbl-cap: "Testing YOLO (Aggregated)"
+#| label: tbl-test-datasetb-yolo-agg
 
-![Confusion Matrix RF-DETR Dataset B](figures/confusion_matrix_rfdetr_kaggle.png){#fig-rfdetr-datasetB-confusion }
+### YOLO-Kaggle-Test Mean + Std
+
+
+# Zusammenfassung berechnen
+summary_yolo_kaggle_test = df.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_yolo_kaggle_test = round(summary_yolo_kaggle_test.rename({"mean": "Mean", "std": "Std (+-)"}),3)
+
+
+summary_yolo_kaggle_test.T
+```
+
+```{python}
+#| tbl-cap: "Testing RF-DETR (Aggregated)"
+#| label: tbl-test-datasetb-rfdetr-agg
+
+## RF-DETR-Kaggle Test Mean + Std
+
+summary_test_rfdetr_kaggle = df_test.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_test_rfdetr_kaggle = round(summary_test_rfdetr_kaggle.rename({"mean": "Mean", "std": "Std (+-)"}),3)
+
+summary_test_rfdetr_kaggle.T
+```
 
 :::
 
+![Visualization of Test Results](figures/Roboflow/Roboflow_TEST.png){#fig-datasetA-comp}
+
+
 {{< pagebreak >}}
 
-Following metrics were calculated from @fig-yolo-datasetB-confusion and @fig-rfdetr-datasetB-confusion :
-
-```{python}
-#| tbl-cap: "Precision Metrics Dataset B"
-#| label: tbl-dataset-b
-
-
-```
-
-Based on the results from @tbl-dataset-b a visualisation was generated:
-
-![Visualization of Results for Dataset B](figures/Kaggle.png){#fig-datasetb-comp}
 
 {{< pagebreak >}}
 
