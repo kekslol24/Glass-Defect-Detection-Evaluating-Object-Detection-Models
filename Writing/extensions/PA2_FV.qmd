@@ -407,26 +407,57 @@ The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-yol
 ```{python}
 #| tbl-cap: "Results of 5-fold Cross Validation YOLO (Dataset B)"
 #| label: "tbl-5cv-datasetb-yolo"
-import pandas as pd
+#| 
+#### YOLO-Kaggle-Results-Val
 
-metric_names_yolo_b = [
-    "Precision",
-    "Recall",
-    "mAP50",
-    "mAP50-95"
+data_kaggle_yolo_val = [{
+    "Fold": 1,
+    "Precision": 0.998,
+    "Recall": 1,
+    "mAP50": 0.995,
+    "mAP50-95": 0.821
+},
+{
+    "Fold": 2,
+    "Precision": 0.998,
+    "Recall": 1,
+    "mAP50": 0.995,
+    "mAP50-95": 0.844
+},
+{
+    "Fold": 3,
+    "Precision": 0.997,
+    "Recall": 0.967,
+    "mAP50": 0.972,
+    "mAP50-95": 0.798
+},
+{
+    "Fold": 4,
+    "Precision": 1,
+    "Recall": 1,
+    "mAP50": 0.995,
+    "mAP50-95": 0.838
+},
+{
+    "Fold": 5,
+    "Precision": 0.997,
+    "Recall": 1,
+    "mAP50": 0.995,
+    "mAP50-95": 0.822
+}
 ]
 
-mean_yolo_b = [0.9944, 0.9928, 0.9918, 0.8105]
-std_yolo_b = [0.0109, 0.0107, 0.0069, 0.0189]
+yolo_kaggle_val_df = pd.DataFrame(data_kaggle_yolo_val)
 
-df_yolo_b = pd.DataFrame({
-    "Metric": metric_names_yolo_b,
-    "Mean": mean_yolo_b,
-    "Std. (+-)": std_yolo_b
-}
-)
+num_cols = [col for col in yolo_kaggle_val_df if col != "Fold"]
 
-df_yolo_b
+yolo_kaggle_val_df.style.format("{:.3f}", subset=num_cols).hide(axis="index")
+
+## YOLO-Kaggle-Results-Val Mean + Std
+
+yolo_kaggle_val_df = round(yolo_kaggle_val_df.drop(columns="Fold").agg(["mean", "std"]).rename({"mean": "Mean", "std": "Std (+-)"}),3)
+
+yolo_kaggle_val_df
 ```
 
 ![Training Results of Best Weights YOLO (Dataset B)](figures/Kaggle/YOLO/kaggle_yolo_train_results.png){#fig-yolo-kaggle-train}
@@ -437,55 +468,38 @@ The 5-fold cross validation produced results displayed in (@tbl-5cv-datasetb-rfd
 ```{python}
 #| tbl-cap: "Results of 5-fold Cross Validation RF-DETR (Dataset B)"
 #| label: tbl-5cv-datasetb-rfdetr
-import numpy as np
+
+
+### Validation RF-DETR-Kaggle
+
 import pandas as pd
 
-# 1. Metrik-Namen definieren (in der korrekten COCO-Reihenfolge)
-# Wir müssen den Keys eindeutige Zusätze geben (all, small, medium, large etc.),
-# da sie im Originaltext identisch hiessen.
-metric_names = [
-    "AP (IoU=0.50:0.95) | area=all",
-    "AP (IoU=0.50)      | area=all",
-    "AP (IoU=0.75)      | area=all",
-    "AP (IoU=0.50:0.95) | area=small",
-    "AP (IoU=0.50:0.95) | area=medium",
-    "AP (IoU=0.50:0.95) | area=large",
-    "AR (IoU=0.50:0.95) | maxDets=1",
-    "AR (IoU=0.50:0.95) | maxDets=10",
-    "AR (IoU=0.50:0.95) | maxDets=100",
-    "AR (IoU=0.50:0.95) | area=small",
-    "AR (IoU=0.50:0.95) | area=medium",
-    "AR (IoU=0.50:0.95) | area=large"
-]
+# Daten basierend auf dem Screenshot
+data_val = {
+    'Fold': [1, 2, 3, 4, 5],
+    # Validation Daten
+    'Precision': [1, 1, 1, 1, 1], ## from confusion, with Precision() its not quite right
+    'Recall': [1.0, 1.0, 1.0, 1.0, 1.0],
+    'mAP50': [1.0, 1.0, 1.0, 1.0, 1.0],
+    'mAP50-95': [0.785670, 0.853004, 0.909271, 0.901233, 0.907649],
+}
 
-# 2. Daten als Listen definieren
-# Ich habe die Werte aus deinem Text extrahiert. Listen behalten die Reihenfolge.
-fold_1 = [0.797, 1.000, 0.941, 0.647, 0.759, 0.911, 0.710, 0.832, 0.832, 0.700, 0.796, 0.950]
-fold_2 = [0.863, 0.970, 0.970, 0.567, 0.870, 1.000, 0.772, 0.882, 0.885, 0.625, 0.897, 1.000]
-fold_3 = [0.915, 1.000, 1.000, 0.855, 0.898, 0.972, 0.835, 0.938, 0.943, 0.900, 0.929, 0.990]
-fold_4 = [0.931, 1.000, 1.000, 0.852, 0.919, 0.990, 0.813, 0.941, 0.944, 0.860, 0.942, 0.990]
-fold_5 = [0.916, 1.000, 1.000, 0.864, 0.921, 1.000, 0.777, 0.935, 0.935, 0.875, 0.940, 1.000]
 
-# Alle Folds in eine Matrix packen (5 Zeilen, 12 Spalten)
-all_folds = np.array([fold_1, fold_2, fold_3, fold_4, fold_5])
+# Erstellen des gesamten DataFrames
+df_val = pd.DataFrame(data_val)
 
-# 3. Berechnungen durchführen
-# axis=0 bedeutet, wir berechnen den Durchschnitt "von oben nach unten" durch die Folds
-means = np.mean(all_folds, axis=0)
-stds = np.std(all_folds, axis=0)
 
-# 4. Ergebnis schön darstellen
-# Wir erstellen ein DataFrame für eine saubere Tabelle
-df_results = pd.DataFrame({
-    'Metrics': metric_names,
-    'Mean': means,
-    'Std. (+-)': stds
-})
+num_cols_val = [col for col in df_val if col != "Fold"]
 
-# Formatierung auf 3 Nachkommastellen
-pd.options.display.float_format = '{:.3f}'.format
 
-df_results
+df_val.style.format("{:.3f}", subset=num_cols_val).hide(axis="index")
+
+## RF-DETR Validation Mean + Std
+summary_rfdetr_kaggle_val = df_val.drop(columns=['Fold']).agg(['mean', 'std'])
+
+summary_rfdetr_kaggle_val = round(summary_rfdetr_kaggle_val.rename({"mean": "Mean", "std": "Std (+-)"}),3)
+summary_rfdetr_kaggle_val
+
 ```
 
 ![Training Results of Best Weights RF-DETR (Dataset B)](figures/Kaggle/RF-DETR/metrics_plot_kaggle_rfdetr_train.png){#fig-rfdetr-kaggle-train}
@@ -553,21 +567,6 @@ Following metrics were calculated from @fig-yolo-datasetB-confusion and @fig-rfd
 #| label: tbl-dataset-b
 
 
-import pandas as pd
-# Definieren der Zeilen-Header (Metriken)
-metrics = ["Precision", "Recall", "F1-Score", "mAP@50", "mAP@[50:95]"]
-
-# Erstellen des leeren DataFrames
-# Wir verwenden die Metriken als Index und die Modelle als Spalten-Header
-data = {
-    "YOLO": [0.960, 1.000, 0.980, 0.995, 0.784],  # Platzhalter für die Werte
-    "RF-DETR": [1.000, 1.000, 1.000, 1.000, 0.770] # Platzhalter für die Werte
-}
-
-df = pd.DataFrame(data, index=metrics)
-
-# Anzeigen des DataFrames
-df
 ```
 
 Based on the results from @tbl-dataset-b a visualisation was generated:
