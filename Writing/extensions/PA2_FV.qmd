@@ -950,7 +950,6 @@ For the YOLO model, the following loss components were monitored:
 
   - **Distribution Focal Loss ($\text{dfl\_loss}$):** Improves the bounding box estimation by modeling the coordinates as probability distributions instead of simple discrete values.
 
-{{< pagebreak >}}
 
 
 **Training Dynamics on Dataset A** 
@@ -959,7 +958,6 @@ As observed in the training results for both models (@fig-yolo-roboflow-train fo
 
 This behavior suggested that the full 100 epochs were necessary to achieve the recorded level of performance on this more complex dataset. It is plausible that a moderate increase in the epoch count beyond 100 could have potentially yielded further marginal improvements in the subsequent prediction accuracy.
 
-The aggregated data from the validation phase (@tbl-5cv-dataseta-yolo-agg and @tbl-5cv-dataseta-rfdetr-val) indicated that the RF-DETR model performed slightly better than the YOLO model, a finding which was also visually evident in the corresponding graph (@fig-valid-data-a). But because of the high variance the observed higher mean performance of RF-DETR was statistically unreliable. The underlying variance (Std.) of the RF-DETR model is either at the same level as the YOLO model's variance or slightly above it. This constraint must be considered when assessing the RF-DETR's true robustness.
 
 The aggregated data from the validation phase (@tbl-5cv-dataseta-yolo-agg and @tbl-5cv-dataseta-rfdetr-val) indicated a numerically slight superiority for the RF-DETR model over the YOLO model, an observation visually supported by the corresponding graph (@fig-valid-data-a). However, the high variance associated with the RF-DETR's performance rendered its observed higher mean unreliable. The instability confirmed that the minimal numerical advantage achieved by the RF-DETR was not trustworthy compared to the statistical certainty of the YOLO model.
 
@@ -974,14 +972,13 @@ While the loss curves continued a steady, albeit oscillating, decline, the Avera
 
 **Structural Constraint:** These high metrics did not provide a reliable measure of the models' sensitivity to true negative scenarios (nondefect images) as the dataset was guaranteed to contain defects.
 
-{{< pagebreak >}}
 
 ### Testing Efficiency
 
 ### Performance on Dataset A
 The evaluation on Dataset A provided the clear delineation of the models' practical suitability, drawing upon the aggregated mean and standard deviation from the test performance (@tbl-test-dataseta-yolo-agg and @tbl-test-dataseta-rfdetr-agg):
 
-- **Precision and False Positives** The YOLO architecture achieved a stable Precision_defect of 0.731 ($\pm 0.023$) , while the RF-DETR model achieved a numerically higher mean of 0.802, but with a significantly larger standard deviation of $\pm 0.120$. For the pharmaceutical context, where minimizing unnecessary product rejection is critical for cost management, YOLO's superior statistical stability established a substantial practical advantage. 
+- **Precision and False Positives** The YOLO architecture achieved a Precision_defect of 0.731 ($\pm 0.023$) , while the RF-DETR model achieved a numerically higher mean of 0.802, but with a significantly larger standard deviation of $\pm 0.120$. For the pharmaceutical context, where minimizing unnecessary product rejection is critical for cost management, YOLO's superior statistical stability established a substantial practical advantage. 
 
 - **Critical Relevance on False Negatives**: In pharmaceutical applications, the identification of false negatives is of critical importance. An FN means that a structurally defective glass container is classified as intact and subsequently filled with a sterile medication. This poses an immediate risk to patient safety and can result in catastrophic product recalls. In the hierarchy of error costs, an FN error (safety risk) therefore weighs considerably more heavily than an FP.
 
@@ -1001,6 +998,8 @@ The results from the smaller, structurally simpler Dataset B (guaranteed defect 
 
 - **Absence of True and False Negatives:** Since the dataset was guaranteed to contain at least one defect in every image, the True Negative and False Negative classes were effectively eliminated from the test population. Consequently, the high metrics recorded for Dataset B did not provide a reliable measure of the models' sensitivity to true negative scenarios and must be interpreted with this structural constraint in mind.
 
+{{< pagebreak >}}
+
 ## Assumptions & Research Questions
 
 ### Verification of Assumptions
@@ -1008,9 +1007,18 @@ The core assumption that Dataset A would require a longer training duration due 
 
 ### Answering Research Questions
 
-- **Performance Comparison:** Although the RF-DETR model achieved a numerically higher mean recall in the final test set (0.842) than the YOLO model (0.634), this metric was not statistically reliable due to the RF-DETR's high standard deviation ($ \pm 0.098$) and the methodological constraint of only two CV runs aswell as the high computation power and extremely long execution time. Therefore the YOLO architecture was ultimately identified as the superior choice for the glass defect application.  
+- **Performance Comparison:** Although the RF-DETR model achieved a numerically higher mean recall in the final test set (0.842) than the YOLO model (0.634), this metric was not statistically reliable due to the RF-DETR's higher standard deviation ($\pm 0.098$) and the methodological constraint of only two CV runs aswell as the high computation power and extremely long execution time. Therefore the YOLO architecture was ultimately identified as the superior choice for the glass defect application.  
 
-- **Applicaton Benchmarks:** The achieved Recall of 0.634 by YOLO on the complex dataset is insufficient for final deployment. The necessity for the industry to achieve a Recall and Precision closer to 1.000 was confirmed as the mandatory application benchmark, suggesting that further research focused on robustness and data synthesis is required.
+- **Applicaton Benchmarks:** The achieved recall of 0.634 by YOLO and 0.842 by the RF-DETR on the complex dataset is insufficient for final deployment. The necessity for the industry to achieve a recall and precision closer to 1.000 was confirmed as the mandatory application benchmark, suggesting that further research focused on robustness and data synthesis is required.
+
+## Research Gap and Contribution Revisited
+
+The contradictory performance findings observed in the preliminary literature review, particularly the trade-off between model size and average precision and the impact of class complexity, highlighted the research gap this study aimed to address. The empirical results generated on the Dataset A directly reinforce the necessity for application-specific validation. While the preliminary literature suggested the RF-DETR architecture offered a higher AP (Accuracy), this project demonstrated that this numerical advantage was compromised by two factors:
+
+- **Computational Infeasibility:** The excessive resource requirements of the RF-DETR model rendered the full scientific validation (5-fold CV) impossible, directly supporting the literature's concern about model size for practical deployment.
+
+- **Statistical Instability:** Even the RF-DETR's numerically higher test scores were counterbalanced by an unacceptable statistical volatility, a factor often not adequately emphasized in broad State of The Art benchmarks.Consequently, this work served as a specific supplementary reference for the performance of these models in a resource-constrained application, confirming that raw benchmark scores alone are insufficient for real-world model selection.
+
 
 # Conclusion
 
