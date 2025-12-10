@@ -35,14 +35,21 @@ execute:
 
 ### English Version
 
-This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the more resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural difference: The YOLO model demonstrated overwhelming training efficiency (up to 70% faster than RF-DETR) and achieved superior Precision (0.869 vs. 0.776 on Dataset A), indicating a lower rate of costly false positives. However, the critical finding was the failure to meet safety standards: The best achieved recall was only 0.799 on the complex dataset. This unacceptable rate of false negatives (missed defects) precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the most efficient choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect recall necessary to guarantee product safety.
+This project addressed the challenge of automated glass defect detection in the pharmaceutical sector, where the integrity of packaging vessels play an important role. The study quantitatively compared two different object detection architectures: the efficient YOLO Nano (CNN-based Single-Shot Detector) and the more resource-intensive RF-DETR Nano (Transformer-based), utilizing two discrete datasets representing simple and complex, real-world conditions. The results revealed a significant architectural difference: The YOLO model demonstrated overwhelming training efficiency (up to 70% faster than RF-DETR) and achieved superior statistical stability (lower standard deviation) in its performance metrics. However, the critical finding was the failure to meet stringent safety standards: The YOLO model's mean recall for defect detection on the complex dataset was only 0.634 and for the RF-DETR 0.842. This unacceptable rate of false negatives precludes both models from safe industrial deployment. The study concludes that, while the YOLO Nano architecture is the choice among the tested models, the primary bottleneck is not architectural speed, but the lack of model robustness required to achieve the near-perfect recall necessary to guarantee product safety.
+
+
+
 
 {{< pagebreak >}}
 
 ### German Version
 
-Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Defekten auf Glasoberflächen im Pharmasektor, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensivere RF-DETR Nano (Transformer-basiert), wobei zwei unterschiedliche Datensätze verwendet wurden, die einfache und komplexe reale Bedingungen repräsentieren. Die Ergebnisse zeigten einen signifikanten Unterschied hinsichtlich der Architektur: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 70 % schneller als das RF-DETR) und erzielte eine überlegene Präzision (0,869 gegenüber 0,776 im Datensatz A), was auf eine geringere Rate kostspieliger Fehlalarme hindeutet. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der Sicherheitsstandards: Die beste erzielte Recall-Rate betrug nur 0,799 im komplexen Datensatz. Diese inakzeptable Rate an False Negatives (übersehene Fehler) schließt beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die effizienteste Wahl unter den getesteten Modellen ist, der Hauptengpass jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die erforderlich ist, um die nahezu perfekte Recall-Rate zu erreichen, die zur Gewährleistung der Produktsicherheit notwendig ist.
+Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennung von Defekten auf Glasoberflächen, wo die Unversehrtheit von Verpackungsbehältern eine wichtige Rolle spielt. Die Studie verglich quantitativ zwei verschiedene Architekturen zur Objekterkennung: das effiziente YOLO Nano (CNN-basierter Single-Shot-Detektor) und das ressourcenintensivere RF-DETR Nano (Transformer-basiert). Dafür wurden zwei unterschiedliche Datensätze verwendet, die einfache und komplexe, reale Bedingungen repräsentieren. Die aggregierten finalen Testergebnisse zeigten einen signifikanten Unterschied: Das YOLO-Modell zeigte eine überwältigende Trainingseffizienz (bis zu 70% schneller) und erzielte eine überlegenere statistische Stabilität (geringere Standardabweichung) bei seinen Resultaten. Die entscheidende Erkenntnis war jedoch die Nichteinhaltung der strengen Sicherheitsstandards: Die mittlere Recall-Rate des YOLO-Modells für die Defekterkennung im komplexen Datensatz betrug nur 0.634, und für das RF-DETR-Modell 0.842. Diese inakzeptable Rate an False Negatives schliesst beide Modelle für einen sicheren industriellen Einsatz aus. Die Studie kommt zu dem Schluss, dass die YOLO Nano-Architektur zwar die bessere Wahl unter den getesteten Modellen ist, der limitierende Faktor jedoch nicht die Geschwindigkeit der Architektur ist, sondern die mangelnde Robustheit des Modells, die zur Erreichung der nahezu perfekten Recall-Rate zur Gewährleistung der Produktsicherheit notwendig ist.
 
+
+# Acknowledgement {.unnumbered .unlisted}
+
+I would like to express my sincere gratitude to Dr. Stefan Glüge for his valuable support and guidance throughout the writing and compilation process of this thesis. My thanks also goes to Dr. Robert Vorbuger for initiating and setting up the project.
 
 ::: {.content-hidden when-format="html"}
 
@@ -58,11 +65,18 @@ Dieses Projekt befasste sich mit der Herausforderung der automatisierten Erkennu
 - **AP**: Average Precision
 - **CNN**: Convolutional Neural Network
 - **COCO**: Common Objects in Context
+- **CV**: Cross Validation
+- **FN**: False Negative
+- **FP**: False Positive
+- **IoU**: Intersection over Union
 - **mAP**: Mean Average Precision
 - **RF-DETR**: Roboflow Detection Transformer
+- **TN**: True Negative
+- **TP**: True Positive
 - **YOLO**: You Only Look Once
 
 # Introduction
+
 ## Context and Motivation
 Within the industrial sector, quality control represents a critical success factor. Specifically in pharmaceuticals and medical technology, the integrity of the primary packaging material (typically glass containers) is crucial for product safety.
 
@@ -98,7 +112,7 @@ The overall objective of this work was to conduct a quantitative performance com
 ## Research Questions
 Based on the challenges mentioned in **[Context and Motivation](#context-and-motivation)**, this study tries to answer following research questions:
 
-  - How does the performance differ between the two investigated object detection models (Model X vs. Model Y), measured by Mean Average Precision (mAP), in detecting defects in the different datasets?
+  - How does the performance differ between the two investigated object detection models (Model X vs. Model Y), measured by Mean Average Precision (mAP), in detecting defects in the different datasets? Which one is superior?
   - Which performance benchmarks (e.g., minimum precision and recall values) must be achieved to deem the resulting reliability of the models as sufficient for deployment in real-world quality control scenarios?
 
 ## State of the Art
@@ -118,6 +132,8 @@ The initial comparison in (@fig-comparison-table) provides a direct performance 
 - **Detection Accuracy:** Correspondingly, the RF-DETR model achieves a higher Average Precision (AP) of 48.0%, while the YOLO model reaches an AP of 37.1%. 
 
 This trend is maintained across varying Intersection over Union (IoU) overlap requirements.These results directly reflect the discrepancy in file size: The RF-DETR Nano model is approximately 349MB, while the YOLOv11 Nano model is only 57MB. This size difference represents a significant factor in the decision-making process regarding model selection for resource-constrained real-world deployment. Specifically, in industrial settings, where processing is often performed on decentralized, resource constrained Edge devices (such as industrial single board computers), models must be lightweight for efficient deployment, possess a minimal memory footprint, and maintain high inference speed to ensure the low latency and high throughput required for real time quality control.
+
+{{< pagebreak >}}
 
 **Contrasting Benchmarks**
 
@@ -156,7 +172,7 @@ The search for suitable data sets proved to be challenging due to the inherent i
   - **Scope and division:** The dataset comprised a total of 1728 images. The division into the three essential subcategories of training set ("train"), validation set ("val") and test set ("test") was already predefined. This division was adopted for the subsequent analysis.
 
 
-![Raw example images of the dataset A (Ground Truth)](figures/val_batch0_labels_roboflow.jpg){#fig-roboflow-raw width=60%}
+![Raw example images of the dataset A (Ground Truth)](figures/val_batch0_labels_roboflow.jpg){#fig-roboflow-raw width=50%}
 
 @fig-roboflow-raw shows that the images were caputred in monotone coloring, they are not autorotated, meaning the angle of the object is different in every picture.
 
@@ -181,9 +197,9 @@ As shown in (@fig-raw-kaggle-1) and Figure (@fig-raw-kaggle-2), the extent of th
 
 In view of the structural and qualitative differences between the data sets, a number of assumptions were formulated in advance.
 
-It was assumed that dataset A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to dataset B.
+- It was assumed that dataset A would be more challenging due to the different rotation angles of the images and the more complex classification. A longer training period and lower overall performance were expected here compared to dataset B.
 
-On the other hand, the small size of dataset B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
+- On the other hand, the small size of dataset B led to the hypothesis of low generalisability, although rapid learning was assumed on the internal test images.
 
 
 ## Model Selection
@@ -195,6 +211,7 @@ For the comparative part of the study, the decision was focused on two of the cu
       - One containing the image data without annotations.
       - The other containing five numbers: The class id, center_x, center_y, width and height of the bounding box 
 
+
   - **RF-DETR (Roboflow Detection Transformer)**
   The folder structure required for the RF-DETR model differed fundamentally from the YOLO standard, necessitating the use of the Common Objects in Context (COCO) format.
 
@@ -203,13 +220,9 @@ For the comparative part of the study, the decision was focused on two of the cu
   The structure of this JSON file adhered to the COCO standard, encompassing the following five key elements:
 
   1. Dataset Information: General metadata regarding the dataset itself.
-
   2. License Information: Details concerning data usage rights.
-
   3. Categories: A definition of the classes present in the dataset. A specific feature of the COCO format was the mandatory inclusion of a Supercategory (e.g., 'Animals'), under which individual classes (e.g., 'Cat') were assigned.
-
   4. Image Information: Metadata for each image, such as file name and dimensions.
-
   5. Annotation Information: Detailed annotation data for each instance, including the object's id, the corresponding image_id, the category_id, the bounding box coordinates, the area (in square pixels), and the segmentation information (segmentation and is_crowd variables)
 
 For the experimental evaluation, the Nano variant (YOLOv11n, RFDETR-nano) was deliberately selected for both the YOLO and the RF-DETR architecture.
@@ -232,6 +245,8 @@ Following feature extraction, the model utilizes a balanced combination of two d
 - **Non-Windowed Attention Blocks:** These enable global interaction across features, which contributes to overall detection accuracy.
 
 This deliberate balance helps maintain high performance while ensuring the model remains fast enough for real-time applications. Subsequently, the deformable cross-attention layers and the segmentation head bilinearly interpolate the output. Finally, the detection and segmentation losses are applied to all decoder layers during the training process [@robinson2025rfdetrneuralarchitecturesearch].
+
+{{< pagebreak >}}
 
 ### YOLO vs RF-DETR
 The selection of YOLO and RF-DETR for the experimental evaluation is based on their fundamental architectural divergence. Although both models are utilized for the same purpose, object detection and localization of defects, they differ significantly in their internal working structure.
@@ -257,11 +272,11 @@ The final testing of the trained models was conducted under the same computation
 ## Evaluation Metrics
 The performance of the models was assessed using standard metrics commonly applied in object detection and machine learning. These metrics were calculated based on the following fundamental classifications:
 
-  - **True Positives (TP):** The model correctly identified a defect, and the predicted bounding box sufficiently overlapped with the ground truth annotation.
+  - **True Positives:** The model correctly identified a defect, and the predicted bounding box sufficiently overlapped with the ground truth annotation.
 
-  - **True Negatives (TN):** The model correctly identified the absence of a defect in an area where none was present.
+  - **True Negatives:** The model correctly identified the absence of a defect in an area where none was present.
 
-  - **False Positives (FP):** The model predicted a defect where the ground truth showed none (a false alarm).
+  - **False Positives:** The model predicted a defect where the ground truth showed none (a false alarm).
 
   - **False Negatives (FN):** The model failed to predict a defect where one was present (a missed detection).
 
@@ -302,7 +317,7 @@ data = {
 # DataFrame erstellen
 df_train_time = pd.DataFrame(data, index=None)
 
-# Anzeige des DataFrames (wird in Quarto als Tabelle gerendert)
+# Anzeige des DataFrames
 df_train_time.style.hide(axis="index")
 ```
 
@@ -435,7 +450,7 @@ df_rfdetr_robo_val_final.style.format("{:.3f}", subset=cols_rf).hide(axis="index
 
 ### Comparison of Means and Std.
 
-The values of [@tbl-5cv-dataseta-yolo-folds] and [@tbl-5cv-dataseta-rfdetr-val] have been aggregated and are displayed in [@tbl-5cv-dataseta-yolo-agg] and [@tbl-5cv-dataseta-rfdetr-agg].
+The values of [@tbl-5cv-dataseta-yolo-folds] and [@tbl-5cv-dataseta-rfdetr-val] have been aggregated and are displayed in [@tbl-5cv-dataseta-yolo-agg] and [@tbl-5cv-dataseta-rfdetr-agg] and compared in (@fig-valid-data-a).
 
 :::{layout-ncol=2}
 
@@ -468,6 +483,8 @@ summary_robo_rfdetr_val_final
 
 
 ![Stratified Validation Comparison](figures/Roboflow/Roboflow_VALID.png){#fig-valid-data-a}  
+
+{{< pagebreak >}}
 
 ### Dataset B
 
@@ -566,7 +583,7 @@ df_val.style.format("{:.3f}", subset=num_cols_val).hide(axis="index")
 
 ### Comparison of Mean and Std
 
-The values of [@tbl-5cv-datasetb-yolo] and [@tbl-5cv-datasetb-rfdetr] have been aggregated and are displayed in [@tbl-5cv-dataseta-yolo-agg] and [@tbl-5cv-dataseta-rfdetr-agg].
+The values of [@tbl-5cv-datasetb-yolo] and [@tbl-5cv-datasetb-rfdetr] have been aggregated and are displayed in [@tbl-5cv-datasetb-yolo-agg] and [@tbl-5cv-datasetb-rfdetr-agg] and compared in (@fig-valid-data-b).
 
 :::{layout-ncol=2}
 
@@ -743,6 +760,8 @@ summary_robo_rfdetr_test_final
 
 :::
 
+{{< pagebreak >}}
+
 A comparison graph has been created:
 
 
@@ -750,7 +769,7 @@ A comparison graph has been created:
 
 ### Dataset B
 
-The testing of the models on the dataset b yielded following results:
+The testing of the models on the dataset B yielded following results:
 
 ```{python}
 #| tbl-cap: "Test Performance YOLO 5 Fold"
@@ -879,17 +898,13 @@ summary_test_rfdetr_kaggle.T
 
 :::
 
-![Visualization of Test Results](figures/Roboflow/Roboflow_TEST.png){#fig-datasetA-comp}
-
-
-{{< pagebreak >}}
-
+![Visualization of Test Results](figures/Kaggle/Kaggle_TEST.png){#fig-datasetB-comp}
 
 {{< pagebreak >}}
 
 ## Sample Images of Testing
 
-This section displays the predtictions vs the ground truth values for each case.
+This section displays the ground truth's vs the predictions for each case.
 
 ### Dataset A
 
@@ -915,9 +930,9 @@ This section displays the predtictions vs the ground truth values for each case.
 ## Interpretation of Results
 
 ### Training Efficiency
-The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to seven times less training time (200 minutes vs. theoretical 1500min on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
+The recorded training duration data explicitly validated the hypothesis concerning the computational overhead associated with the Transformer-based architecture. The YOLO model demonstrated superior computational efficiency, requiring up to seven times less training time (200 minutes vs. theoretical 1500 minutes on Dataset A). This finding underscored the critical advantage of the Single-Shot Detector approach for resource-constrained or time-sensitive development environments. The efficiency difference confirmed that the YOLO architecture better aligns with the lightweight requirements established in the research scope.  
 
-An attempt to execute the full 5-fold Cross Validation (CV) on the RF-DETR model was initiated, but proved infeasible due to resource limitations. Given that a single RF-DETR training run on Dataset A required approximately 5 hours (300minutes), the full 5-fold CV process would have necessitated a continuous execution time exceeding 25 hours. The available computational resources were insufficient for such a sustained, long duration, which constrained the RF-DETR model's final evaluation to only two runs on Dataset A.  
+An attempt to execute the full 5-fold Cross Validation (CV) on the RF-DETR model was initiated, but proved infeasible due to resource limitations. Given that a single RF-DETR training run on Dataset A required approximately 5 hours (300 minutes), the full 5-fold CV process would have necessitated a continuous execution time exceeding 25 hours. The available computational resources were insufficient for such a sustained, long duration, which constrained the RF-DETR model's final evaluation to only two runs on Dataset A. The model is consequently evaluated based on these two runs, a judgment considered fair because it accurately reflects the current state of its operational feasibility and resource constraints.
 
 
 ### Analysis of Training Dynamics
@@ -935,42 +950,54 @@ For the YOLO model, the following loss components were monitored:
 
   - **Distribution Focal Loss ($\text{dfl\_loss}$):** Improves the bounding box estimation by modeling the coordinates as probability distributions instead of simple discrete values.
 
+{{< pagebreak >}}
+
+
 **Training Dynamics on Dataset A** 
 
 As observed in the training results for both models (@fig-yolo-roboflow-train for YOLO and @fig-rfdetr-roboflow-train for RF-DETR), the loss curves indicated a steady decrease across the 100 epochs. For both architectures, the train and val losses did not fully converge before the 100th epoch, and no clear signs of overfitting or underfitting were present (i.e., the validation loss continued to decrease or remained stable).  
 
 This behavior suggested that the full 100 epochs were necessary to achieve the recorded level of performance on this more complex dataset. It is plausible that a moderate increase in the epoch count beyond 100 could have potentially yielded further marginal improvements in the subsequent prediction accuracy.
 
-Das RF-DETR Modell hat leicht besser abgeschnitten, verfügt aber jedoch über eine grössere Standartabweichung wie in @tbl-5cv-dataseta-rfdetr-agg und in @fig-fig-valid-data-a zu sehen ist. Beide Modell konnten in der Validierung keine Metriken für die Glas Klasse ausgeben, sondern nur für die Defekt Klasse.
+The aggregated data from the validation phase (@tbl-5cv-dataseta-yolo-agg and @tbl-5cv-dataseta-rfdetr-val) indicated that the RF-DETR model performed slightly better than the YOLO model, a finding which was also visually evident in the corresponding graph (@fig-valid-data-a). But because of the high variance the observed higher mean performance of RF-DETR was statistically unreliable. The underlying variance (Std.) of the RF-DETR model is either at the same level as the YOLO model's variance or slightly above it. This constraint must be considered when assessing the RF-DETR's true robustness.
+
+The aggregated data from the validation phase (@tbl-5cv-dataseta-yolo-agg and @tbl-5cv-dataseta-rfdetr-val) indicated a numerically slight superiority for the RF-DETR model over the YOLO model, an observation visually supported by the corresponding graph (@fig-valid-data-a). However, the high variance associated with the RF-DETR's performance rendered its observed higher mean unreliable. The instability confirmed that the minimal numerical advantage achieved by the RF-DETR was not trustworthy compared to the statistical certainty of the YOLO model.
+
 
 **Training Dynamics on Dataset B**
 
 The effect of data scarcity on Dataset B (only 208 images) was distinctly visible in the training plots (@fig-yolo-kaggle-train for YOLO and @fig-rfdetr-kaggle-train for RF-DETR). 
 
-While the loss curves continued a steady, albeit oscillating, decline, the Average Precision ($\text{mAP@50}$) metric converged very rapidly. For both models, the $\text{mAP@50}$ curve reached near-maximal performance around or shortly after the 20 th epoch. This rapid plateauing of the core evaluation metric indicated that the models learned the limited defect variance present in Dataset B relatively quickly. Consequently, the remaining 80 epochs were likely redundant for maximizing performance on this specific dataset. A predefined Early Stopping strategy or a reduction of the epoch count after the 20 th epoch could have significantly reduced the computational time without negatively impacting the achieved test performance.
+While the loss curves continued a steady, albeit oscillating, decline, the Average Precision (mAP@50) metric converged very rapidly. For both models, the mAP@50 curve reached near-maximal performance around or shortly after the 20 th epoch. This rapid plateauing of the core evaluation metric indicated that the models learned the limited defect variance present in Dataset B relatively quickly. Consequently, the remaining 80 epochs were likely redundant for maximizing performance on this specific dataset. A predefined Early Stopping strategy or a reduction of the epoch count after the 20 th epoch could have significantly reduced the computational time without negatively impacting the achieved test performance.
+
+**High Scores and Zero Variance:** The RF-DETR model achieved perfect mean scores for Precision, Recall, and mAP50 ($1.000 \pm 0.000$) (@tbl-5cv-datasetb-rfdetr-agg). The YOLO model also performed well (Recall 0.993 $\pm 0.015$) (@tbl-5cv-datasetb-yolo-agg).
+
+**Structural Constraint:** These high metrics did not provide a reliable measure of the models' sensitivity to true negative scenarios (nondefect images) as the dataset was guaranteed to contain defects.
 
 {{< pagebreak >}}
 
 ### Testing Efficiency
 
 ### Performance on Dataset A
-The evaluation on Dataset A provided a clear delineation of the models' practical suitability:  
+The evaluation on Dataset A provided the clear delineation of the models' practical suitability, drawing upon the aggregated mean and standard deviation from the test performance (@tbl-test-dataseta-yolo-agg and @tbl-test-dataseta-rfdetr-agg):
 
-- **Precision and False Positives (FPs)**: The YOLO architecture achieved a significantly higher Precision (0.869) than the RF-DETR model (0.776). Since Precision directly quantifies the reliability of positive predictions ($\frac{TP}{TP + FP}$), the lower Precision of RF-DETR indicated a higher rate of False Positives. This finding supports the theoretical expectation that Single-Shot Detectors often excel in suppressing redundant detections. For the pharmaceutical context, where minimizing unnecessary product rejection (FPs) is critical for cost management, YOLO's higher Precision established a substantial practical advantage.  
+- **Precision and False Positives** The YOLO architecture achieved a stable Precision_defect of 0.731 ($\pm 0.023$) , while the RF-DETR model achieved a numerically higher mean of 0.802, but with a significantly larger standard deviation of $\pm 0.120$. For the pharmaceutical context, where minimizing unnecessary product rejection is critical for cost management, YOLO's superior statistical stability established a substantial practical advantage. 
 
-- **Critical Relevance on False Negatives (FNs)**: In pharmaceutical applications, the identification of false negatives (FNs) is of critical importance. An $\text{FN}$ means that a structurally defective glass container is classified as intact and subsequently filled with a sterile medication. This poses an immediate risk to patient safety and can result in the catastrophic product recalls mentioned in the introduction. In the hierarchy of error costs, an $\text{FN}$ error (safety risk) therefore weighs considerably more heavily than an $\text{FP}$ (unnecessary rejection and costs).  
+- **Critical Relevance on False Negatives**: In pharmaceutical applications, the identification of false negatives is of critical importance. An FN means that a structurally defective glass container is classified as intact and subsequently filled with a sterile medication. This poses an immediate risk to patient safety and can result in catastrophic product recalls. In the hierarchy of error costs, an FN error (safety risk) therefore weighs considerably more heavily than an FP.
 
-- **Recall analysis:** With a recall of 0.799, the YOLO model achieved a higher value than the RF-DETR model (0.759) on dataset A. Although none of the models achieved the required recall close to 1.000, the higher recall performance of YOLO implied that it offered a higher probability of actually identifying existing defects and thus represented a lower risk for false negatives.
+- **Recall analysis:** With a mean Recall_defect of only 0.634 ($\pm 0.040$), the YOLO model demonstrated an unacceptable safety gap, as it failed to detect over one-third of existing defects. Although the RF-DETR model achieved a significantly higher mean Recall_defect of 0.842 ($\pm 0.098$), this mean is derived from highly variable runs, and even this higher score falls far short of the required near-1.000 benchmark. The higher recall of the RF-DETR, despite its high variance, implies that it offers a potentially higher probability of identifying existing defects.
 
-- **Overall Accuracy:** The $\text{mAP@50}$ and $\text{mAP@[50:95]}$ scores were nearly identical for both models, suggesting that while RF-DETR had slightly more accurate localization across all IoU thresholds ($\text{mAP@[50:95]}$ 0.590 vs. 0.589), this minor gain did not compensate for its lower Precision and drastically higher computational cost.
+- **Overall Accuracy:** The overall accuracy metrics mAP50 and mAP@[50-95] were statistically similar when accounting for variance. The YOLO model achieved a stable mean mAP@[50-95] of 0.577 ($\pm 0.011$), while the RF-DETR achieved a mean of 0.646 ($\pm 0.067$). Given the RF-DETR's high standard deviation, the minor numerical gain in its overall accuracy did not compensate for its lower statistical stability and drastically higher computational cost.
 
 - **Detection Guarantee of the Container Object:** 
-As seen in [@fig-yolo-datasetA-confusion] aswell as in @fig-TP-roboflow, @fig-TN-roboflow, @fig-FP-roboflow and @fig-FN-roboflow the detection of the glass object was always successful with a high accuracy. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
+As seen in @fig-TP-roboflow, @fig-TN-roboflow, @fig-FP-roboflow and @fig-FN-roboflow the detection of the glass object was always successful with a high accuracy. This guarantee of the container's localization was verified individually for every test image and is inherent to the dataset's design, where the defect and the glass were grouped under a supercategory. The model successfully identified the presence of the overall object (the glass jar) in virtually all instances. This ensured that the subsequent failure to detect a defect was solely attributable to the defect detection capability of the model and not to the initial inability to locate the primary object of interest.
 
 ### Performance on Dataset B
-The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions. The near-perfect metrics (Recall 1.000; $\text{mAP@50 }$ 1.000 for RF-DETR) illustrated this effectiveness. However, the $\text{mAP@[50:95]}$ metric offered a necessary refinement:  
+The results from the smaller, structurally simpler Dataset B (guaranteed defect presence) confirmed the models' high learning capacity under ideal conditions.  
 
-- **Bounding Box Localization:** The YOLO model achieved the highest score in the strict $\text{mAP@[50:95]}$ criterion (0.784 vs. 0.770 for RF-DETR). As this metric only rewards highly accurate bounding box overlap, this suggested that YOLO produced marginally more precise spatial localization of the defects across the wide size spectrum observed in Dataset B. Otherwise the performance of the two model was almost similar.
+- **Near-Perfect Metrics and Variance:** Both models achieved aggregated test scores near 1.000 (@tbl-test-datasetb-yolo-agg, @tbl-test-datasetb-rfdetr-agg). The RF-DETR model achieved virtually perfect mean scores for precision ($0.997 \pm 0.006$) and recall ($0.996 \pm 0.009$), with extremely low variance across its folds. The YOLO model also performed well (Recall Mean 0.987 $\pm 0.018$), confirming the effectiveness of both architectures when generalization requirements are low.
+
+- **Bounding Box Localization:** The mAP@[50-95] metric offered the necessary refinement for comparison. The RF-DETR model achieved a statistically superior mean score (0.870 $\pm 0.053$) compared to the YOLO model (0.820 $\pm 0.024$). As this metric only rewards highly accurate bounding box overlap, this suggested that the transformer-based model produced a marginally more accurate spatial localization of defects across the full IoU range when tested on ideal data.
 
 - **Absence of True and False Negatives:** Since the dataset was guaranteed to contain at least one defect in every image, the True Negative and False Negative classes were effectively eliminated from the test population. Consequently, the high metrics recorded for Dataset B did not provide a reliable measure of the models' sensitivity to true negative scenarios and must be interpreted with this structural constraint in mind.
 
@@ -981,19 +1008,22 @@ The core assumption that Dataset A would require a longer training duration due 
 
 ### Answering Research Questions
 
-- **Performance Comparison:** The YOLO architecture was identified as the superior choice for the glass defect application. While both models delivered similar overall accuracy (mAP), YOLO outperformed RF-DETR on Precision and Recall on the complex Dataset A, while simultaneously providing a 90% reduction in training time.  
+- **Performance Comparison:** Although the RF-DETR model achieved a numerically higher mean recall in the final test set (0.842) than the YOLO model (0.634), this metric was not statistically reliable due to the RF-DETR's high standard deviation ($ \pm 0.098$) and the methodological constraint of only two CV runs aswell as the high computation power and extremely long execution time. Therefore the YOLO architecture was ultimately identified as the superior choice for the glass defect application.  
 
-- **Applicaton Benchmarks:** The achieved Recall of 0.799 by YOLO on the complex dataset is insufficient for final deployment. The necessity for the industry to achieve a Recall and Precision closer to 1.000 was confirmed as the mandatory application benchmark, suggesting that further research focused on robustness and data synthesis is required.
+- **Applicaton Benchmarks:** The achieved Recall of 0.634 by YOLO on the complex dataset is insufficient for final deployment. The necessity for the industry to achieve a Recall and Precision closer to 1.000 was confirmed as the mandatory application benchmark, suggesting that further research focused on robustness and data synthesis is required.
 
 # Conclusion
+
 ## Summary of Key Findings
-The present comparative study successfully evaluated the performance of two leading object detection architectures, YOLO Nano and RF-DETR Nano, for the task of automated glass defect detection under varying dataset conditions, with the exception that the RF-DETR model on Dataset A was evaluated using only two Cross-Validation (CV) folds due to resource constraints, rather than the intended five folds.
+The present comparative study successfully evaluated the performance of two leading object detection architectures, YOLO Nano and RF-DETR Nano, for the task of automated glass defect detection under varying dataset conditions.
 
 The central conclusions drawn from the experimental data are:
 
+- **Validation vs Test:** The comparative analysis of the aggregated mean mAP50 between the validation and final testing phases of the Dataset A revealed a key difference in generalization stability. The YOLO model demonstrated robust generalization on the complex Dataset A: its mean mAP50 achieved during validation (0.826 $\pm 0.014$) was nearly identical to its final testing phase result (0.828 $\pm 0.009$), indicating successful generalization without overfitting and making its performance statistically trustworthy. Conversely, the RF-DETR model’s generalization was less reliable: its mean mAP50 showed a numerical increase between validation (0.858 $\pm 0.040$) and testing (0.886 $\pm 0.067$), but this marginal gain was compromised by a significant increase in instability (Variance: rose from 0.040 to 0.067).
+
 - **Efficiency Triumphs:** The YOLO architecture demonstrated overwhelming training efficiency, completing the computational requirements significantly faster than the Transformer-based RF-DETR model.  
 
-- **Safety Gap and Critical Failure:** The primary bottleneck is not the architectural choice, but the models' insufficient robustness to data variance. Even the architecturally superior YOLO Nano model achieved a Recall of only 80% on the more complex Dataset A. This translates directly to an unacceptable rate of missed defects (False Negatives), rendering both models unsuitable for safety-critical, unassisted deployment.
+- **Safety Gap and Critical Failure:** The primary bottleneck is not the architectural choice, but the models' insufficient robustness to data variance. Both models did not achieve a satisfactory recall score, rendering both models unsuitable for safety-critical, unassisted deployment.
 
 - **Robustness and Generalization:** The drastic performance difference observed between the highly optimized scores on Dataset B and the lower scores on Dataset A validated the hypothesis that both models require more comprehensive, varied training data to attain the high levels of robustness needed for final industrial deployment.  
 
@@ -1005,6 +1035,8 @@ The central conclusions drawn from the experimental data are:
 The execution of the comparative study was subject to several inherent constraints and practical challenges:
 
 - **Computational Constraints and Training Duration:** A significant limitation was the dependency on high-performance computing resources.  It was observed that without a powerful GPU for fine-tuning and cross validating, researchers must account for extended waiting periods. The training time increases proportionally with the size and complexity of the dataset, posing a barrier to rapid experimentation.
+
+- **Infeasibility of Full Cross-Validation and Comparative Fairness:** The RF-DETR model's substantial computational requirement necessitated such a long computation time that the full execution of the stratified 5-fold CV was not possible. This constraint directly compromised the statistical fairness of the model comparison, as the RF-DETR's metrics were derived from a smaller and less robust sample than those of the YOLO model. Despite this methodological limitation, the current paper's results show the RF-DETR performing better in the final testing phase. This observation, however, simultaneously underscores the YOLO model's inherent efficiency advantage: With appropriate pre-processing, data augmentation, and hyperparameter tuning, the YOLO model is the preferred choice for a resource-constrained industrial application, as its speed is superior, regardless of the RF-DETR's marginally better performance.
 
 - **Discrepancy in Model Outputs:** Due to the divergent underlying model infrastructures (i.e., the unique software libraries and frameworks used by YOLO and RF-DETR), the final training results were represented differently. This resulted in variations in data storage formats, metrics calculated, and output visualizations. Consequently, considerable effort was required to unify the various outputs into a consistent and comparable format suitable for a fair performance comparison. Additionally the infrastructure was highly self-contained (closed in itself), meaning that the process of extracting cross validation data and standardizing metrics was exceptionally cumbersome. The code required complex, custom adjustments to facilitate the planned CV implementation.
 
@@ -1087,7 +1119,7 @@ _**Testing**_
 :::
 
 
-**RF-DETR**
+**RF-DETR (No CV)**
 
 _**Training**_
 
@@ -1134,7 +1166,7 @@ _**Testing**_
 ![F1-Score Testing](figures/Kaggle/YOLO/BoxF1_curve_kaggle_yolo_test.png)
 :::
 
-**RF-DETR**
+**RF-DETR (No CV)**
 
 _**Training**_
 

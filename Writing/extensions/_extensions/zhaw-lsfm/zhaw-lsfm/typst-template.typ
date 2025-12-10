@@ -252,6 +252,27 @@
     ]
   }
 
+  if abstract != none {
+    block(inset: 2em)[
+    #text(weight: "semibold")[#abstract-title] #h(1em) #abstract
+    ]
+  }
+
+  if toc {
+    let title = if toc_title == none {
+      auto
+    } else {
+      toc_title
+    }
+    block(above: 0em, below: 2em)[
+    #outline(
+      title: toc_title,
+      depth: toc_depth,
+      indent: toc_indent
+    );
+    ]
+  }
+
   // Start page numbering for main content with header
   set page(
     numbering: pagenumbering,
@@ -283,27 +304,6 @@
     ]
   )
   counter(page).update(1)
-
-  if abstract != none {
-    block(inset: 2em)[
-    #text(weight: "semibold")[#abstract-title] #h(1em) #abstract
-    ]
-  }
-
-  if toc {
-    let title = if toc_title == none {
-      auto
-    } else {
-      toc_title
-    }
-    block(above: 0em, below: 2em)[
-    #outline(
-      title: toc_title,
-      depth: toc_depth,
-      indent: toc_indent
-    );
-    ]
-  }
 
   set par(spacing: 2em)
 
