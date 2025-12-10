@@ -935,9 +935,13 @@ For the YOLO model, the following loss components were monitored:
 
   - **Distribution Focal Loss ($\text{dfl\_loss}$):** Improves the bounding box estimation by modeling the coordinates as probability distributions instead of simple discrete values.
 
-**Training Dynamics on Dataset A** As observed in the training results for both models (@fig-yolo-roboflow-train for YOLO and @fig-rfdetr-roboflow-train for RF-DETR), the loss curves indicated a steady decrease across the 100 epochs. For both architectures, the train and val losses did not fully converge before the 100th epoch, and no clear signs of overfitting or underfitting were present (i.e., the validation loss continued to decrease or remained stable).  
+**Training Dynamics on Dataset A** 
+
+As observed in the training results for both models (@fig-yolo-roboflow-train for YOLO and @fig-rfdetr-roboflow-train for RF-DETR), the loss curves indicated a steady decrease across the 100 epochs. For both architectures, the train and val losses did not fully converge before the 100th epoch, and no clear signs of overfitting or underfitting were present (i.e., the validation loss continued to decrease or remained stable).  
 
 This behavior suggested that the full 100 epochs were necessary to achieve the recorded level of performance on this more complex dataset. It is plausible that a moderate increase in the epoch count beyond 100 could have potentially yielded further marginal improvements in the subsequent prediction accuracy.
+
+Das RF-DETR Modell hat leicht besser abgeschnitten, verfügt aber jedoch über eine grössere Standartabweichung wie in @tbl-5cv-dataseta-rfdetr-agg und in @fig-fig-valid-data-a zu sehen ist. Beide Modell konnten in der Validierung keine Metriken für die Glas Klasse ausgeben, sondern nur für die Defekt Klasse.
 
 **Training Dynamics on Dataset B**
 
