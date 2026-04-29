@@ -1,0 +1,6 @@
+ultralytics
+rfdetr == 1.2.1
+pandas
+numpy
+scikit-learn
+ZipFile
