@@ -4,7 +4,7 @@ Visit this link to see the final report: [Project Work 2](https://github.com/kek
 
 The primary objective is to quantify the necessary trade-off between detection reliability and industrial efficiency for defect recognition.
 
-Core Methodology
+Core Methodology  
 The project applies Transfer Learning to fine-tune two fundamentally different object detection architectures on a custom dataset of glass defects.
 
 1. YOLOv11 Nano (Efficiency Baseline)
