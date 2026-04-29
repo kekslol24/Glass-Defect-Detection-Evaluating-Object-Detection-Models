@@ -1,5 +1,6 @@
 ## Glass Defect Detection: Model Evaluation for Industrial Efficiency
 This repository documents a Bachelor's project at ZHAW focused on evaluating advanced deep learning models for quality control in glass manufacturing.
+Visit this link to see the final report: [Project Work 2](https://github.com/kekslol24/Glass-Defect-Detection-Evaluating-Object-Detection-Models/blob/main/Writing/extensions/PA2_FV.pdf)
 
 The primary objective is to quantify the necessary trade-off between detection reliability and industrial efficiency for defect recognition.
 
